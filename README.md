@@ -20,7 +20,7 @@ Bergen Parkering. Status meldes med ett trykk, og «Kjør hit» åpner veibeskri
 - `app.html` – selve appen (brukes som delt claude.ai-artifact, med felles database).
 - `build.sh` – lager `index.html`, en frittstående versjon (f.eks. for GitHub Pages).
   Utenfor claude.ai lagres data bare i nettleseren (localStorage).
-- `kart/` – kartgrunnlag for Bergen sentrum fra Kartverket (topo, CC BY 4.0).
+- `kart/` – kartgrunnlag fra Kartverket (topo, CC BY 4.0): `kart-z15.jpg`/`kart-z16.jpg` dekker sentrum med Sandviken, Møhlenpris, Solheimsviken og Fjellsiden, `kart.jpg` er et skarpere bilde av selve sentrum.
 
 ## Felles lagring på egen nettside (Firebase)
 

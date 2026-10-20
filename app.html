@@ -102,18 +102,24 @@ header.top { background: var(--sign); color: var(--sign-ink); display: flex; ali
 .panel { position: absolute; z-index: 600; background: var(--bg); display: flex; flex-direction: column; min-height: 0; }
 .handle { display: none; }
 .phead { flex: none; display: grid; gap: 10px; padding: 14px 16px 10px; border-bottom: 1px solid var(--line); background: var(--bg); }
-.pbody { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 12px 16px 28px; display: grid; gap: 12px; align-content: start; }
+.pbody { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; padding: 12px 16px calc(56px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 12px; align-content: start; }
 @media (min-width: 900px) {
   .panel { left: 0; top: 0; bottom: 0; width: 410px; border-right: 1px solid var(--line); box-shadow: var(--shadow); }
 }
 @media (max-width: 899.98px) {
-  .panel { left: 0; right: 0; bottom: 0; border-radius: 16px 16px 0 0; box-shadow: 0 -6px 24px rgba(16,33,48,.18); transition: height .25s ease; height: 172px;
-    padding-bottom: env(safe-area-inset-bottom, 0px); }
-  .panel[data-snap="half"] { height: 56%; }
+  .panel { left: 0; right: 0; bottom: 0; border-radius: 16px 16px 0 0; box-shadow: 0 -6px 24px rgba(16,33,48,.18); transition: height .25s ease; height: 118px; }
+  .panel[data-snap="half"] { height: 48%; }
+  .panel[data-snap="peek"] .chips { display: none; }
+  .panel[data-snap="peek"] .phead { border-bottom: 0; }
   .panel[data-snap="full"] { height: calc(100% - 8px); }
   .handle { display: grid; place-items: center; height: 22px; flex: none; cursor: grab; touch-action: none; border: 0; background: transparent; width: 100%; padding: 0; }
   .handle span { width: 42px; height: 5px; border-radius: 3px; background: var(--line); }
-  .phead { padding-top: 0; }
+  .phead { padding-top: 0; gap: 8px; }
+  .phead[id="headList"] { cursor: grab; }
+  header.top { padding-block: 7px; gap: 10px; }
+  .psign { width: 32px; height: 32px; border-width: 2.5px; font-size: 22px; }
+  .brand h1 { font-size: 19px; }
+  .btn.on-sign { padding: 7px 12px; }
   .phead, .pbody { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   .leaflet-control-zoom { display: none; }
 }
@@ -345,8 +351,10 @@ label.f small { font-weight: 400; color: var(--muted); }
   };
   const FRESH_MS = 2 * 60 * 60 * 1000;
   const WINDOW_MS = 6 * 60 * 60 * 1000; // bare meldinger fra de siste 6 timene hentes (sparer lesinger)
-  const BOUNDS = [[60.378575, 5.295410], [60.404358, 5.353088]]; // Kartverket topo, satt sammen for Bergen sentrum
-  const PEEK = 172;
+  // Kartverket topo, satt sammen til bilder: hele området (zoom 15/16) og skarpere sentrum (zoom 17)
+  const WIDE = [[60.362281, 5.273438], [60.419276, 5.377808]];
+  const CENTER = [[60.378575, 5.295410], [60.404358, 5.353088]];
+  const PEEK = 118;
 
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -696,15 +704,21 @@ label.f small { font-weight: 400; color: var(--muted); }
   }
 
   /* ---------- kart ---------- */
-  let map = null, layer = null, overlay = null, sharp = false, meMarker = null;
+  let map = null, layer = null, mid = null, sharp = null, meMarker = null;
   function initMap() {
     if (!window.L) { $("#map").innerHTML = '<p class="notice" style="margin:16px">Kartet kunne ikke lastes.</p>'; return; }
-    map = L.map("map", { maxBounds: BOUNDS, maxBoundsViscosity: 1, minZoom: 14, maxZoom: 18, zoomSnap: 0.5 });
+    map = L.map("map", { maxBounds: WIDE, maxBoundsViscosity: 1, minZoom: 13, maxZoom: 18, zoomSnap: 0.5 });
     map.zoomControl.setPosition("bottomright");
     map.attributionControl.setPrefix(false);
-    overlay = L.imageOverlay("kart/kart-liten.jpg", BOUNDS, { attribution: "© Kartverket" }).addTo(map);
+    L.imageOverlay("kart/kart-z15.jpg", WIDE, { attribution: "© Kartverket" }).addTo(map);
+    // skarpere kart lastes først når man zoomer inn
+    const upgrade = () => {
+      const z = map.getZoom();
+      if (!mid && z >= 15.25) { mid = L.imageOverlay("kart/kart-z16.jpg", WIDE).addTo(map); if (sharp) sharp.bringToFront(); }
+      if (!sharp && z >= 16.5) sharp = L.imageOverlay("kart/kart.jpg", CENTER).addTo(map);
+    };
     map.fitBounds([[60.386, 5.312], [60.400, 5.338]], isDesktop() ? { paddingTopLeft: [410, 0] } : { paddingBottomRight: [0, PEEK] });
-    map.on("zoomend", () => { if (!sharp && map.getZoom() >= 16.5) { sharp = true; overlay.setUrl("kart/kart.jpg"); } });
+    map.on("zoomend", upgrade); upgrade();
     layer = L.layerGroup().addTo(map);
   }
   function renderMap() {
@@ -748,25 +762,44 @@ label.f small { font-weight: 400; color: var(--muted); }
     panel.dataset.snap = s;
     setTimeout(() => { if (state.view === "place") placeCross(); }, 270);
   }
+  const maxH = () => panel.parentElement.clientHeight - 8;
   (() => {
-    const h = $("#handle"); let y0 = null, h0 = 0, moved = false;
-    h.addEventListener("pointerdown", (e) => { y0 = e.clientY; h0 = panel.getBoundingClientRect().height; moved = false; panel.style.transition = "none"; h.setPointerCapture(e.pointerId); });
-    h.addEventListener("pointermove", (e) => {
+    let y0 = null, h0 = 0, moved = false, tap = false;
+    const begin = (e, isTap) => { y0 = e.clientY; h0 = panel.getBoundingClientRect().height; moved = false; tap = isTap; };
+    $("#handle").addEventListener("pointerdown", (e) => begin(e, true));
+    document.querySelectorAll(".phead").forEach((el) => el.addEventListener("pointerdown", (e) => {
+      if (isDesktop() || e.target.closest("input, select, textarea, button, a, label, .chips")) return;
+      begin(e, false);
+    }));
+    addEventListener("pointermove", (e) => {
       if (y0 == null) return;
-      const dy = e.clientY - y0; if (Math.abs(dy) > 4) moved = true;
-      const max = panel.parentElement.clientHeight - 8;
-      panel.style.height = Math.min(max, Math.max(120, h0 - dy)) + "px";
+      const dy = e.clientY - y0;
+      if (!moved && Math.abs(dy) < 6) return;
+      moved = true; panel.style.transition = "none";
+      panel.style.height = Math.min(maxH(), Math.max(90, h0 - dy)) + "px";
     });
     const end = () => {
       if (y0 == null) return;
       y0 = null; panel.style.transition = "";
-      const cur = panel.getBoundingClientRect().height, max = panel.parentElement.clientHeight;
+      const cur = panel.getBoundingClientRect().height;
       panel.style.height = "";
-      if (!moved) { setSnap(panel.dataset.snap === "peek" ? "half" : panel.dataset.snap === "half" ? "full" : "peek"); return; }
-      const opts = [["peek", PEEK], ["half", max * 0.56], ["full", max - 8]];
+      if (!moved) { if (tap) setSnap(panel.dataset.snap === "peek" ? "half" : panel.dataset.snap === "half" ? "full" : "peek"); return; }
+      const opts = [["peek", PEEK], ["half", maxH() * 0.48], ["full", maxH()]];
       setSnap(opts.reduce((a, b) => (Math.abs(b[1] - cur) < Math.abs(a[1] - cur) ? b : a))[0]);
     };
-    h.addEventListener("pointerup", end); h.addEventListener("pointercancel", end);
+    addEventListener("pointerup", end); addEventListener("pointercancel", end);
+    // sveip opp i listen gjør arket stort; dra ned øverst i listen gjør det mindre
+    document.querySelectorAll(".pbody").forEach((b) => {
+      let ty = null, top = false;
+      b.addEventListener("touchstart", (e) => { ty = e.touches[0].clientY; top = b.scrollTop <= 0; }, { passive: true });
+      b.addEventListener("touchmove", (e) => {
+        if (ty == null || isDesktop()) return;
+        const dy = e.touches[0].clientY - ty;
+        if (dy < -12 && panel.dataset.snap !== "full") { setSnap("full"); ty = null; }
+        else if (dy > 70 && top && b.scrollTop <= 0 && panel.dataset.snap !== "peek") { setSnap(panel.dataset.snap === "full" ? "half" : "peek"); ty = null; }
+      }, { passive: true });
+      b.addEventListener("touchend", () => { ty = null; }, { passive: true });
+    });
   })();
 
   /* ---------- handlinger ---------- */
@@ -841,7 +874,7 @@ label.f small { font-weight: 400; color: var(--muted); }
     if (map) {
       if (meMarker) meMarker.remove();
       meMarker = L.marker(ll, { icon: L.divIcon({ className: "", html: '<div class="me"></div>', iconSize: [18, 18], iconAnchor: [9, 9] }), interactive: false, zIndexOffset: 2000 }).addTo(map);
-      if (!L.latLngBounds(BOUNDS).contains(ll)) toast("Du er utenfor kartet over sentrum. Avstandene stemmer likevel.");
+      if (!L.latLngBounds(WIDE).contains(ll)) toast("Du er utenfor kartet. Avstandene stemmer likevel.");
       else if (pan) showOnMap(ll, 16);
     }
     render();
