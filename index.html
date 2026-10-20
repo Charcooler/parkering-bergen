@@ -213,7 +213,7 @@ footer { color: var(--muted); font-size: 12px; padding-block: 28px 32px; }
 
   <footer>
     Opplysningene er meldt inn av brukere og kan være feil eller utdaterte. Sjekk alltid skiltet og takstene på stedet.
-    Meldinger eldre enn 2 timer vises som utdatert.
+    Meldinger eldre enn 2 timer vises som utdatert, og meldinger eldre enn 6 timer vises ikke. Plassene ligger alltid lagret.
   </footer>
 </main>
 
@@ -267,6 +267,7 @@ footer { color: var(--muted); font-size: 12px; padding-block: 28px 32px; }
     fullt: { label: "Fullt",        rank: 1 },
   };
   const FRESH_MS = 2 * 60 * 60 * 1000;
+  const WINDOW_MS = 6 * 60 * 60 * 1000; // bare meldinger fra de siste 6 timene hentes (sparer lesinger)
 
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -294,7 +295,7 @@ footer { color: var(--muted); font-size: 12px; padding-block: 28px 32px; }
   };
   let db = null;
   function emit() {
-    if (state.mode === "local") { state.spots = local.data.spots; state.reports = local.data.reports; state.loaded = true; }
+    if (state.mode === "local") { state.spots = local.data.spots; state.reports = local.data.reports.filter((r) => Date.now() - r.at < WINDOW_MS); state.loaded = true; }
     render();
   }
 
@@ -344,7 +345,7 @@ footer { color: var(--muted); font-size: 12px; padding-block: 28px 32px; }
     db.collection("spots").limit(1000).onSnapshot((snap) => {
       state.spots = snap.docs.map((x) => ({ id: x.id, ...x.data() })); state.loaded = true; resolveNames(); render();
     }, onDbError);
-    db.collection("reports").orderBy("at", "desc").limit(500).onSnapshot((snap) => {
+    db.collection("reports").where("at", ">", Date.now() - WINDOW_MS).orderBy("at", "desc").limit(300).onSnapshot((snap) => {
       state.reports = snap.docs.map((x) => ({ id: x.id, ...x.data() })); resolveNames(); render();
     }, onDbError);
     render();
@@ -486,7 +487,7 @@ footer { color: var(--muted); font-size: 12px; padding-block: 28px 32px; }
 
   function card(s) {
     const r = latestFor(s.id), fresh = isFresh(r), open = state.open === s.id;
-    const pill = !r ? `<span class="pill stale">Ingen meldinger</span>`
+    const pill = !r ? `<span class="pill stale">Ingen melding siste 6 t</span>`
       : `<span class="pill ${fresh ? r.level : "stale"}">${esc(LEVELS[r.level].label)}${r.free != null ? " · " + r.free : ""}</span>`;
     const statusLine = r ? `<span class="ago">${fresh ? "" : "Utdatert · "}${esc(ago(r.at))}</span>` : "";
     const hist = state.reports.filter((x) => x.spotId === s.id).slice(0, 6);
@@ -534,7 +535,7 @@ footer { color: var(--muted); font-size: 12px; padding-block: 28px 32px; }
           : `<button class="btn ghost small" type="button" data-act="del">Slett</button>`) : ""}
       </div>` : "";
     const h = hist.length ? `<ul class="history">${hist.map((x) => `<li><span class="when">${esc(clock(x.at))}</span><span><b>${esc(LEVELS[x.level].label)}</b>${x.free != null ? ` (${esc(x.free)} ledige)` : ""} – ${esc(who(x.by))}, ${esc(ago(x.at))}${x.comment ? ` · «${esc(x.comment)}»` : ""}</span></li>`).join("")}</ul>`
-      : `<p class="note">Ingen har meldt status her ennå.</p>`;
+      : `<p class="note">Ingen har meldt status her de siste 6 timene.</p>`;
     const added = s.at ? `<p class="note" style="font-size:12px">Lagt inn av ${esc(who(s.by))} ${esc(ago(s.at))}</p>` : "";
     return `<div class="report">${form}${h}${added}</div>`;
   }
@@ -707,7 +708,7 @@ footer { color: var(--muted); font-size: 12px; padding-block: 28px 32px; }
       const m = L.circleMarker([s.lat, s.lng], {
         radius: state.open === s.id ? 11 : 8, weight: 2, color: css("--surface"), fillColor: col, fillOpacity: 1,
       }).addTo(markers);
-      const status = r ? (fresh ? LEVELS[r.level].label : "Utdatert") + ", " + ago(r.at) : "Ingen meldinger";
+      const status = r ? (fresh ? LEVELS[r.level].label : "Utdatert") + ", " + ago(r.at) : "Ingen melding siste 6 t";
       m.bindTooltip(`<span class="mk-label">${esc(s.name)}</span><br>${esc(status)}`, { direction: "top", offset: [0, -6] });
       m.on("click", () => { if (state.pick) return; state.open = s.id; state.draft = { level: null }; render(); scrollToCard(s.id); });
     }
