@@ -15,6 +15,15 @@ fast kolonne til venstre. De offentlige parkeringshusene (ByGarasjen, KlosterGar
 GriegGarasjen og NordnesGarasjen) ligger inne fra start, med lenke til sanntidsledige plasser hos
 Bergen Parkering. Status meldes med ett trykk, og «Kjør hit» åpner veibeskrivelse.
 
+### Sanntid fra P-husene
+
+På den frittstående nettsiden henter appen ledige plasser og ledige ladere for ByGarasjen,
+KlosterGarasjen og GriegGarasjen hvert 45. sekund fra
+`https://ledig-parkering.no/wp-json/lpark/v1/live` – samme kilde som bergenparkering.no bruker.
+Data eldre enn 5 minutter vises ikke. Dette er ikke et dokumentert, offisielt API, så det kan
+endre seg; da faller appen tilbake til lenken til Bergen Parkering. På claude.ai vises bare
+lenken, fordi artifacts ikke får hente data fra andre nettsteder.
+
 ## Filer
 
 - `app.html` – selve appen (brukes som delt claude.ai-artifact, med felles database).
