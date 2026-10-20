@@ -10,6 +10,11 @@ En app for soneparkering i Bergen sentrum. Brukere kan
 Meldinger eldre enn 2 timer vises som utdatert. En liten annonselinje under kartet kan
 redigeres av eier/redaktører.
 
+Kartet fyller skjermen. På mobil ligger plassene i et ark som dras opp fra bunnen, på PC i en
+fast kolonne til venstre. De offentlige parkeringshusene (ByGarasjen, KlosterGarasjen,
+GriegGarasjen og NordnesGarasjen) ligger inne fra start, med lenke til sanntidsledige plasser hos
+Bergen Parkering. Status meldes med ett trykk, og «Kjør hit» åpner veibeskrivelse.
+
 ## Filer
 
 - `app.html` – selve appen (brukes som delt claude.ai-artifact, med felles database).

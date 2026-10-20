@@ -2,21 +2,22 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
 /* Leaflet 1.9.4 (BSD-2) */
 .leaflet-image-layer,.leaflet-layer,.leaflet-marker-icon,.leaflet-marker-shadow,.leaflet-pane,.leaflet-pane>canvas,.leaflet-pane>svg,.leaflet-tile,.leaflet-tile-container,.leaflet-zoom-box{position:absolute;left:0;top:0}.leaflet-container{overflow:hidden}.leaflet-marker-icon,.leaflet-marker-shadow,.leaflet-tile{-webkit-user-select:none;-moz-user-select:none;user-select:none;-webkit-user-drag:none}.leaflet-tile::selection{background:0 0}.leaflet-safari .leaflet-tile{image-rendering:-webkit-optimize-contrast}.leaflet-safari .leaflet-tile-container{width:1600px;height:1600px;-webkit-transform-origin:0 0}.leaflet-marker-icon,.leaflet-marker-shadow{display:block}.leaflet-container .leaflet-overlay-pane svg{max-width:none!important;max-height:none!important}.leaflet-container .leaflet-marker-pane img,.leaflet-container .leaflet-shadow-pane img,.leaflet-container .leaflet-tile,.leaflet-container .leaflet-tile-pane img,.leaflet-container img.leaflet-image-layer{max-width:none!important;max-height:none!important;width:auto;padding:0}.leaflet-container img.leaflet-tile{mix-blend-mode:plus-lighter}.leaflet-container.leaflet-touch-zoom{-ms-touch-action:pan-x pan-y;touch-action:pan-x pan-y}.leaflet-container.leaflet-touch-drag{-ms-touch-action:pinch-zoom;touch-action:none;touch-action:pinch-zoom}.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom{-ms-touch-action:none;touch-action:none}.leaflet-container{-webkit-tap-highlight-color:transparent}.leaflet-container a{-webkit-tap-highlight-color:rgba(51,181,229,.4)}.leaflet-tile{filter:inherit;visibility:hidden}.leaflet-tile-loaded{visibility:inherit}.leaflet-zoom-box{width:0;height:0;-moz-box-sizing:border-box;box-sizing:border-box;z-index:800}.leaflet-overlay-pane svg{-moz-user-select:none}.leaflet-pane{z-index:400}.leaflet-tile-pane{z-index:200}.leaflet-overlay-pane{z-index:400}.leaflet-shadow-pane{z-index:500}.leaflet-marker-pane{z-index:600}.leaflet-tooltip-pane{z-index:650}.leaflet-popup-pane{z-index:700}.leaflet-map-pane canvas{z-index:100}.leaflet-map-pane svg{z-index:200}.leaflet-vml-shape{width:1px;height:1px}.lvml{behavior:url(#default#VML);display:inline-block;position:absolute}.leaflet-control{position:relative;z-index:800;pointer-events:visiblePainted;pointer-events:auto}.leaflet-bottom,.leaflet-top{position:absolute;z-index:1000;pointer-events:none}.leaflet-top{top:0}.leaflet-right{right:0}.leaflet-bottom{bottom:0}.leaflet-left{left:0}.leaflet-control{float:left;clear:both}.leaflet-right .leaflet-control{float:right}.leaflet-top .leaflet-control{margin-top:10px}.leaflet-bottom .leaflet-control{margin-bottom:10px}.leaflet-left .leaflet-control{margin-left:10px}.leaflet-right .leaflet-control{margin-right:10px}.leaflet-fade-anim .leaflet-popup{opacity:0;-webkit-transition:opacity .2s linear;-moz-transition:opacity .2s linear;transition:opacity .2s linear}.leaflet-fade-anim .leaflet-map-pane .leaflet-popup{opacity:1}.leaflet-zoom-animated{-webkit-transform-origin:0 0;-ms-transform-origin:0 0;transform-origin:0 0}svg.leaflet-zoom-animated{will-change:transform}.leaflet-zoom-anim .leaflet-zoom-animated{-webkit-transition:-webkit-transform .25s cubic-bezier(0,0,.25,1);-moz-transition:-moz-transform .25s cubic-bezier(0,0,.25,1);transition:transform .25s cubic-bezier(0,0,.25,1)}.leaflet-pan-anim .leaflet-tile,.leaflet-zoom-anim .leaflet-tile{-webkit-transition:none;-moz-transition:none;transition:none}.leaflet-zoom-anim .leaflet-zoom-hide{visibility:hidden}.leaflet-interactive{cursor:pointer}.leaflet-grab{cursor:-webkit-grab;cursor:-moz-grab;cursor:grab}.leaflet-crosshair,.leaflet-crosshair .leaflet-interactive{cursor:crosshair}.leaflet-control,.leaflet-popup-pane{cursor:auto}.leaflet-dragging .leaflet-grab,.leaflet-dragging .leaflet-grab .leaflet-interactive,.leaflet-dragging .leaflet-marker-draggable{cursor:move;cursor:-webkit-grabbing;cursor:-moz-grabbing;cursor:grabbing}.leaflet-image-layer,.leaflet-marker-icon,.leaflet-marker-shadow,.leaflet-pane>svg path,.leaflet-tile-container{pointer-events:none}.leaflet-image-layer.leaflet-interactive,.leaflet-marker-icon.leaflet-interactive,.leaflet-pane>svg path.leaflet-interactive,svg.leaflet-image-layer.leaflet-interactive path{pointer-events:visiblePainted;pointer-events:auto}.leaflet-container{background:#ddd;outline-offset:1px}.leaflet-container a{color:#0078a8}.leaflet-zoom-box{border:2px dotted #38f;background:rgba(255,255,255,.5)}.leaflet-container{font-family:"Helvetica Neue",Arial,Helvetica,sans-serif;font-size:12px;font-size:.75rem;line-height:1.5}.leaflet-bar{box-shadow:0 1px 5px rgba(0,0,0,.65);border-radius:4px}.leaflet-bar a{background-color:#fff;border-bottom:1px solid #ccc;width:26px;height:26px;line-height:26px;display:block;text-align:center;text-decoration:none;color:#000}.leaflet-bar a,.leaflet-control-layers-toggle{background-position:50% 50%;background-repeat:no-repeat;display:block}.leaflet-bar a:focus,.leaflet-bar a:hover{background-color:#f4f4f4}.leaflet-bar a:first-child{border-top-left-radius:4px;border-top-right-radius:4px}.leaflet-bar a:last-child{border-bottom-left-radius:4px;border-bottom-right-radius:4px;border-bottom:none}.leaflet-bar a.leaflet-disabled{cursor:default;background-color:#f4f4f4;color:#bbb}.leaflet-touch .leaflet-bar a{width:30px;height:30px;line-height:30px}.leaflet-touch .leaflet-bar a:first-child{border-top-left-radius:2px;border-top-right-radius:2px}.leaflet-touch .leaflet-bar a:last-child{border-bottom-left-radius:2px;border-bottom-right-radius:2px}.leaflet-control-zoom-in,.leaflet-control-zoom-out{font:bold 18px 'Lucida Console',Monaco,monospace;text-indent:1px}.leaflet-touch .leaflet-control-zoom-in,.leaflet-touch .leaflet-control-zoom-out{font-size:22px}.leaflet-control-layers{box-shadow:0 1px 5px rgba(0,0,0,.4);background:#fff;border-radius:5px}.leaflet-control-layers-toggle{background-image:url(images/layers.png);width:36px;height:36px}.leaflet-retina .leaflet-control-layers-toggle{background-image:url(images/layers-2x.png);background-size:26px 26px}.leaflet-touch .leaflet-control-layers-toggle{width:44px;height:44px}.leaflet-control-layers .leaflet-control-layers-list,.leaflet-control-layers-expanded .leaflet-control-layers-toggle{display:none}.leaflet-control-layers-expanded .leaflet-control-layers-list{display:block;position:relative}.leaflet-control-layers-expanded{padding:6px 10px 6px 6px;color:#333;background:#fff}.leaflet-control-layers-scrollbar{overflow-y:scroll;overflow-x:hidden;padding-right:5px}.leaflet-control-layers-selector{margin-top:2px;position:relative;top:1px}.leaflet-control-layers label{display:block;font-size:13px;font-size:1.08333em}.leaflet-control-layers-separator{height:0;border-top:1px solid #ddd;margin:5px -10px 5px -6px}.leaflet-default-icon-path{background-image:url(images/marker-icon.png)}.leaflet-container .leaflet-control-attribution{background:#fff;background:rgba(255,255,255,.8);margin:0}.leaflet-control-attribution,.leaflet-control-scale-line{padding:0 5px;color:#333;line-height:1.4}.leaflet-control-attribution a{text-decoration:none}.leaflet-control-attribution a:focus,.leaflet-control-attribution a:hover{text-decoration:underline}.leaflet-attribution-flag{display:inline!important;vertical-align:baseline!important;width:1em;height:.6669em}.leaflet-left .leaflet-control-scale{margin-left:5px}.leaflet-bottom .leaflet-control-scale{margin-bottom:5px}.leaflet-control-scale-line{border:2px solid #777;border-top:none;line-height:1.1;padding:2px 5px 1px;white-space:nowrap;-moz-box-sizing:border-box;box-sizing:border-box;background:rgba(255,255,255,.8);text-shadow:1px 1px #fff}.leaflet-control-scale-line:not(:first-child){border-top:2px solid #777;border-bottom:none;margin-top:-2px}.leaflet-control-scale-line:not(:first-child):not(:last-child){border-bottom:2px solid #777}.leaflet-touch .leaflet-bar,.leaflet-touch .leaflet-control-attribution,.leaflet-touch .leaflet-control-layers{box-shadow:none}.leaflet-touch .leaflet-bar,.leaflet-touch .leaflet-control-layers{border:2px solid rgba(0,0,0,.2);background-clip:padding-box}.leaflet-popup{position:absolute;text-align:center;margin-bottom:20px}.leaflet-popup-content-wrapper{padding:1px;text-align:left;border-radius:12px}.leaflet-popup-content{margin:13px 24px 13px 20px;line-height:1.3;font-size:13px;font-size:1.08333em;min-height:1px}.leaflet-popup-content p{margin:17px 0;margin:1.3em 0}.leaflet-popup-tip-container{width:40px;height:20px;position:absolute;left:50%;margin-top:-1px;margin-left:-20px;overflow:hidden;pointer-events:none}.leaflet-popup-tip{width:17px;height:17px;padding:1px;margin:-10px auto 0;pointer-events:auto;-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg)}.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#fff;color:#333;box-shadow:0 3px 14px rgba(0,0,0,.4)}.leaflet-container a.leaflet-popup-close-button{position:absolute;top:0;right:0;border:none;text-align:center;width:24px;height:24px;font:16px/24px Tahoma,Verdana,sans-serif;color:#757575;text-decoration:none;background:0 0}.leaflet-container a.leaflet-popup-close-button:focus,.leaflet-container a.leaflet-popup-close-button:hover{color:#585858}.leaflet-popup-scrolled{overflow:auto}.leaflet-oldie .leaflet-popup-content-wrapper{-ms-zoom:1}.leaflet-oldie .leaflet-popup-tip{width:24px;margin:0 auto}.leaflet-oldie .leaflet-control-layers,.leaflet-oldie .leaflet-control-zoom,.leaflet-oldie .leaflet-popup-content-wrapper,.leaflet-oldie .leaflet-popup-tip{border:1px solid #999}.leaflet-div-icon{background:#fff;border:1px solid #666}.leaflet-tooltip{position:absolute;padding:6px;background-color:#fff;border:1px solid #fff;border-radius:3px;color:#222;white-space:nowrap;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;pointer-events:none;box-shadow:0 1px 3px rgba(0,0,0,.4)}.leaflet-tooltip.leaflet-interactive{cursor:pointer;pointer-events:auto}.leaflet-tooltip-bottom:before,.leaflet-tooltip-left:before,.leaflet-tooltip-right:before,.leaflet-tooltip-top:before{position:absolute;pointer-events:none;border:6px solid transparent;background:0 0;content:""}.leaflet-tooltip-bottom{margin-top:6px}.leaflet-tooltip-top{margin-top:-6px}.leaflet-tooltip-bottom:before,.leaflet-tooltip-top:before{left:50%;margin-left:-6px}.leaflet-tooltip-top:before{bottom:0;margin-bottom:-12px;border-top-color:#fff}.leaflet-tooltip-bottom:before{top:0;margin-top:-12px;margin-left:-6px;border-bottom-color:#fff}.leaflet-tooltip-left{margin-left:-6px}.leaflet-tooltip-right{margin-left:6px}.leaflet-tooltip-left:before,.leaflet-tooltip-right:before{top:50%;margin-top:-6px}.leaflet-tooltip-left:before{right:0;margin-right:-12px;border-left-color:#fff}.leaflet-tooltip-right:before{left:0;margin-left:-12px;border-right-color:#fff}@media print{.leaflet-control{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
 </style>
 <style>
-/* Layout: skiltblå toppstripe, filterlinje, liste over plasser gruppert per bydel; ett kort per plass med siste melding som statuspille */
+/* Layout: kartet fyller skjermen; plassene ligger i et panel – nedtrekkbart ark på mobil, fast venstrekolonne på PC.
+   Skiltblått (P-skilt) som aksent, statusfarger kun for ledig/fullt. */
 :root {
   --bg: #eef2f5;
   --surface: #ffffff;
-  --sunken: #e3e9ee;
+  --sunken: #e6ecf1;
   --ink: #14212b;
   --muted: #5a6b78;
-  --line: #d3dce3;
+  --line: #d6dee5;
   --sign: #0a4f9e;
   --sign-ink: #ffffff;
   --brick: #a8432f;
@@ -24,235 +25,318 @@
   --some: #5f8a17;
   --low: #b46f08;
   --full: #b8322a;
-  --stale: #8996a1;
+  --stale: #7f8d99;
   --focus: #0a4f9e;
+  --shadow: 0 6px 24px rgba(16, 33, 48, .16);
+  --map-filter: none;
   --display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
   --body: "Barlow", "Segoe UI", system-ui, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0e161d; --surface: #16222c; --sunken: #111b23; --ink: #e6edf2; --muted: #93a4b1;
+    --bg: #0e161d; --surface: #16222c; --sunken: #101a22; --ink: #e6edf2; --muted: #93a4b1;
     --line: #26343f; --sign: #2f74c8; --sign-ink: #ffffff; --brick: #d3735d;
-    --ok: #3fbf74; --some: #9ccc3d; --low: #e5a33a; --full: #ec6a5f; --stale: #66757f; --focus: #7fb2f0;
+    --ok: #34b36a; --some: #8dbd33; --low: #e09a2f; --full: #e35d52; --stale: #66757f; --focus: #7fb2f0;
+    --shadow: 0 6px 24px rgba(0, 0, 0, .5);
+    --map-filter: brightness(.72) saturate(.85) contrast(1.06);
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0e161d; --surface: #16222c; --sunken: #111b23; --ink: #e6edf2; --muted: #93a4b1;
+  --bg: #0e161d; --surface: #16222c; --sunken: #101a22; --ink: #e6edf2; --muted: #93a4b1;
   --line: #26343f; --sign: #2f74c8; --sign-ink: #ffffff; --brick: #d3735d;
-  --ok: #3fbf74; --some: #9ccc3d; --low: #e5a33a; --full: #ec6a5f; --stale: #66757f; --focus: #7fb2f0;
+  --ok: #34b36a; --some: #8dbd33; --low: #e09a2f; --full: #e35d52; --stale: #66757f; --focus: #7fb2f0;
+  --shadow: 0 6px 24px rgba(0, 0, 0, .5);
+  --map-filter: brightness(.72) saturate(.85) contrast(1.06);
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
-body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.45; }
+html, body { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.45; overflow: hidden; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--sign); }
-.wrap { max-width: 980px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; letter-spacing: .01em; }
 button, input, select, textarea { font: inherit; color: inherit; }
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
-header.top { background: var(--sign); color: var(--sign-ink); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
-header.top .wrap { display: flex; align-items: center; gap: 14px; padding-block: 12px; }
-.psign { flex: none; width: 42px; height: 42px; border: 3px solid var(--sign-ink); border-radius: 7px; display: grid; place-items: center; font: 700 30px/1 var(--display); }
+/* ---------- skall ---------- */
+.app { height: 100%; display: grid; grid-template-rows: auto 1fr; }
+header.top { background: var(--sign); color: var(--sign-ink); display: flex; align-items: center; gap: 12px;
+  padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); z-index: 6; }
+.psign { flex: none; width: 38px; height: 38px; border: 3px solid var(--sign-ink); border-radius: 7px; display: grid; place-items: center; font: 700 27px/1 var(--display); }
 .brand { min-width: 0; flex: 1; }
-.brand h1 { font-size: 24px; line-height: 1.05; }
-.brand p { margin: 2px 0 0; font-size: 13px; opacity: .85; }
-.btn { border: 0; border-radius: 6px; padding: 9px 14px; font-weight: 600; cursor: pointer; background: var(--sunken); color: var(--ink); }
-.btn:hover { filter: brightness(.97); }
+.brand h1 { font-size: 22px; line-height: 1.05; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.brand p { margin: 1px 0 0; font-size: 12.5px; opacity: .85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.main { position: relative; min-height: 0; overflow: hidden; }
+#map { position: absolute; inset: 0; background: var(--sunken); z-index: 0; }
+.leaflet-container { font-family: var(--body); background: var(--sunken); }
+.leaflet-image-layer { filter: var(--map-filter); }
+
+.btn { border: 0; border-radius: 8px; padding: 9px 14px; font-weight: 600; cursor: pointer; background: var(--sunken); color: var(--ink); display: inline-flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; line-height: 1.2; }
+.btn:hover { filter: brightness(.96); }
 .btn.primary { background: var(--sign); color: var(--sign-ink); }
 .btn.on-sign { background: var(--sign-ink); color: var(--sign); flex: none; }
 .btn.ghost { background: transparent; border: 1px solid var(--line); }
 .btn.small { padding: 6px 10px; font-size: 13px; }
+.btn.danger { color: var(--full); }
 .btn:disabled { opacity: .5; cursor: not-allowed; }
 
-.notice { margin-top: 12px; padding: 10px 12px; border-radius: 6px; background: var(--sunken); color: var(--muted); font-size: 13px; }
+.fab { position: absolute; z-index: 500; border: 1px solid var(--line); background: var(--surface); color: var(--ink); box-shadow: var(--shadow); border-radius: 10px; font-weight: 600; cursor: pointer; }
+.locate { right: max(12px, env(safe-area-inset-right, 0px)); top: 12px; padding: 9px 12px; font-size: 14px; display: flex; gap: 6px; align-items: center; }
+.locate svg { width: 18px; height: 18px; }
 
-.summary { display: flex; flex-wrap: wrap; gap: 8px 18px; padding-block: 14px 4px; font-size: 14px; color: var(--muted); align-items: center; }
-.summary strong { color: var(--ink); font-variant-numeric: tabular-nums; }
-.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
+/* ---------- nåler på kartet ---------- */
+.pin { --c: var(--stale); width: 30px; height: 30px; border-radius: 9px; background: var(--c); color: #fff; border: 2.5px solid #fff;
+  display: grid; place-items: center; font: 700 15px/1 var(--display); box-shadow: 0 2px 6px rgba(0,0,0,.35); transition: transform .15s; }
+.pin.phus { width: 36px; height: 36px; border-radius: 10px; font-size: 19px; }
+.pin.s-mye { --c: var(--ok); } .pin.s-noe { --c: var(--some); } .pin.s-lite { --c: var(--low); } .pin.s-fullt { --c: var(--full); }
+.pin.sel { transform: scale(1.3); box-shadow: 0 0 0 4px var(--sign), 0 4px 12px rgba(0,0,0,.4); }
+.me { width: 18px; height: 18px; border-radius: 50%; background: var(--sign); border: 3px solid #fff; box-shadow: 0 0 0 0 rgba(10,79,158,.5); }
+@media (prefers-reduced-motion: no-preference) { .me { animation: pulse 2s infinite; } }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(47,116,200,.55); } 70% { box-shadow: 0 0 0 16px rgba(47,116,200,0); } 100% { box-shadow: 0 0 0 0 rgba(47,116,200,0); } }
 
-.filters { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; padding-block: 10px; }
-.filters input, .filters select, .report input, form input, form select, form textarea {
-  width: 100%; min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 9px 10px;
+.cross { position: absolute; left: 50%; z-index: 450; pointer-events: none; transform: translate(-50%, -100%); }
+.cross svg { display: block; width: 40px; height: 52px; filter: drop-shadow(0 3px 4px rgba(0,0,0,.35)); }
+
+/* ---------- panel / ark ---------- */
+.panel { position: absolute; z-index: 600; background: var(--bg); display: flex; flex-direction: column; min-height: 0; }
+.handle { display: none; }
+.phead { flex: none; display: grid; gap: 10px; padding: 14px 16px 10px; border-bottom: 1px solid var(--line); background: var(--bg); }
+.pbody { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 12px 16px 28px; display: grid; gap: 12px; align-content: start; }
+@media (min-width: 900px) {
+  .panel { left: 0; top: 0; bottom: 0; width: 410px; border-right: 1px solid var(--line); box-shadow: var(--shadow); }
 }
-.check { display: flex; align-items: center; gap: 6px; white-space: nowrap; font-size: 14px; padding: 0 4px; }
-.check input { width: auto; }
-.chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; scrollbar-width: thin; }
-.chip { flex: none; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 5px 12px; font-size: 13px; cursor: pointer; }
+@media (max-width: 899.98px) {
+  .panel { left: 0; right: 0; bottom: 0; border-radius: 16px 16px 0 0; box-shadow: 0 -6px 24px rgba(16,33,48,.18); transition: height .25s ease; height: 172px;
+    padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .panel[data-snap="half"] { height: 56%; }
+  .panel[data-snap="full"] { height: calc(100% - 8px); }
+  .handle { display: grid; place-items: center; height: 22px; flex: none; cursor: grab; touch-action: none; border: 0; background: transparent; width: 100%; padding: 0; }
+  .handle span { width: 42px; height: 5px; border-radius: 3px; background: var(--line); }
+  .phead { padding-top: 0; }
+  .phead, .pbody { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .leaflet-control-zoom { display: none; }
+}
+
+.summary { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: center; font-size: 14px; color: var(--muted); }
+.summary b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; vertical-align: 0; }
+.searchrow { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+input, select, textarea { width: 100%; min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; }
+.searchrow select { width: auto; max-width: 46vw; }
+.chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.chip { flex: none; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 5px 12px; font-size: 13px; font-weight: 500; cursor: pointer; }
 .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.chip .n { font-variant-numeric: tabular-nums; opacity: .7; margin-left: 4px; }
 
-.area { margin-top: 20px; }
-.area > h2 { font-size: 15px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding-bottom: 6px; border-bottom: 2px solid var(--brick); display: flex; justify-content: space-between; gap: 8px; }
-.list { display: grid; gap: 10px; margin-top: 10px; }
-
-.spot { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 8px; }
-.spot-head { display: flex; gap: 12px; align-items: flex-start; }
-.spot-title { flex: 1; min-width: 0; }
-.spot-title h3 { font-size: 21px; line-height: 1.1; overflow-wrap: anywhere; }
-.meta { display: flex; flex-wrap: wrap; gap: 4px 12px; color: var(--muted); font-size: 13px; margin-top: 3px; }
-.meta b { color: var(--ink); font-weight: 600; font-variant-numeric: tabular-nums; }
-.zone { display: inline-block; border: 1.5px solid currentColor; border-radius: 4px; padding: 0 5px; font: 600 12px/1.5 var(--body); letter-spacing: .03em; color: var(--sign); }
-.status { flex: none; text-align: right; display: grid; gap: 2px; justify-items: end; }
-.pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 3px 10px; font-weight: 600; font-size: 13px; color: #fff; background: var(--stale); white-space: nowrap; }
-.pill.mye { background: var(--ok); } .pill.noe { background: var(--some); } .pill.lite { background: var(--low); } .pill.fullt { background: var(--full); }
-.pill.stale { background: transparent; color: var(--muted); border: 1px dashed var(--stale); }
-.ago { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.note { font-size: 14px; color: var(--muted); margin: 0; overflow-wrap: anywhere; }
-.actions { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-.actions a { color: var(--sign); font-size: 13px; font-weight: 600; text-decoration: none; padding: 6px 4px; }
-.actions a:hover { text-decoration: underline; }
-
-.report { border-top: 1px solid var(--line); padding-top: 10px; display: grid; gap: 8px; }
-.levels { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-.level { border: 2px solid var(--line); background: var(--surface); border-radius: 6px; padding: 8px 4px; font-weight: 600; font-size: 13px; cursor: pointer; display: grid; justify-items: center; gap: 4px; }
-.level[aria-pressed="true"] { border-color: var(--ink); background: var(--sunken); }
-.row2 { display: grid; grid-template-columns: 150px 1fr; gap: 8px; }
-.history { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
-.history li { display: flex; gap: 8px; align-items: baseline; }
-.history .when { flex: none; width: 74px; font-variant-numeric: tabular-nums; }
-.history span:last-child { min-width: 0; overflow-wrap: anywhere; }
-
-.empty { margin-top: 24px; padding: 28px 20px; border: 2px dashed var(--line); border-radius: 10px; text-align: center; color: var(--muted); display: grid; gap: 10px; justify-items: center; }
-.empty h2 { color: var(--ink); font-size: 24px; }
-.empty p { margin: 0; max-width: 46ch; }
-
-dialog { border: 0; border-radius: 10px; padding: 0; width: min(520px, calc(100vw - 32px)); background: var(--surface); color: var(--ink); }
-dialog::backdrop { background: rgba(10, 20, 30, .55); }
-dialog form { padding: 18px; display: grid; gap: 12px; }
-dialog h2 { font-size: 26px; }
-label.f { display: grid; gap: 4px; font-size: 13px; font-weight: 600; }
-label.f small { font-weight: 400; color: var(--muted); }
-.form-actions { display: flex; justify-content: flex-end; gap: 8px; }
-.err { color: var(--full); font-size: 13px; margin: 0; }
-
-.toast { position: fixed; left: 50%; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 9px 16px; border-radius: 6px; font-weight: 600; z-index: 20; }
-footer { color: var(--muted); font-size: 12px; padding-block: 28px 32px; }
-
-.mapbox { position: relative; margin-top: 12px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
-#map { height: 380px; background: var(--sunken); }
-.leaflet-container { font-family: var(--body); }
-.picking #map { cursor: crosshair; }
-.pickbar { position: absolute; z-index: 1000; left: 8px; right: 8px; top: 8px; display: flex; gap: 8px; align-items: center; justify-content: space-between; background: var(--ink); color: var(--bg); border-radius: 6px; padding: 8px 10px; font-weight: 600; font-size: 14px; }
-.pickbar .btn { background: var(--bg); color: var(--ink); }
-.locate { position: absolute; z-index: 1000; right: 10px; top: 10px; background: var(--surface); color: var(--ink); border: 1px solid var(--line); box-shadow: 0 1px 4px rgba(0,0,0,.2); padding: 7px 11px; font-size: 13px; }
-.dist { color: var(--sign); font-weight: 600; font-variant-numeric: tabular-nums; }
-.maphint { font-size: 12px; color: var(--muted); margin: 4px 2px 0; }
-.mk-label { font: 600 12px/1.2 var(--body); }
-.spot.hl { border-color: var(--sign); box-shadow: 0 0 0 2px var(--sign); }
-
-.ad { margin-top: 10px; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); font-size: 13px; }
+.notice { padding: 9px 12px; border-radius: 8px; background: var(--sunken); color: var(--muted); font-size: 13px; }
+.ad { display: flex; align-items: center; gap: 10px; min-height: 40px; padding: 5px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); font-size: 13px; flex-wrap: wrap; }
 .ad .tag { flex: none; font: 600 10px/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 3px; padding: 3px 5px; }
 .ad .txt { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ad a.txt { color: var(--ink); text-decoration: none; }
 .ad a.txt:hover { text-decoration: underline; }
-.ad .txt.placeholder { color: var(--muted); }
-.ad-edit { display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 6px; margin-top: 6px; }
-.ad-edit input { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 7px 9px; }
-.loc { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; }
-.loc .ok { color: var(--ok); font-weight: 600; }
+.ad .placeholder { color: var(--muted); }
+.ad-edit { flex-basis: 100%; display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 6px; }
 
-@media (max-width: 620px) {
-  #map { height: 300px; }
-  .ad-edit { grid-template-columns: 1fr 1fr; }
-  .filters { grid-template-columns: 1fr 1fr; }
-  .filters #q { grid-column: 1 / -1; }
+.nearby { display: grid; gap: 8px; padding: 12px; border-radius: 10px; background: var(--sign); color: var(--sign-ink); }
+.nearby p { margin: 0; font-weight: 600; }
+.nearby .btn { background: var(--sign-ink); color: var(--sign); justify-self: start; }
+
+.group-title { font: 600 13px/1.2 var(--display); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); display: flex; justify-content: space-between; border-bottom: 2px solid var(--brick); padding: 6px 2px 4px; }
+.rows { display: grid; gap: 6px; }
+.row { display: grid; grid-template-columns: auto 1fr auto; gap: 12px; align-items: center; text-align: left; width: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; cursor: pointer; }
+.row:hover { border-color: var(--sign); }
+.row .pin { box-shadow: none; border-width: 0; width: 32px; height: 32px; }
+.row-main { min-width: 0; display: grid; gap: 1px; }
+.row-main b { font: 600 18px/1.15 var(--display); overflow-wrap: anywhere; }
+.row-sub { font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 2px 10px; font-variant-numeric: tabular-nums; }
+.row-status { display: grid; justify-items: end; gap: 2px; }
+.pill { display: inline-flex; align-items: center; border-radius: 999px; padding: 2px 9px; font-weight: 600; font-size: 12.5px; color: #fff; background: var(--stale); white-space: nowrap; }
+.pill.mye { background: var(--ok); } .pill.noe { background: var(--some); } .pill.lite { background: var(--low); } .pill.fullt { background: var(--full); }
+.pill.none { background: transparent; color: var(--muted); border: 1px dashed var(--stale); }
+.ago { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.zone { display: inline-block; border: 1.5px solid currentColor; border-radius: 4px; padding: 0 5px; font: 600 11.5px/1.5 var(--body); color: var(--sign); }
+.kind { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+
+.empty { padding: 22px 16px; border: 2px dashed var(--line); border-radius: 12px; text-align: center; color: var(--muted); display: grid; gap: 8px; justify-items: center; }
+.empty h2 { color: var(--ink); font-size: 22px; }
+.empty p { margin: 0; max-width: 40ch; }
+
+details.info { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: 13.5px; }
+details.info summary { cursor: pointer; font-weight: 600; }
+details.info ul { margin: 8px 0 4px; padding-left: 18px; display: grid; gap: 5px; }
+details.info p { margin: 6px 0 0; color: var(--muted); font-size: 12px; }
+.foot { color: var(--muted); font-size: 12px; margin: 0; }
+
+/* ---------- detalj ---------- */
+.dhead { display: flex; align-items: flex-start; gap: 10px; }
+.back { flex: none; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; width: 36px; height: 36px; display: grid; place-items: center; cursor: pointer; font-size: 18px; }
+.dtitle { flex: 1; min-width: 0; }
+.dtitle h2 { font-size: 26px; line-height: 1.05; overflow-wrap: anywhere; }
+.dtitle .meta { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; margin-top: 3px; font-size: 13px; color: var(--muted); }
+.statusbox { border-radius: 12px; padding: 12px 14px; color: #fff; background: var(--stale); display: grid; gap: 2px; }
+.statusbox.mye { background: var(--ok); } .statusbox.noe { background: var(--some); } .statusbox.lite { background: var(--low); } .statusbox.fullt { background: var(--full); }
+.statusbox.none { background: var(--sunken); color: var(--muted); }
+.statusbox strong { font: 700 24px/1.1 var(--display); }
+.statusbox.none strong { color: var(--ink); }
+.statusbox span { font-size: 13px; opacity: .95; }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; }
+.fact { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; display: grid; gap: 1px; align-content: start; }
+.fact small { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 600; }
+.fact b { font: 600 19px/1.2 var(--display); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.fact .sub { font: 400 12px/1.3 var(--body); color: var(--muted); }
+.dnote { margin: 0; color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.report { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: grid; gap: 10px; }
+.report h3 { font-size: 19px; }
+.report .hint { margin: -6px 0 0; font-size: 13px; color: var(--muted); }
+.extra { display: grid; grid-template-columns: 130px 1fr; gap: 8px; }
+.levels { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.level { border: 0; border-radius: 10px; padding: 14px 8px; font: 700 17px/1.1 var(--display); letter-spacing: .02em; color: #fff; cursor: pointer; }
+.level.mye { background: var(--ok); } .level.noe { background: var(--some); } .level.lite { background: var(--low); } .level.fullt { background: var(--full); }
+.level:active { transform: scale(.97); }
+.level:disabled { opacity: .5; }
+.history { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 13px; color: var(--muted); }
+.history li { display: grid; grid-template-columns: 44px 1fr; gap: 8px; }
+.history .when { font-variant-numeric: tabular-nums; }
+.history span:last-child { min-width: 0; overflow-wrap: anywhere; }
+.tools { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; border-top: 1px solid var(--line); padding-top: 10px; }
+.tools input { width: 90px; padding: 6px 8px; }
+.byline { font-size: 12px; color: var(--muted); margin: 0; }
+
+/* ---------- plassering og skjema ---------- */
+.placehead p { margin: 0; font-weight: 600; }
+.placehead .actions { justify-content: space-between; }
+form.add { display: grid; gap: 12px; }
+label.f { display: grid; gap: 4px; font-size: 13px; font-weight: 600; }
+label.f small { font-weight: 400; color: var(--muted); }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.loc { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 11px; border-radius: 8px; background: var(--sunken); font-size: 14px; }
+.loc .ok { color: var(--ok); font-weight: 600; }
+.err { color: var(--full); font-size: 13px; margin: 0; }
+
+.toast { position: fixed; left: 50%; top: calc(118px + env(safe-area-inset-top, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 9px 16px; border-radius: 8px; font-weight: 600; z-index: 2000; box-shadow: var(--shadow); max-width: calc(100% - 32px); text-align: center; }
+
+@media (max-width: 520px) {
   .brand p { display: none; }
-  .row2 { grid-template-columns: 1fr; }
-  .levels { grid-template-columns: repeat(2, 1fr); }
+  .ad-edit { grid-template-columns: 1fr 1fr; }
 }
-@media (prefers-reduced-motion: no-preference) { .spot { transition: border-color .15s; } }
 </style>
 
-<header class="top">
-  <div class="wrap">
+<div class="app">
+  <header class="top">
     <div class="psign" aria-hidden="true">P</div>
     <div class="brand">
       <h1>Parkering Bergen sentrum</h1>
-      <p>Sonene og plassene, meldt inn av folk som står der</p>
+      <p>Sonene, P-husene og ledige plasser, meldt inn av folk som står der</p>
     </div>
-    <button class="btn on-sign" id="addBtn" type="button">+ Foreslå plass</button>
-  </div>
-</header>
+    <button class="btn on-sign" id="addBtn" type="button">+ Legg til</button>
+  </header>
 
-<main class="wrap">
-  <div id="notice" class="notice" hidden></div>
-
-  <div class="summary" id="summary" aria-live="polite">Henter plasser …</div>
-
-  <div class="mapbox" id="mapbox">
+  <div class="main">
     <div id="map" role="application" aria-label="Kart over Bergen sentrum med parkeringsplassene"></div>
-    <button class="btn locate" type="button" id="locateBtn" aria-label="Finn min posisjon">◎ Min posisjon</button>
-    <div class="pickbar" id="pickbar" hidden><span id="pickText">Trykk på kartet der plassen ligger</span><button class="btn small" type="button" id="pickCancel">Avbryt</button></div>
+    <div class="cross" id="cross" hidden aria-hidden="true">
+      <svg viewBox="0 0 40 52"><path d="M20 50C20 50 38 31 38 19A18 18 0 1 0 2 19C2 31 20 50 20 50Z" fill="#0a4f9e" stroke="#fff" stroke-width="3"/><text x="20" y="26" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="700" font-size="20" fill="#fff">P</text></svg>
+    </div>
+    <button class="fab locate" id="locateBtn" type="button" aria-label="Finn min posisjon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+      <span id="locateTxt">Min posisjon</span>
+    </button>
+
+    <section class="panel" id="panel" data-snap="peek" aria-label="Parkeringsplasser">
+      <button class="handle" id="handle" type="button" aria-label="Vis mer eller mindre av listen"><span></span></button>
+
+      <div class="phead" id="headList">
+        <div class="summary" id="summary">Henter plasser …</div>
+        <div class="searchrow">
+          <input id="q" type="search" placeholder="Søk gate, plass eller sone" aria-label="Søk" autocomplete="off">
+          <select id="sort" aria-label="Sortering">
+            <option value="smart">Smart</option>
+            <option value="near">Nærmest meg</option>
+            <option value="free">Mest ledig nå</option>
+            <option value="area">Bydel</option>
+            <option value="recent">Nyeste melding</option>
+          </select>
+        </div>
+        <div class="chips" role="toolbar" aria-label="Filter">
+          <button class="chip" type="button" data-kind="alle" aria-pressed="true">Alle</button>
+          <button class="chip" type="button" data-kind="gate" aria-pressed="false">Gateparkering</button>
+          <button class="chip" type="button" data-kind="phus" aria-pressed="false">Parkeringshus</button>
+          <button class="chip" type="button" id="freeChip" aria-pressed="false">Ledig nå</button>
+        </div>
+      </div>
+      <div class="pbody" id="bodyList"></div>
+
+      <div class="phead" id="headDetail" hidden></div>
+      <div class="pbody" id="bodyDetail" hidden></div>
+
+      <div class="phead placehead" id="headPlace" hidden>
+        <p id="placeText">Flytt kartet så nålen står der plassen er</p>
+        <div class="actions">
+          <button class="btn ghost" type="button" id="placeCancel">Avbryt</button>
+          <button class="btn primary" type="button" id="placeOk">Bruk denne plasseringen</button>
+        </div>
+      </div>
+
+      <div class="phead" id="headForm" hidden>
+        <div class="dhead">
+          <button class="back" type="button" id="formBack" aria-label="Tilbake">←</button>
+          <div class="dtitle"><h2>Ny parkeringsplass</h2></div>
+        </div>
+      </div>
+      <div class="pbody" id="bodyForm" hidden>
+        <form class="add" id="spotForm" novalidate>
+          <div class="loc"><span id="f-loc">Ikke plassert på kartet</span><button class="btn ghost small" type="button" id="f-pick">Velg på kartet</button></div>
+          <label class="f">Navn på plassen
+            <input id="f-name" maxlength="80" placeholder="f.eks. Strandgaten ved Galleriet">
+          </label>
+          <div class="two">
+            <label class="f">Type
+              <select id="f-kind"><option value="gate">Gateparkering</option><option value="phus">Parkeringshus</option></select>
+            </label>
+            <label class="f">Ca. antall plasser
+              <input id="f-count" type="number" min="1" max="5000" inputmode="numeric" placeholder="ca.">
+            </label>
+          </div>
+          <div class="two">
+            <label class="f">Bydel
+              <select id="f-area"></select>
+            </label>
+            <label class="f">Sone <small>fra skiltet</small>
+              <input id="f-zone" maxlength="40" placeholder="f.eks. sone 1">
+            </label>
+          </div>
+          <label class="f">Gate eller adresse
+            <input id="f-street" maxlength="100" placeholder="f.eks. Strandgaten 15">
+          </label>
+          <label class="f">Merknad <small>makstid, avgiftstider, HC, el-lading …</small>
+            <textarea id="f-note" rows="2" maxlength="300"></textarea>
+          </label>
+          <p class="err" id="spotErr" hidden></p>
+          <button class="btn primary" type="submit" id="spotSave">Lagre plassen</button>
+        </form>
+      </div>
+    </section>
   </div>
-  <p class="maphint">Fargen på prikken viser siste melding. Grå betyr ingen melding de siste 2 timene. Kart: © Kartverket</p>
-
-  <aside class="ad" id="ad" aria-label="Annonse"></aside>
-
-  <div class="filters">
-    <input id="q" type="search" placeholder="Søk gate, plass eller sone" aria-label="Søk">
-    <select id="sort" aria-label="Sortering">
-      <option value="area">Sorter: bydel</option>
-      <option value="near">Sorter: nærmest meg</option>
-      <option value="free">Sorter: mest ledig nå</option>
-      <option value="recent">Sorter: nyeste melding</option>
-    </select>
-    <label class="check"><input id="onlyFree" type="checkbox"> Bare ledig nå</label>
-  </div>
-  <div class="chips" id="chips" role="toolbar" aria-label="Bydel"></div>
-
-  <div id="out"></div>
-
-  <footer>
-    Opplysningene er meldt inn av brukere og kan være feil eller utdaterte. Sjekk alltid skiltet og takstene på stedet.
-    Meldinger eldre enn 2 timer vises som utdatert, og meldinger eldre enn 6 timer vises ikke. Plassene ligger alltid lagret.
-  </footer>
-</main>
-
-<dialog id="spotDlg" aria-labelledby="spotDlgTitle">
-  <form id="spotForm" method="dialog" novalidate>
-    <h2 id="spotDlgTitle">Foreslå en parkeringsplass</h2>
-    <label class="f">Navn på plassen
-      <input id="f-name" required maxlength="80" placeholder="f.eks. Strandgaten ved Galleriet">
-    </label>
-    <label class="f">Gate eller adresse <small>Brukes til «Vis i kart»</small>
-      <input id="f-street" maxlength="100" placeholder="f.eks. Strandgaten 15">
-    </label>
-    <div class="row2">
-      <label class="f">Ca. antall plasser
-        <input id="f-count" type="number" min="1" max="5000" inputmode="numeric" placeholder="ca.">
-      </label>
-      <label class="f">Bydel
-        <select id="f-area"></select>
-      </label>
-    </div>
-    <div class="f" style="display:grid;gap:4px;font-size:13px;font-weight:600">Plassering på kartet
-      <div class="loc"><span id="f-loc">Ikke plassert</span><button class="btn ghost small" type="button" id="f-pick">Velg på kartet</button></div>
-    </div>
-    <label class="f">Sone <small>Det som står på skiltet eller i parkeringsappen</small>
-      <input id="f-zone" maxlength="40" placeholder="f.eks. sone 1">
-    </label>
-    <label class="f">Merknad <small>Makstid, avgiftstider, HC-plasser, el-lading …</small>
-      <textarea id="f-note" rows="2" maxlength="300"></textarea>
-    </label>
-    <p class="err" id="spotErr" hidden></p>
-    <div class="form-actions">
-      <button class="btn ghost" type="button" id="spotCancel">Avbryt</button>
-      <button class="btn primary" type="submit" id="spotSave">Legg til plass</button>
-    </div>
-  </form>
-</dialog>
+</div>
 
 <div class="toast" id="toast" role="status" hidden></div>
 
 <script>
 (() => {
+  /* ---------- faste data ---------- */
   const AREAS = [
     "Sentrum / Torgallmenningen", "Bryggen og Vågen", "Nordnes", "Nøstet", "Engen",
     "Marken", "Nygårdshøyden", "Møhlenpris", "Sydnes", "Fjellsiden",
     "Kalfaret", "Sandviken", "Skuteviken", "Lungegården / Bystasjonen", "Annet"
   ];
+  // Offentlige parkeringshus (Bergen Parkering). Kapasitet fra Bergen Parkering / visitBergen, 2026.
+  const GARAGES = [
+    { id: "g-bygarasjen", name: "ByGarasjen", street: "Ved Bystasjonen", area: "Lungegården / Bystasjonen", lat: 60.38749, lng: 5.33124, count: 2205, hours: "Døgnåpent", note: "92 ladeplasser for elbil på plan 2.", url: "https://bergenparkering.no/anlegg/bygarasjen/" },
+    { id: "g-klostergarasjen", name: "KlosterGarasjen", street: "Vestre Murallmenningen 14", area: "Nøstet", lat: 60.39317, lng: 5.31657, count: 940, hours: "Døgnåpent", note: "50 ladepunkter på plan E og F. Gangutganger mot Strandkaien, Klosteret og Markeveien.", url: "https://bergenparkering.no/anlegg/klostergarasjen/" },
+    { id: "g-grieggarasjen", name: "GriegGarasjen", street: "Lars Hilles gate 3 (under Grieghallen)", area: "Sentrum / Torgallmenningen", lat: 60.38956, lng: 5.32560, count: null, hours: "Døgnåpent", note: "Lading på plan U3. Høydegrense 2,05 m.", url: "https://bergenparkering.no/anlegg/grieggarasjen/" },
+    { id: "g-nordnesgarasjen", name: "NordnesGarasjen", street: "Nordnesgaten 46", area: "Nordnes", lat: 60.39984, lng: 5.30531, count: null, hours: "Innkjøring 06–24", note: "Rett ved Akvariet. Elbillading.", url: "https://bergenparkering.no/anlegg/nordnesgarasjen/" },
+  ].map((g) => ({ ...g, kind: "phus", builtin: true, zone: null }));
+
   const LEVELS = {
     mye:   { label: "Mye ledig",    rank: 4 },
     noe:   { label: "Noen ledige",  rank: 3 },
@@ -261,59 +345,53 @@ footer { color: var(--muted); font-size: 12px; padding-block: 28px 32px; }
   };
   const FRESH_MS = 2 * 60 * 60 * 1000;
   const WINDOW_MS = 6 * 60 * 60 * 1000; // bare meldinger fra de siste 6 timene hentes (sparer lesinger)
+  const BOUNDS = [[60.378575, 5.295410], [60.404358, 5.353088]]; // Kartverket topo, satt sammen for Bergen sentrum
+  const PEEK = 172;
 
   const $ = (s) => document.querySelector(s);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const lsGet = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } };
   const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
   const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  const isDesktop = () => matchMedia("(min-width: 900px)").matches;
 
   const state = {
-    spots: [], reports: [], loaded: false,
-    me: null, canWrite: true, mode: "local",
-    names: {},
-    area: lsGet("pb-area", "alle"), q: "", sort: lsGet("pb-sort", "area") === "near" ? "area" : lsGet("pb-sort", "area"), onlyFree: false,
-    myPos: null, // [lat, lng] fra GPS eller valgt på kartet
-    open: null, draft: { level: null },
-    confirmDelete: null,
-    pick: null,       // { kind: "new" } eller { kind: "move", id }
-    newLoc: null,     // [lat, lng] for plassen som legges til
-    ad: null, editAd: false, canEdit: false,
+    spots: [], reports: [], loaded: false, notice: null,
+    me: null, canWrite: true, canEdit: false, mode: "local", user: null, names: {},
+    q: "", sort: "smart", kind: "alle", onlyFree: false,
+    view: "list", selected: null, place: null, newLoc: null,
+    myPos: null, ad: null, editAd: false, editCount: false, confirmDelete: false, sending: false,
   };
 
-  /* ---------- lagring: delt db når den finnes, ellers lokalt i nettleseren ---------- */
-  const local = {
-    data: lsGet("pb-data", { spots: [], reports: [] }),
-    save() { lsSet("pb-data", this.data); emit(); },
-  };
+  /* ---------- lagring: claude.ai-database, Firebase eller bare nettleseren ---------- */
+  const local = { data: lsGet("pb-data", { spots: [], reports: [] }), save() { lsSet("pb-data", this.data); emitLocal(); } };
   let db = null;
-  function emit() {
-    if (state.mode === "local") { state.spots = local.data.spots; state.reports = local.data.reports.filter((r) => Date.now() - r.at < WINDOW_MS); state.loaded = true; }
-    render();
+  function emitLocal() {
+    state.spots = local.data.spots;
+    state.reports = local.data.reports.filter((r) => Date.now() - r.at < WINDOW_MS);
+    state.loaded = true; render();
   }
-
   const api = {
     async addSpot(s) {
-      if (db) return db.collection("spots").add(s);
-      local.data.spots.push({ id: uid(), ...s }); local.save();
+      if (db) return (await db.collection("spots").add(s)).id;
+      const id = uid(); local.data.spots.push({ id, ...s }); local.save(); return id;
     },
     async updateSpot(id, patch) {
       if (db) return db.doc("spots/" + id).update(patch);
-      const s = local.data.spots.find((x) => x.id === id); Object.assign(s, patch); local.save();
+      Object.assign(local.data.spots.find((x) => x.id === id), patch); local.save();
     },
     async deleteSpot(id) {
       if (db) return db.doc("spots/" + id).delete();
       local.data.spots = local.data.spots.filter((x) => x.id !== id);
       local.data.reports = local.data.reports.filter((r) => r.spotId !== id); local.save();
     },
+    async addReport(r) {
+      if (db) return db.collection("reports").add(r);
+      local.data.reports.unshift({ id: uid(), ...r }); local.data.reports = local.data.reports.slice(0, 400); local.save();
+    },
     async setAd(a) {
       if (db) return db.doc("config/ad").set(a);
       lsSet("pb-ad", a); state.ad = a; render();
-    },
-    async addReport(r) {
-      if (db) return db.collection("reports").add(r);
-      local.data.reports.unshift({ id: uid(), ...r });
-      local.data.reports = local.data.reports.slice(0, 400); local.save();
     },
   };
 
@@ -322,17 +400,16 @@ footer { color: var(--muted); font-size: 12px; padding-block: 28px 32px; }
     if (!use) { if (!(await startFirebase())) localMode(); return; }
     const [d, user] = await Promise.all([use("db").catch(() => null), use("user").catch(() => null)]);
     if (!d) { localMode(); return; }
-    db = d; state.mode = "db"; state.loaded = false;
+    db = d; state.mode = "db";
     if (user) {
-      state.me = await user.id().catch(() => null);
-      const w = await user.can("data.write").catch(() => null);
-      state.canWrite = w !== false;
-      state.canEdit = await user.canEdit().catch(() => false);
       state.user = user;
+      state.me = await user.id().catch(() => null);
+      state.canWrite = (await user.can("data.write").catch(() => null)) !== false;
+      state.canEdit = await user.canEdit().catch(() => false);
     }
-    if (!state.canWrite) showNotice("Du kan se plassene, men ikke legge inn eller melde. Be eieren om tilgang som bidragsyter.");
-    db.doc("config/ad").onSnapshot((snap) => { state.ad = snap.exists ? snap.data() : null; renderAd(); }, () => {});
-    subscribe();
+    if (!state.canWrite) state.notice = "Du kan se plassene, men ikke legge inn eller melde. Be eieren om tilgang som bidragsyter.";
+    db.doc("config/ad").onSnapshot((snap) => { state.ad = snap.exists ? snap.data() : null; render(); }, () => {});
+    subscribe(); render();
   }
   function subscribe() {
     db.collection("spots").limit(1000).onSnapshot((snap) => {
@@ -341,9 +418,7 @@ footer { color: var(--muted); font-size: 12px; padding-block: 28px 32px; }
     db.collection("reports").where("at", ">", Date.now() - WINDOW_MS).orderBy("at", "desc").limit(300).onSnapshot((snap) => {
       state.reports = snap.docs.map((x) => ({ id: x.id, ...x.data() })); resolveNames(); render();
     }, onDbError);
-    render();
   }
-  /* Frittstående nettside: felles lagring i Firebase når config.js har nøkler */
   const loadScript = (src) => new Promise((ok, fail) => {
     const el = document.createElement("script"); el.src = src; el.onload = ok; el.onerror = fail; document.head.appendChild(el);
   });
@@ -351,406 +426,511 @@ footer { color: var(--muted); font-size: 12px; padding-block: 28px 32px; }
     try { await loadScript("config.js"); } catch { return false; }
     const cfg = window.PARKERING_CONFIG || {};
     if (!cfg.firebase || !cfg.firebase.apiKey) return false;
-    state.ad = cfg.ad && cfg.ad.text ? cfg.ad : null; state.canEdit = false;
+    state.ad = cfg.ad && cfg.ad.text ? cfg.ad : null;
     try {
       const base = "https://cdn.jsdelivr.net/npm/firebase@10.12.2/";
       await loadScript(base + "firebase-app-compat.js");
       await Promise.all([loadScript(base + "firebase-auth-compat.js"), loadScript(base + "firebase-firestore-compat.js")]);
       firebase.initializeApp(cfg.firebase);
-      const cred = await firebase.auth().signInAnonymously();
-      state.me = cred.user.uid;
-      db = firebase.firestore(); state.mode = "db"; state.loaded = false;
+      state.me = (await firebase.auth().signInAnonymously()).user.uid;
+      db = firebase.firestore(); state.mode = "db";
       subscribe(); render();
       return true;
     } catch (e) {
       console.error(e);
-      showNotice("Fikk ikke kontakt med den felles databasen. Plassene lagres bare i denne nettleseren inntil videre.");
+      state.notice = "Fikk ikke kontakt med den felles databasen. Det du legger inn lagres bare på denne enheten.";
       return false;
     }
   }
   function localMode() {
     state.mode = "local"; state.canEdit = true; state.ad = lsGet("pb-ad", null);
-    showNotice("Plassene lagres bare i denne nettleseren. Åpne den delte versjonen for å se hva andre har meldt inn.");
-    emit();
+    state.notice = state.notice || "Det du legger inn lagres bare på denne enheten.";
+    emitLocal();
   }
-  function onDbError(e) { showNotice("Fikk ikke kontakt med den delte oversikten (" + (e && e.code || "ukjent feil") + "). Last siden på nytt."); }
-  function showNotice(t) { const n = $("#notice"); n.textContent = t; n.hidden = false; }
+  function onDbError(e) { state.notice = "Mistet kontakten med den felles oversikten (" + ((e && e.code) || "ukjent feil") + "). Last siden på nytt."; render(); }
 
   async function resolveNames() {
     if (!state.user) return;
     const ids = new Set();
     state.spots.forEach((s) => s.by && ids.add(s.by));
-    state.reports.slice(0, 200).forEach((r) => r.by && ids.add(r.by));
-    const missing = [...ids].filter((i) => !(i in state.names));
+    state.reports.forEach((r) => r.by && ids.add(r.by));
+    const missing = [...ids].filter((i) => !(i in state.names)).slice(0, 64);
     if (!missing.length) return;
     missing.forEach((i) => (state.names[i] = ""));
-    try {
-      const ps = await state.user.profiles(missing);
-      for (const i of missing) state.names[i] = (ps[i] && ps[i].name) || "";
-      render();
-    } catch {}
+    try { const ps = await state.user.profiles(missing); for (const i of missing) state.names[i] = (ps[i] && ps[i].name) || ""; render(); } catch {}
   }
-  const who = (id) => (state.mode === "local" || (id && id === state.me)) ? "deg" : (state.names[id] || "noen");
+  const who = (id) => (state.mode === "local" || (id && id === state.me)) ? "deg" : (state.names[id] || "en bruker");
 
   /* ---------- avledet tilstand ---------- */
-  function latestFor(spotId) { return state.reports.find((r) => r.spotId === spotId) || null; }
-  function isFresh(r) { return r && Date.now() - r.at < FRESH_MS; }
+  const allSpots = () => [...GARAGES, ...state.spots.map((s) => ({ kind: "gate", ...s }))];
+  const byId = (id) => allSpots().find((s) => s.id === id);
+  const hasLoc = (s) => typeof s.lat === "number" && typeof s.lng === "number";
+  const latestFor = (id) => state.reports.find((r) => r.spotId === id) || null;
+  const isFresh = (r) => !!r && Date.now() - r.at < FRESH_MS;
+  const freshLevel = (s) => { const r = latestFor(s.id); return isFresh(r) ? r.level : null; };
   function ago(t) {
     const m = Math.round((Date.now() - t) / 60000);
     if (m < 1) return "nå nettopp";
     if (m < 60) return m + " min siden";
     const h = Math.floor(m / 60);
-    if (h < 24) return h + " t " + (m % 60 ? (m % 60) + " min " : "") + "siden";
-    const d = Math.floor(h / 24);
-    return d === 1 ? "i går" : d + " dager siden";
+    return h + " t" + (m % 60 ? " " + (m % 60) + " min" : "") + " siden";
   }
-  function clock(t) { return new Date(t).toLocaleTimeString("nb-NO", { hour: "2-digit", minute: "2-digit" }); }
-  const hasLoc = (s) => typeof s.lat === "number" && typeof s.lng === "number";
-  function mapUrl(s) {
-    if (hasLoc(s)) return "https://www.google.com/maps/search/?api=1&query=" + s.lat.toFixed(5) + "," + s.lng.toFixed(5); return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent((s.street || s.name) + ", Bergen"); }
+  const clock = (t) => new Date(t).toLocaleTimeString("nb-NO", { hour: "2-digit", minute: "2-digit" });
+  function distance(a, b) {
+    const R = 6371000, rad = Math.PI / 180, dLat = (b[0] - a[0]) * rad, dLng = (b[1] - a[1]) * rad;
+    const h = Math.sin(dLat / 2) ** 2 + Math.cos(a[0] * rad) * Math.cos(b[0] * rad) * Math.sin(dLng / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(h));
+  }
+  const distTo = (s) => state.myPos && hasLoc(s) ? distance(state.myPos, [s.lat, s.lng]) : null;
+  const fmtDist = (m) => m < 1000 ? Math.max(10, Math.round(m / 10) * 10) + " m" : (m / 1000).toFixed(1).replace(".", ",") + " km";
+  const walk = (m) => Math.max(1, Math.round(m / 80)) + " min å gå";
+  const navUrl = (s) => hasLoc(s)
+    ? "https://www.google.com/maps/dir/?api=1&travelmode=driving&destination=" + s.lat.toFixed(5) + "," + s.lng.toFixed(5)
+    : "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent((s.street || s.name) + ", Bergen");
 
   function filtered() {
     const q = state.q.trim().toLowerCase();
-    return state.spots.filter((s) => {
-      if (state.area !== "alle" && s.area !== state.area) return false;
+    return allSpots().filter((s) => {
+      if (state.kind !== "alle" && s.kind !== state.kind) return false;
       if (q && ![s.name, s.street, s.zone, s.note, s.area].join(" ").toLowerCase().includes(q)) return false;
-      if (state.onlyFree) { const r = latestFor(s.id); if (!isFresh(r) || LEVELS[r.level].rank < 3) return false; }
+      if (state.onlyFree) { const l = freshLevel(s); if (!l || LEVELS[l].rank < 3) return false; }
       return true;
     });
+  }
+  function sorted(list) {
+    const mode = state.sort === "smart" ? (state.myPos ? "near" : "free") : state.sort;
+    const free = (s) => { const r = latestFor(s.id); return isFresh(r) ? LEVELS[r.level].rank * 1e13 + r.at : (r ? r.at / 1e3 : 0); };
+    const cmp = {
+      near: (a, b) => (distTo(a) ?? Infinity) - (distTo(b) ?? Infinity),
+      free: (a, b) => free(b) - free(a) || a.name.localeCompare(b.name, "nb"),
+      recent: (a, b) => ((latestFor(b.id) || {}).at || 0) - ((latestFor(a.id) || {}).at || 0),
+      area: (a, b) => AREAS.indexOf(a.area) - AREAS.indexOf(b.area) || a.name.localeCompare(b.name, "nb"),
+    }[mode];
+    return [...list].sort(cmp);
   }
 
   /* ---------- tegning ---------- */
   function render() {
-    // behold det brukeren har skrevet i et åpent meldingsskjema
-    const keep = {};
-    if (state.open) for (const k of ["r-free-", "r-comment-"]) { const el = document.getElementById(k + state.open); if (el) keep[k] = el.value; }
-    const focused = document.activeElement && document.activeElement.id;
-    renderSpots();
-    for (const k in keep) { const el = document.getElementById(k + state.open); if (el) el.value = keep[k]; }
-    if (focused && focused.startsWith("r-")) { const el = document.getElementById(focused); if (el) el.focus(); }
-  }
-  function renderSpots() {
-    renderChips(); renderSummary(); renderMap(); renderAd();
-    const out = $("#out");
-    if (!state.loaded) { out.innerHTML = ""; return; }
-    if (!state.spots.length) {
-      out.innerHTML = `<div class="empty"><h2>Ingen plasser lagt inn ennå</h2>
-        <p>Her kommer sonene og plassene i Bergen sentrum, med ca. antall plasser og om det er ledig akkurat nå. Står du ved en plass? Legg den inn, så kan andre melde fra når de er der.</p>
-        ${state.canWrite ? '<button class="btn primary" type="button" data-act="add">Legg inn første plass</button>' : ""}</div>`;
-      return;
+    for (const v of ["List", "Detail", "Place", "Form"]) {
+      const on = state.view === v.toLowerCase();
+      const h = $("#head" + v), b = $("#body" + v);
+      if (h) h.hidden = !on;
+      if (b) b.hidden = !on;
     }
-    const list = filtered();
-    if (!list.length) { out.innerHTML = `<div class="empty"><h2>Ingen treff</h2><p>Prøv en annen bydel eller fjern filteret «Bare ledig nå».</p></div>`; return; }
+    $("#cross").hidden = state.view !== "place";
+    $("#addBtn").hidden = !state.canWrite;
+    if (state.view === "list") renderList();
+    if (state.view === "detail") renderDetail();
+    renderMap();
+  }
 
-    if (state.sort === "area") {
-      const groups = AREAS.map((a) => [a, list.filter((s) => s.area === a)]).filter(([, l]) => l.length);
-      const unknown = list.filter((s) => !AREAS.includes(s.area));
-      if (unknown.length) groups.push(["Annet", unknown]);
-      out.innerHTML = groups.map(([a, l]) => `<section class="area"><h2><span>${esc(a)}</span><span>${l.length} ${l.length === 1 ? "plass" : "plasser"}</span></h2>
-        <div class="list">${l.sort((x, y) => x.name.localeCompare(y.name, "nb")).map(card).join("")}</div></section>`).join("");
+  function pinHtml(s, extraClass = "") {
+    const r = latestFor(s.id), fresh = isFresh(r);
+    const label = fresh && r.free != null && r.free < 100 ? r.free : "P";
+    return `<div class="pin ${s.kind === "phus" ? "phus" : ""} ${fresh ? "s-" + r.level : ""} ${extraClass}">${esc(label)}</div>`;
+  }
+  function statusPill(s) {
+    const r = latestFor(s.id);
+    if (!r) return `<span class="pill none">Ingen melding</span>`;
+    const fresh = isFresh(r);
+    return `<span class="pill ${fresh ? r.level : ""}">${fresh ? esc(LEVELS[r.level].label) : "Utdatert"}</span><span class="ago">${esc(ago(r.at))}</span>`;
+  }
+  function row(s) {
+    const d = distTo(s);
+    const sub = [
+      s.kind === "phus" ? "P-hus" : (s.zone ? `<span class="zone">${esc(s.zone)}</span>` : "Gate"),
+      s.count ? `ca. ${Number(s.count).toLocaleString("nb-NO")} plasser` : "",
+      d != null ? fmtDist(d) : "",
+    ].filter(Boolean).map((x) => `<span>${x}</span>`).join("");
+    return `<button class="row" type="button" data-id="${esc(s.id)}">
+      ${pinHtml(s)}
+      <span class="row-main"><b>${esc(s.name)}</b><span class="row-sub">${sub}</span></span>
+      <span class="row-status">${statusPill(s)}</span>
+    </button>`;
+  }
+
+  function renderList() {
+    const spots = allSpots();
+    const fresh = spots.map(freshLevel).filter(Boolean);
+    const n = (l) => fresh.filter((x) => l.includes(x)).length;
+    $("#summary").innerHTML = `<span><b>${spots.length}</b> plasser</span>
+      <span><i class="dot" style="background:var(--ok)"></i><b>${n(["mye", "noe"])}</b> ledig nå</span>
+      <span><i class="dot" style="background:var(--low)"></i><b>${n(["lite"])}</b> nesten fullt</span>
+      <span><i class="dot" style="background:var(--full)"></i><b>${n(["fullt"])}</b> fullt</span>`;
+    document.querySelectorAll(".chip[data-kind]").forEach((c) => c.setAttribute("aria-pressed", String(c.dataset.kind === state.kind)));
+    $("#freeChip").setAttribute("aria-pressed", String(state.onlyFree));
+
+    const parts = [];
+    if (state.notice) parts.push(`<div class="notice">${esc(state.notice)}</div>`);
+    parts.push(adHtml());
+
+    // står du ved en plass? foreslå å melde status
+    if (state.myPos && state.canWrite) {
+      const near = spots.filter(hasLoc).map((s) => [s, distTo(s)]).filter(([, d]) => d < 150).sort((a, b) => a[1] - b[1])[0];
+      if (near) parts.push(`<div class="nearby"><p>Står du ved ${esc(near[0].name)}? Hjelp andre og meld hvor mye som er ledig.</p>
+        <button class="btn small" type="button" data-open="${esc(near[0].id)}">Meld status</button></div>`);
+    }
+
+    const list = sorted(filtered());
+    if (!state.loaded) parts.push(`<p class="foot">Henter plasser fra den felles oversikten …</p>`);
+    if (!list.length) {
+      parts.push(`<div class="empty"><h2>Ingen treff</h2><p>Prøv et annet søk eller fjern filteret «Ledig nå».</p></div>`);
+    } else if (state.sort === "area") {
+      const groups = AREAS.map((a) => [a, list.filter((s) => (AREAS.includes(s.area) ? s.area : "Annet") === a)]).filter(([, l]) => l.length);
+      for (const [a, l] of groups) parts.push(`<div class="group-title"><span>${esc(a)}</span><span>${l.length}</span></div><div class="rows">${l.map(row).join("")}</div>`);
     } else {
-      if (state.sort === "near" && state.myPos) {
-        const d = (s) => hasLoc(s) ? distance(state.myPos, [s.lat, s.lng]) : Infinity;
-        out.innerHTML = `<div class="list" style="margin-top:16px">${[...list].sort((a, b) => d(a) - d(b)).map(card).join("")}</div>`;
-        return;
-      }
-      const score = (s) => { const r = latestFor(s.id); if (state.sort === "recent") return r ? r.at : 0; return isFresh(r) ? LEVELS[r.level].rank * 1e13 + r.at : 0; };
-      out.innerHTML = `<div class="list" style="margin-top:16px">${[...list].sort((a, b) => score(b) - score(a)).map(card).join("")}</div>`;
+      parts.push(`<div class="rows">${list.map(row).join("")}</div>`);
     }
+    if (state.loaded && !state.spots.length && state.canWrite) {
+      parts.push(`<div class="empty"><h2>Kjenner du en gateplass?</h2>
+        <p>P-husene ligger inne. Gateplassene legges inn av dere som parkerer: trykk «+ Legg til», flytt nålen dit plassen er, og skriv ca. hvor mange plasser det er.</p>
+        <button class="btn primary" type="button" data-act="add">+ Legg til første gateplass</button></div>`);
+    }
+    parts.push(zoneInfo());
+    parts.push(`<p class="foot">Opplysningene er meldt inn av brukere og kan være feil. Skiltet på stedet gjelder alltid. Meldinger eldre enn 2 timer vises som utdatert, og eldre enn 6 timer vises ikke. Kart: © Kartverket.</p>`);
+
+    const body = $("#bodyList");
+    if (state.editAd && body.querySelector("#adForm")) return; // ikke tegn over annonseskjemaet mens det fylles ut
+    const info = body.querySelector("details.info");
+    const wasOpen = info && info.open;
+    const st = body.scrollTop; body.innerHTML = parts.join(""); body.scrollTop = st;
+    if (wasOpen) body.querySelector("details.info").open = true;
   }
 
-  function renderChips() {
-    const counts = {}; state.spots.forEach((s) => (counts[s.area] = (counts[s.area] || 0) + 1));
-    const items = [["alle", "Alle bydeler", state.spots.length], ...AREAS.filter((a) => counts[a]).map((a) => [a, a, counts[a]])];
-    if (state.area !== "alle" && !counts[state.area]) state.area = "alle";
-    $("#chips").innerHTML = items.map(([v, l, n]) => `<button type="button" class="chip" data-area="${esc(v)}" aria-pressed="${state.area === v}">${esc(l)}<span class="n">${n}</span></button>`).join("");
+  function adHtml() {
+    const a = state.ad;
+    const url = a && /^https?:\/\//i.test(a.url || "") ? a.url : null;
+    const body = a && a.text
+      ? (url ? `<a class="txt" href="${esc(url)}" target="_blank" rel="noopener sponsored">${esc(a.text)}</a>` : `<span class="txt">${esc(a.text)}</span>`)
+      : `<span class="txt placeholder">Annonser her og nå bilistene i Bergen sentrum</span>`;
+    const edit = state.canEdit ? `<button class="btn ghost small" type="button" data-act="ad-edit">${state.editAd ? "Lukk" : "Rediger"}</button>` : "";
+    const form = state.editAd ? `<form class="ad-edit" id="adForm">
+        <input id="ad-text" maxlength="90" placeholder="Annonsetekst (én linje)" value="${esc((a && a.text) || "")}" aria-label="Annonsetekst">
+        <input id="ad-url" maxlength="300" placeholder="https://… (valgfri lenke)" value="${esc((a && a.url) || "")}" aria-label="Lenke">
+        <button class="btn primary small" type="submit">Lagre</button>
+        <button class="btn ghost small" type="button" data-act="ad-clear">Fjern</button>
+      </form>` : "";
+    return `<aside class="ad" aria-label="Annonse"><span class="tag">Annonse</span>${body}${edit}${form}</aside>`;
   }
 
-  function renderSummary() {
-    if (!state.loaded) return;
-    const fresh = state.spots.map((s) => latestFor(s.id)).filter(isFresh);
-    const by = (lv) => fresh.filter((r) => r.level === lv).length;
-    const total = state.spots.reduce((n, s) => n + (Number(s.count) || 0), 0);
-    $("#summary").innerHTML = `<span><strong>${state.spots.length}</strong> ${state.spots.length === 1 ? "plass" : "plasser"} registrert${total ? `, ca. <strong>${total.toLocaleString("nb-NO")}</strong> parkeringsplasser` : ""}</span>
-      <span>Siste 2 timer:</span>
-      <span><i class="dot" style="background:var(--ok)"></i><strong>${by("mye") + by("noe")}</strong> med ledig</span>
-      <span><i class="dot" style="background:var(--low)"></i><strong>${by("lite")}</strong> nesten fullt</span>
-      <span><i class="dot" style="background:var(--full)"></i><strong>${by("fullt")}</strong> fullt</span>`;
+  function zoneInfo() {
+    return `<details class="info">
+      <summary>Slik fungerer parkeringssonene i Bergen</summary>
+      <ul>
+        <li><b>Sone 1 (sentrum):</b> gateplassene er for beboere med sonekort. Som besøkende parkerer du på avgiftsplasser eller i P-hus.</li>
+        <li><b>Avgiftsplasser i sentrum:</b> betaling mandag–lørdag kl. 08–23, gratis søndag og helligdager. Ca. 34–69 kr i timen, maks 1–2 timer.</li>
+        <li><b>Sone 2–7:</b> rene boligsoner, bare for beboere og virksomheter med tillatelse.</li>
+        <li><b>Sone 8–30:</b> besøkende kan betale ca. 24 kr i timen (360 kr per døgn) mandag–fredag kl. 08–23 og lørdag kl. 08–17.</li>
+        <li>Betal i appen «Parkering i Bergen» eller på automat. Skiltet på stedet gjelder alltid.</li>
+      </ul>
+      <p>Kilder: Bergen kommune, parkeringsregler.no og Bergen Parkering (2026). Priser og regler kan endres.</p>
+    </details>`;
   }
 
-  function card(s) {
-    const r = latestFor(s.id), fresh = isFresh(r), open = state.open === s.id;
-    const pill = !r ? `<span class="pill stale">Ingen melding siste 6 t</span>`
-      : `<span class="pill ${fresh ? r.level : "stale"}">${esc(LEVELS[r.level].label)}${r.free != null ? " · " + r.free : ""}</span>`;
-    const statusLine = r ? `<span class="ago">${fresh ? "" : "Utdatert · "}${esc(ago(r.at))}</span>` : "";
-    const hist = state.reports.filter((x) => x.spotId === s.id).slice(0, 6);
-    const mine = state.me && s.by === state.me;
-    return `<article class="spot" data-id="${esc(s.id)}">
-      <div class="spot-head">
-        <div class="spot-title">
-          <h3>${esc(s.name)}</h3>
-          <div class="meta">
-            ${s.zone ? `<span class="zone">${esc(s.zone)}</span>` : ""}
-            ${s.street ? `<span>${esc(s.street)}</span>` : ""}
-            <span>ca. <b>${s.count ? esc(s.count) : "?"}</b> plasser</span>
-            ${state.myPos && hasLoc(s) ? `<span class="dist">${fmtDist(distance(state.myPos, [s.lat, s.lng]))} unna</span>` : ""}
-          </div>
+  function renderDetail() {
+    const s = byId(state.selected);
+    if (!s) { state.view = "list"; state.selected = null; render(); return; }
+    const keep = {}; for (const k of ["r-free", "r-comment", "c-count"]) { const el = document.getElementById(k); if (el) keep[k] = el.value; }
+    const focused = document.activeElement && document.activeElement.id;
+    const scroll = $("#bodyDetail").scrollTop;
+
+    const r = latestFor(s.id), fresh = isFresh(r), d = distTo(s);
+    const mine = !s.builtin && (state.mode === "local" || (state.me && s.by === state.me));
+    $("#headDetail").innerHTML = `<div class="dhead">
+      <button class="back" type="button" data-act="back" aria-label="Tilbake til listen">←</button>
+      <div class="dtitle"><h2>${esc(s.name)}</h2>
+        <div class="meta"><span class="kind">${s.kind === "phus" ? "Parkeringshus" : "Gateparkering"}</span>${s.zone ? `<span class="zone">${esc(s.zone)}</span>` : ""}${s.street ? `<span>${esc(s.street)}</span>` : ""}</div>
+      </div></div>`;
+
+    const status = !r
+      ? `<div class="statusbox none"><strong>Ingen melding siste 6 timer</strong><span>Er du der? Meld fra under, så ser andre det med en gang.</span></div>`
+      : `<div class="statusbox ${fresh ? r.level : ""}"><strong>${fresh ? esc(LEVELS[r.level].label) : "Utdatert: " + esc(LEVELS[r.level].label.toLowerCase())}${r.free != null ? " · ca. " + esc(r.free) + " ledige" : ""}</strong>
+          <span>Meldt ${esc(ago(r.at))} av ${esc(who(r.by))}${r.comment ? ` · «${esc(r.comment)}»` : ""}</span></div>`;
+
+    const facts = [
+      ["Plasser", s.count ? "ca. " + Number(s.count).toLocaleString("nb-NO") : "Ukjent"],
+      d != null ? ["Avstand", fmtDist(d) + `<br><span class="sub">${walk(d)}</span>`] : null,
+      s.hours ? ["Åpent", esc(s.hours)] : null,
+      ["Bydel", esc(s.area || "Annet")],
+    ].filter(Boolean).map(([k, v]) => `<div class="fact"><small>${k}</small><b>${v}</b></div>`).join("");
+
+    const hist = state.reports.filter((x) => x.spotId === s.id).slice(0, 8);
+    const history = hist.length ? `<ul class="history">${hist.map((x) => `<li><span class="when">${esc(clock(x.at))}</span><span><b>${esc(LEVELS[x.level].label)}</b>${x.free != null ? ` · ${esc(x.free)} ledige` : ""} – ${esc(who(x.by))}${x.comment ? ` · «${esc(x.comment)}»` : ""}</span></li>`).join("")}</ul>` : "";
+
+    const report = state.canWrite ? `<div class="report">
+        <h3>Hvordan ser det ut nå?</h3>
+        <p class="hint">Trykk på det som passer. Meldingen sendes med en gang.</p>
+        <div class="extra">
+          <input id="r-free" type="number" min="0" max="5000" inputmode="numeric" placeholder="Ledige (ca.)" aria-label="Ca. antall ledige, valgfritt">
+          <input id="r-comment" maxlength="140" placeholder="Kommentar (valgfritt)" aria-label="Kommentar, valgfritt">
         </div>
-        <div class="status">${pill}${statusLine}</div>
-      </div>
-      ${s.note ? `<p class="note">${esc(s.note)}</p>` : ""}
-      ${r && r.comment && fresh ? `<p class="note">«${esc(r.comment)}» – ${esc(who(r.by))}</p>` : ""}
-      <div class="actions">
-        ${state.canWrite ? `<button class="btn primary small" type="button" data-act="report">${open ? "Lukk" : "Jeg er her – meld status"}</button>` : `<button class="btn small" type="button" data-act="report">${open ? "Lukk" : "Historikk"}</button>`}
-        ${hasLoc(s) ? `<button class="btn ghost small" type="button" data-act="show">Vis på kartet</button>` : ""}
-        ${state.canWrite ? `<button class="btn ghost small" type="button" data-act="place">${hasLoc(s) ? "Flytt" : "Plasser på kartet"}</button>` : ""}
-        <a href="${mapUrl(s)}" target="_blank" rel="noopener">Google Maps ↗</a>
-      </div>
-      ${open ? reportPanel(s, hist, mine) : ""}
-    </article>`;
-  }
+        <div class="levels">${Object.entries(LEVELS).map(([k, v]) => `<button class="level ${k}" type="button" data-level="${k}" ${state.sending ? "disabled" : ""}>${v.label}</button>`).join("")}</div>
+        ${history}
+      </div>` : (history ? `<div class="report"><h3>Siste meldinger</h3>${history}</div>` : "");
 
-  function reportPanel(s, hist, mine) {
-    const d = state.draft;
-    const form = state.canWrite ? `
-      <div class="levels" role="group" aria-label="Hvor mye er ledig">
-        ${Object.entries(LEVELS).map(([k, v]) => `<button type="button" class="level" data-level="${k}" aria-pressed="${d.level === k}"><i class="dot" style="background:var(--${k === "mye" ? "ok" : k === "noe" ? "some" : k === "lite" ? "low" : "full"});margin:0"></i>${v.label}</button>`).join("")}
-      </div>
-      <div class="row2">
-        <input id="r-free-${esc(s.id)}" type="number" min="0" max="5000" inputmode="numeric" placeholder="Ledige (ca.)" aria-label="Ca. antall ledige">
-        <input id="r-comment-${esc(s.id)}" maxlength="140" placeholder="Kommentar, f.eks. kø inn, to ledige ved inngangen" aria-label="Kommentar">
-      </div>
-      <div class="actions">
-        <button class="btn primary small" type="button" data-act="send" ${d.level ? "" : "disabled"}>Send melding</button>
-        <button class="btn ghost small" type="button" data-act="count">Rett antall plasser</button>
-        ${mine ? (state.confirmDelete === s.id
-          ? `<button class="btn small" type="button" data-act="del-yes" style="color:var(--full)">Ja, slett plassen</button><button class="btn ghost small" type="button" data-act="del-no">Behold</button>`
+    const tools = !s.builtin && state.canWrite ? `<div class="tools">
+        ${state.editCount
+          ? `<input id="c-count" type="number" min="1" max="5000" inputmode="numeric" value="${esc(s.count || "")}" aria-label="Ca. antall plasser"><button class="btn small" type="button" data-act="count-save">Lagre antall</button><button class="btn ghost small" type="button" data-act="count">Avbryt</button>`
+          : `<button class="btn ghost small" type="button" data-act="count">Rett antall plasser</button>`}
+        <button class="btn ghost small" type="button" data-act="move">${hasLoc(s) ? "Flytt på kartet" : "Plasser på kartet"}</button>
+        ${mine ? (state.confirmDelete
+          ? `<button class="btn small danger" type="button" data-act="del-yes">Ja, slett plassen</button><button class="btn ghost small" type="button" data-act="del-no">Behold</button>`
           : `<button class="btn ghost small" type="button" data-act="del">Slett</button>`) : ""}
       </div>` : "";
-    const h = hist.length ? `<ul class="history">${hist.map((x) => `<li><span class="when">${esc(clock(x.at))}</span><span><b>${esc(LEVELS[x.level].label)}</b>${x.free != null ? ` (${esc(x.free)} ledige)` : ""} – ${esc(who(x.by))}, ${esc(ago(x.at))}${x.comment ? ` · «${esc(x.comment)}»` : ""}</span></li>`).join("")}</ul>`
-      : `<p class="note">Ingen har meldt status her de siste 6 timene.</p>`;
-    const added = s.at ? `<p class="note" style="font-size:12px">Lagt inn av ${esc(who(s.by))} ${esc(ago(s.at))}</p>` : "";
-    return `<div class="report">${form}${h}${added}</div>`;
+
+    const byline = s.builtin ? `<p class="byline">Fra Bergen Parkering. Ledige plasser i sanntid står på nettsiden deres.</p>`
+      : (s.at ? `<p class="byline">Lagt inn av ${esc(who(s.by))} ${esc(new Date(s.at).toLocaleDateString("nb-NO", { day: "numeric", month: "short" }))}.</p>` : "");
+
+    $("#bodyDetail").innerHTML = `${status}
+      <div class="facts">${facts}</div>
+      ${s.note ? `<p class="dnote">${esc(s.note)}</p>` : ""}
+      <div class="actions">
+        <a class="btn primary" href="${navUrl(s)}" target="_blank" rel="noopener">Kjør hit ↗</a>
+        ${s.url ? `<a class="btn ghost" href="${esc(s.url)}" target="_blank" rel="noopener">Ledige plasser nå ↗</a>` : ""}
+      </div>
+      ${report}${tools}${byline}`;
+    $("#bodyDetail").scrollTop = scroll;
+
+    for (const k in keep) { const el = document.getElementById(k); if (el) el.value = keep[k]; }
+    if (focused) { const el = document.getElementById(focused); if (el && el.tagName === "INPUT") el.focus(); }
   }
-
-  /* ---------- hendelser ---------- */
-  let toastT;
-  function toast(t) { const el = $("#toast"); el.textContent = t; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => (el.hidden = true), 2400); }
-  function fail(e) { toast(e && e.code === "quota_exceeded" ? "Oversikten er full. Slett gamle plasser først." : "Fikk ikke lagret. Prøv igjen."); }
-
-  document.addEventListener("click", async (ev) => {
-    const chip = ev.target.closest(".chip");
-    if (chip) { state.area = chip.dataset.area; lsSet("pb-area", state.area); render(); return; }
-    const btn = ev.target.closest("[data-act], .level");
-    if (!btn) return;
-    if (btn.dataset.act === "add") { openSpotDialog(); return; }
-    const art = btn.closest(".spot"); if (!art) return;
-    const id = art.dataset.id, s = state.spots.find((x) => x.id === id);
-    if (btn.classList.contains("level")) { state.draft.level = btn.dataset.level; render(); return; }
-    switch (btn.dataset.act) {
-      case "report":
-        state.open = state.open === id ? null : id; state.draft = { level: null }; state.confirmDelete = null; render(); break;
-      case "send": {
-        const freeV = document.getElementById("r-free-" + id).value.trim();
-        const comment = document.getElementById("r-comment-" + id).value.trim();
-        const rep = { spotId: id, level: state.draft.level, at: Date.now(), by: state.me || null, free: freeV === "" ? null : Math.max(0, Math.round(Number(freeV))), comment: comment || null };
-        btn.disabled = true;
-        try {
-          await api.addReport(rep); state.draft = { level: null };
-          document.getElementById("r-free-" + id).value = ""; document.getElementById("r-comment-" + id).value = "";
-          render(); toast("Takk! Statusen er meldt."); }
-        catch (e) { fail(e); btn.disabled = false; }
-        break;
-      }
-      case "count": {
-        const art2 = art; const holder = art2.querySelector(".report .actions");
-        if (holder.querySelector(".count-edit")) return;
-        const wrap = document.createElement("span"); wrap.className = "count-edit"; wrap.style.cssText = "display:flex;gap:6px";
-        wrap.innerHTML = `<input id="c-${esc(id)}" type="number" min="1" max="5000" value="${esc(s.count || "")}" aria-label="Ca. antall plasser" style="width:90px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--surface)"><button class="btn small" type="button" data-act="count-save">Lagre</button>`;
-        holder.appendChild(wrap); wrap.querySelector("input").focus(); break;
-      }
-      case "count-save": {
-        const v = Math.round(Number(document.getElementById("c-" + id).value));
-        if (!(v > 0)) { toast("Skriv et antall over 0."); return; }
-        try { await api.updateSpot(id, { count: v }); toast("Antall plasser er oppdatert."); } catch (e) { fail(e); }
-        break;
-      }
-      case "show": focusOnMap(s); break;
-      case "place": startPick({ kind: "move", id }); break;
-      case "del": state.confirmDelete = id; render(); break;
-      case "del-no": state.confirmDelete = null; render(); break;
-      case "del-yes":
-        try { await api.deleteSpot(id); state.open = null; toast("Plassen er slettet."); } catch (e) { fail(e); }
-        break;
-    }
-  });
-
-  $("#q").addEventListener("input", (e) => { state.q = e.target.value; render(); });
-  $("#sort").value = state.sort;
-  $("#sort").addEventListener("change", (e) => {
-    state.sort = e.target.value; lsSet("pb-sort", state.sort);
-    if (state.sort === "near" && !state.myPos) locate(); else render();
-  });
-  $("#onlyFree").addEventListener("change", (e) => { state.onlyFree = e.target.checked; render(); });
-
-  const dlg = $("#spotDlg");
-  $("#f-area").innerHTML = AREAS.map((a) => `<option>${esc(a)}</option>`).join("");
-  function openSpotDialog() {
-    if (!state.canWrite) { toast("Du har bare lesetilgang."); return; }
-    $("#spotForm").reset(); $("#spotErr").hidden = true; state.newLoc = null; showLoc();
-    if (state.area !== "alle") $("#f-area").value = state.area;
-    dlg.showModal(); $("#f-name").focus();
-  }
-  $("#addBtn").addEventListener("click", openSpotDialog);
-  $("#spotCancel").addEventListener("click", () => dlg.close());
-  $("#f-pick").addEventListener("click", () => { dlg.close(); startPick({ kind: "new" }); });
-  function showLoc() {
-    $("#f-loc").innerHTML = state.newLoc ? '<span class="ok">✓ Plassert</span>' : "Ikke plassert";
-    $("#f-pick").textContent = state.newLoc ? "Endre" : "Velg på kartet";
-  }
-  $("#spotForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const name = $("#f-name").value.trim();
-    if (!name) { const er = $("#spotErr"); er.textContent = "Gi plassen et navn, f.eks. gaten den ligger i."; er.hidden = false; return; }
-    const c = Math.round(Number($("#f-count").value));
-    const spot = {
-      name, street: $("#f-street").value.trim() || null, area: $("#f-area").value,
-      zone: $("#f-zone").value.trim() || null, count: c > 0 ? c : null,
-      note: $("#f-note").value.trim() || null, by: state.me || null, at: Date.now(),
-      lat: state.newLoc ? state.newLoc[0] : null, lng: state.newLoc ? state.newLoc[1] : null,
-    };
-    $("#spotSave").disabled = true;
-    try { await api.addSpot(spot); dlg.close(); toast("Plassen er lagt til."); }
-    catch (err) { fail(err); }
-    finally { $("#spotSave").disabled = false; }
-  });
 
   /* ---------- kart ---------- */
-  // Kartgrunnlag fra Kartverket (topo, CC BY 4.0), satt sammen for Bergen sentrum
-  const BOUNDS = [[60.378575, 5.295410], [60.404358, 5.353088]];
-  const COLORS = { mye: "--ok", noe: "--some", lite: "--low", fullt: "--full" };
-  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
-  let map = null, markers = null, overlay = null, sharp = false;
+  let map = null, layer = null, overlay = null, sharp = false, meMarker = null;
   function initMap() {
-    if (!window.L) { $("#mapbox").hidden = true; return; }
-    map = L.map("map", { maxBounds: BOUNDS, maxBoundsViscosity: 1, minZoom: 14, maxZoom: 18, zoomSnap: 0.5, attributionControl: true });
+    if (!window.L) { $("#map").innerHTML = '<p class="notice" style="margin:16px">Kartet kunne ikke lastes.</p>'; return; }
+    map = L.map("map", { maxBounds: BOUNDS, maxBoundsViscosity: 1, minZoom: 14, maxZoom: 18, zoomSnap: 0.5 });
+    map.zoomControl.setPosition("bottomright");
     map.attributionControl.setPrefix(false);
     overlay = L.imageOverlay("kart/kart-liten.jpg", BOUNDS, { attribution: "© Kartverket" }).addTo(map);
-    map.fitBounds([[60.386, 5.312], [60.400, 5.338]]);
+    map.fitBounds([[60.386, 5.312], [60.400, 5.338]], isDesktop() ? { paddingTopLeft: [410, 0] } : { paddingBottomRight: [0, PEEK] });
     map.on("zoomend", () => { if (!sharp && map.getZoom() >= 16.5) { sharp = true; overlay.setUrl("kart/kart.jpg"); } });
-    markers = L.layerGroup().addTo(map);
-    map.on("click", (e) => {
-      if (!state.pick) return;
-      const ll = [Number(e.latlng.lat.toFixed(6)), Number(e.latlng.lng.toFixed(6))];
-      const pick = state.pick; stopPick();
-      if (pick.kind === "me") { setMyPos(ll); toast("Posisjonen din er satt."); }
-      else if (pick.kind === "new") { state.newLoc = ll; showLoc(); dlg.showModal(); }
-      else api.updateSpot(pick.id, { lat: ll[0], lng: ll[1] }).then(() => toast("Plasseringen er lagret."), fail);
+    layer = L.layerGroup().addTo(map);
+  }
+  function renderMap() {
+    if (!layer) return;
+    layer.clearLayers();
+    const ids = new Set(filtered().map((s) => s.id));
+    if (state.selected) ids.add(state.selected);
+    for (const s of allSpots()) {
+      if (!hasLoc(s) || !ids.has(s.id)) continue;
+      const sel = state.selected === s.id && state.view === "detail";
+      const size = s.kind === "phus" ? 36 : 30;
+      const m = L.marker([s.lat, s.lng], {
+        icon: L.divIcon({ className: "", html: pinHtml(s, sel ? "sel" : ""), iconSize: [size, size], iconAnchor: [size / 2, size / 2] }),
+        zIndexOffset: sel ? 1000 : (s.kind === "phus" ? 100 : 0), title: s.name,
+      }).addTo(layer);
+      m.on("click", () => { if (state.view !== "place") openSpot(s.id, true); });
+    }
+  }
+  // den delen av kartet som ligger bak panelet
+  const coveredBottom = () => isDesktop() ? 0 : $("#panel").getBoundingClientRect().height;
+  const coveredLeft = () => isDesktop() ? $("#panel").getBoundingClientRect().width : 0;
+  function showOnMap(ll, zoom) {
+    if (!map) return;
+    const z = zoom || Math.max(map.getZoom(), 16.5);
+    const p = map.project(ll, z).add([-coveredLeft() / 2, coveredBottom() / 2]);
+    map.setView(map.unproject(p, z), z, { animate: true });
+  }
+  function crossPoint() {
+    const el = $("#map"), w = el.clientWidth, h = el.clientHeight;
+    return [coveredLeft() + (w - coveredLeft()) / 2, (h - coveredBottom()) / 2];
+  }
+  function placeCross() {
+    const [x, y] = crossPoint();
+    const c = $("#cross"); c.style.left = x + "px"; c.style.top = y + "px";
+  }
+
+  /* ---------- ark (mobil) ---------- */
+  const panel = $("#panel");
+  function setSnap(s) {
+    if (panel.dataset.snap === s) return;
+    panel.dataset.snap = s;
+    setTimeout(() => { if (state.view === "place") placeCross(); }, 270);
+  }
+  (() => {
+    const h = $("#handle"); let y0 = null, h0 = 0, moved = false;
+    h.addEventListener("pointerdown", (e) => { y0 = e.clientY; h0 = panel.getBoundingClientRect().height; moved = false; panel.style.transition = "none"; h.setPointerCapture(e.pointerId); });
+    h.addEventListener("pointermove", (e) => {
+      if (y0 == null) return;
+      const dy = e.clientY - y0; if (Math.abs(dy) > 4) moved = true;
+      const max = panel.parentElement.clientHeight - 8;
+      panel.style.height = Math.min(max, Math.max(120, h0 - dy)) + "px";
     });
+    const end = () => {
+      if (y0 == null) return;
+      y0 = null; panel.style.transition = "";
+      const cur = panel.getBoundingClientRect().height, max = panel.parentElement.clientHeight;
+      panel.style.height = "";
+      if (!moved) { setSnap(panel.dataset.snap === "peek" ? "half" : panel.dataset.snap === "half" ? "full" : "peek"); return; }
+      const opts = [["peek", PEEK], ["half", max * 0.56], ["full", max - 8]];
+      setSnap(opts.reduce((a, b) => (Math.abs(b[1] - cur) < Math.abs(a[1] - cur) ? b : a))[0]);
+    };
+    h.addEventListener("pointerup", end); h.addEventListener("pointercancel", end);
+  })();
+
+  /* ---------- handlinger ---------- */
+  function openSpot(id, fromMap) {
+    const changed = state.selected !== id;
+    state.selected = id; state.view = "detail"; state.editCount = false; state.confirmDelete = false;
+    if (changed) $("#bodyDetail").innerHTML = "";
+    render();
+    if (changed) $("#bodyDetail").scrollTop = 0;
+    if (!isDesktop()) setSnap("half");
+    const s = byId(id);
+    if (s && hasLoc(s)) setTimeout(() => showOnMap([s.lat, s.lng], fromMap ? map.getZoom() : Math.max(map.getZoom(), 16.5)), isDesktop() ? 0 : 280);
   }
-  function startPick(p) {
+  function backToList() { state.view = "list"; state.selected = null; render(); }
+
+  function startPlace(p) {
     if (!map) { toast("Kartet er ikke tilgjengelig."); return; }
-    $("#pickText").textContent = p.kind === "me" ? "Trykk på kartet der du er" : "Trykk på kartet der plassen ligger";
-    state.pick = p; $("#pickbar").hidden = false; document.body.classList.add("picking");
-    $("#mapbox").scrollIntoView({ behavior: "smooth", block: "center" });
+    state.place = p; state.view = "place";
+    $("#placeText").textContent = p.kind === "me" ? "Flytt kartet så nålen står der du er" : "Flytt kartet så nålen står der plassen er";
+    $("#placeOk").textContent = p.kind === "me" ? "Her er jeg" : "Bruk denne plasseringen";
+    render(); setSnap("peek");
+    const target = p.kind === "move" ? byId(p.id) : null;
+    setTimeout(() => {
+      placeCross();
+      if (target && hasLoc(target)) showOnMap([target.lat, target.lng], 17);
+      else if (p.kind === "new" && state.newLoc) showOnMap(state.newLoc, 17);
+      else if (p.kind === "new" && state.myPos) showOnMap(state.myPos, 17);
+    }, 280);
   }
-  function stopPick() { state.pick = null; $("#pickbar").hidden = true; document.body.classList.remove("picking"); }
-  $("#pickCancel").addEventListener("click", () => { const k = state.pick && state.pick.kind; stopPick(); if (k === "new") dlg.showModal(); });
+  function confirmPlace() {
+    const ll = map.containerPointToLatLng(crossPoint());
+    const pos = [Number(ll.lat.toFixed(6)), Number(ll.lng.toFixed(6))];
+    const p = state.place; state.place = null;
+    if (p.kind === "me") { state.view = "list"; setMyPos(pos, false); toast("Sortert etter avstand fra deg."); return; }
+    if (p.kind === "new") { state.newLoc = pos; showLoc(); state.view = "form"; render(); setSnap("full"); setTimeout(() => $("#f-name").focus(), 280); return; }
+    api.updateSpot(p.id, { lat: pos[0], lng: pos[1] }).then(() => toast("Plasseringen er lagret."), fail);
+    openSpot(p.id);
+  }
+  function cancelPlace() {
+    const p = state.place; state.place = null;
+    if (p && p.fromForm) { state.view = "form"; render(); setSnap("full"); return; }
+    if (p && p.kind === "move") { openSpot(p.id); return; }
+    backToList();
+  }
+
+  function startAdd() {
+    if (!state.canWrite) { toast("Du har bare lesetilgang."); return; }
+    $("#spotForm").reset(); $("#spotErr").hidden = true; state.newLoc = null; showLoc();
+    startPlace({ kind: "new" });
+  }
+  function showLoc() {
+    $("#f-loc").innerHTML = state.newLoc ? '<span class="ok">✓ Plassert på kartet</span>' : "Ikke plassert på kartet";
+    $("#f-pick").textContent = state.newLoc ? "Endre" : "Velg på kartet";
+  }
+
+  async function sendReport(level) {
+    const s = byId(state.selected); if (!s || state.sending) return;
+    const fv = (($("#r-free") || {}).value || "").trim(), cm = (($("#r-comment") || {}).value || "").trim();
+    const rep = { spotId: s.id, level, at: Date.now(), by: state.me || null, free: fv === "" ? null : Math.max(0, Math.round(Number(fv))), comment: cm || null };
+    state.sending = true; render();
+    try {
+      await api.addReport(rep);
+      for (const k of ["r-free", "r-comment"]) { const el = document.getElementById(k); if (el) el.value = ""; }
+      toast("Takk! «" + LEVELS[level].label + "» er meldt.");
+    } catch (e) { fail(e); }
+    finally { state.sending = false; render(); }
+  }
 
   /* ---------- min posisjon ---------- */
-  function distance(a, b) {
-    const R = 6371000, rad = Math.PI / 180;
-    const dLat = (b[0] - a[0]) * rad, dLng = (b[1] - a[1]) * rad;
-    const h = Math.sin(dLat / 2) ** 2 + Math.cos(a[0] * rad) * Math.cos(b[0] * rad) * Math.sin(dLng / 2) ** 2;
-    return 2 * R * Math.asin(Math.sqrt(h));
-  }
-  function fmtDist(m) { return m < 1000 ? Math.round(m / 10) * 10 + " m" : (m / 1000).toFixed(1).replace(".", ",") + " km"; }
-  let meMarker = null;
-  function setMyPos(ll) {
+  function setMyPos(ll, pan = true) {
     state.myPos = ll;
-    if (state.sort !== "near") { state.sort = "near"; $("#sort").value = "near"; }
     if (map) {
       if (meMarker) meMarker.remove();
-      meMarker = L.circleMarker(ll, { radius: 7, weight: 3, color: css("--surface"), fillColor: css("--sign"), fillOpacity: 1 })
-        .bindTooltip("Du er her", { direction: "top", offset: [0, -6] }).addTo(map);
-      const b = L.latLngBounds(BOUNDS);
-      if (b.contains(ll)) map.setView(ll, Math.max(map.getZoom(), 16));
+      meMarker = L.marker(ll, { icon: L.divIcon({ className: "", html: '<div class="me"></div>', iconSize: [18, 18], iconAnchor: [9, 9] }), interactive: false, zIndexOffset: 2000 }).addTo(map);
+      if (!L.latLngBounds(BOUNDS).contains(ll)) toast("Du er utenfor kartet over sentrum. Avstandene stemmer likevel.");
+      else if (pan) showOnMap(ll, 16);
     }
     render();
   }
   function locate() {
-    const fallback = (msg) => { toast(msg); startPick({ kind: "me" }); };
-    if (!navigator.geolocation) { fallback("GPS er ikke tilgjengelig her. Trykk på kartet der du er."); return; }
-    $("#locateBtn").disabled = true; $("#locateBtn").textContent = "Finner deg …";
-    const done = () => { $("#locateBtn").disabled = false; $("#locateBtn").textContent = "◎ Min posisjon"; };
+    const fallback = (msg) => { toast(msg); startPlace({ kind: "me" }); };
+    if (!navigator.geolocation) { fallback("GPS er ikke tilgjengelig her. Vis på kartet hvor du er."); return; }
+    $("#locateBtn").disabled = true; $("#locateTxt").textContent = "Finner deg …";
+    const done = () => { $("#locateBtn").disabled = false; $("#locateTxt").textContent = "Min posisjon"; };
     navigator.geolocation.getCurrentPosition(
       (p) => { done(); setMyPos([p.coords.latitude, p.coords.longitude]); toast("Sortert etter avstand fra deg."); },
-      () => { done(); fallback("Fikk ikke tak i posisjonen din. Trykk på kartet der du er."); },
+      () => { done(); fallback("Fikk ikke tak i GPS-en. Vis på kartet hvor du er."); },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
     );
   }
-  $("#locateBtn").addEventListener("click", locate);
 
-  function renderMap() {
-    if (!markers) return;
-    markers.clearLayers();
-    for (const s of filtered()) {
-      if (!hasLoc(s)) continue;
-      const r = latestFor(s.id), fresh = isFresh(r);
-      const col = fresh ? css(COLORS[r.level]) : css("--stale");
-      const m = L.circleMarker([s.lat, s.lng], {
-        radius: state.open === s.id ? 11 : 8, weight: 2, color: css("--surface"), fillColor: col, fillOpacity: 1,
-      }).addTo(markers);
-      const status = r ? (fresh ? LEVELS[r.level].label : "Utdatert") + ", " + ago(r.at) : "Ingen melding siste 6 t";
-      m.bindTooltip(`<span class="mk-label">${esc(s.name)}</span><br>${esc(status)}`, { direction: "top", offset: [0, -6] });
-      m.on("click", () => { if (state.pick) return; state.open = s.id; state.draft = { level: null }; render(); scrollToCard(s.id); });
+  let toastT;
+  function toast(t) { const el = $("#toast"); el.textContent = t; el.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => (el.hidden = true), 2600); }
+  function fail(e) { toast(e && e.code === "quota_exceeded" ? "Oversikten er full. Slett gamle plasser først." : "Fikk ikke lagret. Sjekk nettet og prøv igjen."); }
+
+  document.addEventListener("click", async (ev) => {
+    const t = ev.target;
+    const rowEl = t.closest(".row[data-id]"); if (rowEl) { openSpot(rowEl.dataset.id); return; }
+    const op = t.closest("[data-open]"); if (op) { openSpot(op.dataset.open); return; }
+    const kindChip = t.closest(".chip[data-kind]"); if (kindChip) { state.kind = kindChip.dataset.kind; render(); return; }
+    const lv = t.closest(".level[data-level]"); if (lv) { sendReport(lv.dataset.level); return; }
+    const a = t.closest("[data-act]"); if (!a) return;
+    const s = byId(state.selected);
+    switch (a.dataset.act) {
+      case "add": startAdd(); break;
+      case "back": backToList(); break;
+      case "count": state.editCount = !state.editCount; render(); break;
+      case "count-save": {
+        const v = Math.round(Number($("#c-count").value));
+        if (!(v > 0)) { toast("Skriv et antall over 0."); return; }
+        try { await api.updateSpot(s.id, { count: v }); state.editCount = false; render(); toast("Antall plasser er oppdatert."); } catch (e) { fail(e); }
+        break;
+      }
+      case "move": startPlace({ kind: "move", id: s.id }); break;
+      case "del": state.confirmDelete = true; render(); break;
+      case "del-no": state.confirmDelete = false; render(); break;
+      case "del-yes": try { await api.deleteSpot(s.id); backToList(); toast("Plassen er slettet."); } catch (e) { fail(e); } break;
+      case "ad-edit": state.editAd = !state.editAd; $("#bodyList").innerHTML = ""; render(); break;
+      case "ad-clear": try { await api.setAd({ text: null, url: null }); state.editAd = false; $("#bodyList").innerHTML = ""; render(); toast("Annonsen er fjernet."); } catch (e) { fail(e); } break;
     }
-  }
-  function scrollToCard(id) {
-    const el = document.querySelector(`.spot[data-id="${CSS.escape(id)}"]`);
-    if (!el) return;
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
-    el.classList.add("hl"); setTimeout(() => el.classList.remove("hl"), 1600);
-  }
-  function focusOnMap(s) {
-    if (!map) return;
-    $("#mapbox").scrollIntoView({ behavior: "smooth", block: "center" });
-    map.setView([s.lat, s.lng], Math.max(map.getZoom(), 16.5));
-    state.open = s.id; render();
-  }
-
-  /* ---------- annonseplass ---------- */
-  function renderAd() {
-    const el = $("#ad"), a = state.ad;
-    const safeUrl = a && /^https?:\/\//i.test(a.url || "") ? a.url : null;
-    const body = a && a.text
-      ? (safeUrl ? `<a class="txt" href="${esc(safeUrl)}" target="_blank" rel="noopener sponsored">${esc(a.text)}</a>` : `<span class="txt">${esc(a.text)}</span>`)
-      : `<span class="txt placeholder">Annonser her og nå bilistene i Bergen sentrum</span>`;
-    const edit = state.canEdit ? `<button class="btn ghost small" type="button" id="adEditBtn">${state.editAd ? "Lukk" : "Rediger"}</button>` : "";
-    if (el.dataset.editing === "1" && state.editAd) return; // ikke tegn over skjemaet mens det fylles ut
-    el.style.flexWrap = state.editAd ? "wrap" : "";
-    el.innerHTML = `<span class="tag">Annonse</span>${body}${edit}` + (state.editAd ? `
-      <form class="ad-edit" id="adForm" style="flex-basis:100%">
-        <input id="ad-text" maxlength="90" placeholder="Annonsetekst (én linje)" value="${esc(a && a.text || "")}" aria-label="Annonsetekst">
-        <input id="ad-url" maxlength="300" placeholder="https://… (valgfri lenke)" value="${esc(a && a.url || "")}" aria-label="Lenke">
-        <button class="btn primary small" type="submit">Lagre</button>
-        <button class="btn ghost small" type="button" id="adClear">Fjern</button>
-      </form>` : "");
-    el.dataset.editing = state.editAd ? "1" : "0";
-  }
-  $("#ad").addEventListener("click", async (e) => {
-    if (e.target.id === "adEditBtn") { state.editAd = !state.editAd; $("#ad").dataset.editing = "0"; renderAd(); }
-    if (e.target.id === "adClear") { try { await api.setAd({ text: null, url: null }); state.editAd = false; $("#ad").dataset.editing = "0"; renderAd(); toast("Annonsen er fjernet."); } catch (er) { fail(er); } }
   });
-  $("#ad").addEventListener("submit", async (e) => {
+  document.addEventListener("submit", async (e) => {
+    if (e.target.id !== "adForm") return;
     e.preventDefault();
     const text = $("#ad-text").value.trim(), url = $("#ad-url").value.trim();
     if (url && !/^https?:\/\//i.test(url)) { toast("Lenken må starte med https://"); return; }
-    try { await api.setAd({ text: text || null, url: url || null }); state.editAd = false; $("#ad").dataset.editing = "0"; renderAd(); toast("Annonsen er lagret."); }
-    catch (er) { fail(er); }
+    try { await api.setAd({ text: text || null, url: url || null }); state.editAd = false; $("#bodyList").innerHTML = ""; render(); toast("Annonsen er lagret."); } catch (er) { fail(er); }
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (state.view === "place") cancelPlace(); else if (state.view === "detail" || state.view === "form") backToList();
   });
 
+  $("#addBtn").addEventListener("click", startAdd);
+  $("#locateBtn").addEventListener("click", locate);
+  $("#placeOk").addEventListener("click", confirmPlace);
+  $("#placeCancel").addEventListener("click", cancelPlace);
+  $("#formBack").addEventListener("click", () => { backToList(); setSnap("peek"); });
+  $("#f-pick").addEventListener("click", () => startPlace({ kind: "new", fromForm: true }));
+  $("#freeChip").addEventListener("click", () => { state.onlyFree = !state.onlyFree; render(); });
+  $("#q").addEventListener("input", (e) => { state.q = e.target.value; render(); });
+  $("#q").addEventListener("focus", () => { if (!isDesktop()) setSnap("full"); });
+  $("#sort").addEventListener("change", (e) => { state.sort = e.target.value; if (state.sort === "near" && !state.myPos) locate(); render(); });
+  $("#f-area").innerHTML = AREAS.map((a) => `<option>${esc(a)}</option>`).join("");
+  $("#spotForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = $("#f-name").value.trim(), err = $("#spotErr");
+    if (!name) { err.textContent = "Gi plassen et navn, for eksempel gaten den ligger i."; err.hidden = false; $("#f-name").focus(); return; }
+    if (!state.newLoc) { err.textContent = "Vis hvor plassen er: trykk «Velg på kartet»."; err.hidden = false; return; }
+    const c = Math.round(Number($("#f-count").value));
+    const spot = {
+      name, kind: $("#f-kind").value, street: $("#f-street").value.trim() || null, area: $("#f-area").value,
+      zone: $("#f-zone").value.trim() || null, count: c > 0 ? c : null, note: $("#f-note").value.trim() || null,
+      by: state.me || null, at: Date.now(), lat: state.newLoc[0], lng: state.newLoc[1],
+    };
+    $("#spotSave").disabled = true;
+    try { const id = await api.addSpot(spot); toast("Plassen er lagt til. Takk!"); state.newLoc = null; if (id) openSpot(id); else backToList(); }
+    catch (er) { fail(er); }
+    finally { $("#spotSave").disabled = false; }
+  });
+  addEventListener("resize", () => { if (state.view === "place") placeCross(); });
+
   initMap();
+  render();
   setInterval(render, 60000); // oppdater «x min siden»
   boot();
 })();
