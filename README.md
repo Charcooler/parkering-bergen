@@ -31,6 +31,13 @@ lenken, fordi artifacts ikke får hente data fra andre nettsteder.
   Utenfor claude.ai lagres data bare i nettleseren (localStorage).
 - `kart/` – kartgrunnlag fra Kartverket (topo, CC BY 4.0): `kart-z15.jpg`/`kart-z16.jpg` dekker sentrum med Sandviken, Møhlenpris, Solheimsviken og Fjellsiden, `kart.jpg` er et skarpere bilde av selve sentrum.
 
+## Nettsiden
+
+Appen ligger på <https://charcooler.github.io/parkering-bergen/> (GitHub Pages fra grenen
+`gh-pages`). Etter endringer i `app.html`: kjør `./build.sh`, commit, og
+`git push origin main && git push origin main:gh-pages`. På mobil kan siden legges på
+hjemskjermen («Legg til på Hjem-skjerm») og åpnes som en app.
+
 ## Felles lagring på egen nettside (Firebase)
 
 På claude.ai lagres alt felles automatisk. Den frittstående nettsiden (`index.html`,
