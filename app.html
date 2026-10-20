@@ -52,8 +52,9 @@
 }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
-html, body { height: 100%; }
-body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.45; overflow: hidden; }
+html, body { height: 100%; overscroll-behavior: none; }
+html { background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.45; overflow: hidden; -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--sign); }
 h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; letter-spacing: .01em; }
 button, input, select, textarea { font: inherit; color: inherit; }
@@ -225,6 +226,24 @@ label.f small { font-weight: 400; color: var(--muted); }
 
 .toast { position: fixed; left: 50%; top: calc(118px + env(safe-area-inset-top, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 9px 16px; border-radius: 8px; font-weight: 600; z-index: 2000; box-shadow: var(--shadow); max-width: calc(100% - 32px); text-align: center; }
 
+/* berøringsskjerm: store nok mål for tommelen, og 16px i felt så iPhone ikke zoomer inn */
+@media (pointer: coarse) {
+  input, select, textarea { font-size: 16px; }
+  button, a, .row, .chip { touch-action: manipulation; }
+  .chip { padding: 8px 14px; font-size: 14px; }
+  .btn.small { padding: 9px 12px; font-size: 14px; }
+  .back { width: 42px; height: 42px; }
+  .row { padding: 12px; }
+  .handle, .phead, header.top { -webkit-user-select: none; user-select: none; }
+}
+@media (max-width: 899.98px) {
+  /* «Min posisjon» flyter rett over arket, der tommelen når */
+  .locate { top: auto; bottom: calc(var(--sheet, 118px) + 12px); width: 48px; height: 48px; padding: 0; justify-content: center; border-radius: 50%; transition: bottom .25s ease; }
+  .locate span { display: none; }
+  .locate svg { width: 22px; height: 22px; }
+  .main.dragging .locate { transition: none; }
+  .main[data-snap="full"] .locate { display: none; }
+}
 @media (max-width: 520px) {
   .brand p { display: none; }
   .ad-edit { grid-template-columns: 1fr 1fr; }
@@ -257,7 +276,7 @@ label.f small { font-weight: 400; color: var(--muted); }
       <div class="phead" id="headList">
         <div class="summary" id="summary">Henter plasser …</div>
         <div class="searchrow">
-          <input id="q" type="search" placeholder="Søk gate, plass eller sone" aria-label="Søk" autocomplete="off">
+          <input id="q" type="search" placeholder="Søk gate eller plass" aria-label="Søk" autocomplete="off">
           <select id="sort" aria-label="Sortering">
             <option value="smart">Smart</option>
             <option value="near">Nærmest meg</option>
@@ -800,12 +819,17 @@ label.f small { font-weight: 400; color: var(--muted); }
 
   /* ---------- ark (mobil) ---------- */
   const panel = $("#panel");
+  const mainEl = $(".main");
+  const maxH = () => mainEl.clientHeight - 8;
+  const snapHeight = (s) => s === "full" ? maxH() : s === "half" ? Math.round(mainEl.clientHeight * 0.48) : PEEK;
+  function syncSheet(h) { mainEl.style.setProperty("--sheet", (h ?? snapHeight(panel.dataset.snap)) + "px"); mainEl.dataset.snap = panel.dataset.snap; }
   function setSnap(s) {
-    if (panel.dataset.snap === s) return;
-    panel.dataset.snap = s;
+    if (panel.dataset.snap === s) { syncSheet(); return; }
+    panel.dataset.snap = s; syncSheet();
     setTimeout(() => { if (state.view === "place") placeCross(); }, 270);
   }
-  const maxH = () => panel.parentElement.clientHeight - 8;
+  syncSheet();
+  addEventListener("resize", () => syncSheet());
   (() => {
     let y0 = null, h0 = 0, moved = false, tap = false;
     const begin = (e, isTap) => { y0 = e.clientY; h0 = panel.getBoundingClientRect().height; moved = false; tap = isTap; };
@@ -818,15 +842,21 @@ label.f small { font-weight: 400; color: var(--muted); }
       if (y0 == null) return;
       const dy = e.clientY - y0;
       if (!moved && Math.abs(dy) < 6) return;
-      moved = true; panel.style.transition = "none";
-      panel.style.height = Math.min(maxH(), Math.max(90, h0 - dy)) + "px";
+      moved = true; panel.style.transition = "none"; mainEl.classList.add("dragging");
+      const hh = Math.min(maxH(), Math.max(90, h0 - dy));
+      panel.style.height = hh + "px"; syncSheet(hh);
     });
     const end = () => {
       if (y0 == null) return;
-      y0 = null; panel.style.transition = "";
+      y0 = null; panel.style.transition = ""; mainEl.classList.remove("dragging");
       const cur = panel.getBoundingClientRect().height;
       panel.style.height = "";
-      if (!moved) { if (tap) setSnap(panel.dataset.snap === "peek" ? "half" : panel.dataset.snap === "half" ? "full" : "peek"); return; }
+      if (!moved) {
+        if (tap) setSnap(panel.dataset.snap === "peek" ? "half" : panel.dataset.snap === "half" ? "full" : "peek");
+        else if (panel.dataset.snap === "peek") setSnap("half"); // trykk på toppen av arket åpner det
+        else syncSheet();
+        return;
+      }
       const opts = [["peek", PEEK], ["half", maxH() * 0.48], ["full", maxH()]];
       setSnap(opts.reduce((a, b) => (Math.abs(b[1] - cur) < Math.abs(a[1] - cur) ? b : a))[0]);
     };
