@@ -325,7 +325,7 @@ footer { color: var(--muted); font-size: 12px; padding-block: 28px 32px; }
 
   async function boot() {
     const use = window.claude && window.claude.use;
-    if (!use) { localMode(); return; }
+    if (!use) { if (!(await startFirebase())) localMode(); return; }
     const [d, user] = await Promise.all([use("db").catch(() => null), use("user").catch(() => null)]);
     if (!d) { localMode(); return; }
     db = d; state.mode = "db"; state.loaded = false;
@@ -337,14 +337,42 @@ footer { color: var(--muted); font-size: 12px; padding-block: 28px 32px; }
       state.user = user;
     }
     if (!state.canWrite) showNotice("Du kan se plassene, men ikke legge inn eller melde. Be eieren om tilgang som bidragsyter.");
+    db.doc("config/ad").onSnapshot((snap) => { state.ad = snap.exists ? snap.data() : null; renderAd(); }, () => {});
+    subscribe();
+  }
+  function subscribe() {
     db.collection("spots").limit(1000).onSnapshot((snap) => {
       state.spots = snap.docs.map((x) => ({ id: x.id, ...x.data() })); state.loaded = true; resolveNames(); render();
     }, onDbError);
-    db.doc("config/ad").onSnapshot((snap) => { state.ad = snap.exists ? snap.data() : null; renderAd(); }, () => {});
     db.collection("reports").orderBy("at", "desc").limit(500).onSnapshot((snap) => {
       state.reports = snap.docs.map((x) => ({ id: x.id, ...x.data() })); resolveNames(); render();
     }, onDbError);
     render();
+  }
+  /* Frittstående nettside: felles lagring i Firebase når config.js har nøkler */
+  const loadScript = (src) => new Promise((ok, fail) => {
+    const el = document.createElement("script"); el.src = src; el.onload = ok; el.onerror = fail; document.head.appendChild(el);
+  });
+  async function startFirebase() {
+    try { await loadScript("config.js"); } catch { return false; }
+    const cfg = window.PARKERING_CONFIG || {};
+    if (!cfg.firebase || !cfg.firebase.apiKey) return false;
+    state.ad = cfg.ad && cfg.ad.text ? cfg.ad : null; state.canEdit = false;
+    try {
+      const base = "https://cdn.jsdelivr.net/npm/firebase@10.12.2/";
+      await loadScript(base + "firebase-app-compat.js");
+      await Promise.all([loadScript(base + "firebase-auth-compat.js"), loadScript(base + "firebase-firestore-compat.js")]);
+      firebase.initializeApp(cfg.firebase);
+      const cred = await firebase.auth().signInAnonymously();
+      state.me = cred.user.uid;
+      db = firebase.firestore(); state.mode = "db"; state.loaded = false;
+      subscribe(); render();
+      return true;
+    } catch (e) {
+      console.error(e);
+      showNotice("Fikk ikke kontakt med den felles databasen. Plassene lagres bare i denne nettleseren inntil videre.");
+      return false;
+    }
   }
   function localMode() {
     state.mode = "local"; state.canEdit = true; state.ad = lsGet("pb-ad", null);

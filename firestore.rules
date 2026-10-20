@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function shortText(v, n) { return v == null || (v is string && v.size() <= n); }
+
+    match /spots/{id} {
+      allow read: if true;
+      allow create: if signedIn()
+        && request.resource.data.by == request.auth.uid
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 80
+        && shortText(request.resource.data.street, 100)
+        && shortText(request.resource.data.zone, 40)
+        && shortText(request.resource.data.note, 300);
+      // Alle innloggede kan rette antall plasser og plassering, resten bare den som la inn plassen
+      allow update: if signedIn() && (
+        resource.data.by == request.auth.uid
+        || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['count', 'lat', 'lng']));
+      allow delete: if signedIn() && resource.data.by == request.auth.uid;
+    }
+
+    match /reports/{id} {
+      allow read: if true;
+      allow create: if signedIn()
+        && request.resource.data.by == request.auth.uid
+        && request.resource.data.level in ['mye', 'noe', 'lite', 'fullt']
+        && request.resource.data.spotId is string
+        && shortText(request.resource.data.comment, 140);
+      allow update, delete: if false;
+    }
+
+    match /{other=**} {
+      allow read, write: if false;
+    }
+  }
+}
