@@ -239,6 +239,14 @@ label.f small { font-weight: 400; color: var(--muted); }
 .loc .ok { color: var(--ok); font-weight: 600; }
 .err { color: var(--full); font-size: 13px; margin: 0; }
 
+.photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 6px; }
+.photos button.ph { padding: 0; border: 0; border-radius: 8px; overflow: hidden; aspect-ratio: 1; cursor: pointer; background: var(--sunken); max-width: 100%; }
+.photos img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.upload { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.upload input[type=file] { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.lightbox { position: fixed; inset: 0; z-index: 3000; background: rgba(5, 12, 18, .92); display: grid; grid-template-rows: 1fr auto; padding: calc(12px + env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px)); gap: 10px; }
+.lightbox img { width: 100%; height: 100%; object-fit: contain; min-height: 0; }
+.lightbox .bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; color: #fff; font-size: 13px; }
 .toast { position: fixed; left: 50%; top: calc(118px + env(safe-area-inset-top, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 9px 16px; border-radius: 8px; font-weight: 600; z-index: 2000; box-shadow: var(--shadow); max-width: calc(100% - 32px); text-align: center; }
 
 /* berøringsskjerm: store nok mål for tommelen, og 16px i felt så iPhone ikke zoomer inn */
@@ -354,6 +362,9 @@ label.f small { font-weight: 400; color: var(--muted); }
           <label class="f">Merknad <small>makstid, avgiftstider, HC, el-lading …</small>
             <textarea id="f-note" rows="2" maxlength="300"></textarea>
           </label>
+          <div class="f" style="display:grid;gap:4px;font-size:13px;font-weight:600">Bilde av plassen <small style="font-weight:400;color:var(--muted)">valgfritt – skilt, innkjøring eller gaten</small>
+            <div class="upload"><label class="btn ghost small" for="f-photo">📷 Velg eller ta bilde</label><input id="f-photo" type="file" accept="image/*"><span id="f-photo-name" class="byline"></span></div>
+          </div>
           <p class="err" id="spotErr" hidden></p>
           <button class="btn primary" type="submit" id="spotSave">Lagre plassen</button>
         </form>
@@ -363,6 +374,10 @@ label.f small { font-weight: 400; color: var(--muted); }
 </div>
 
 <div class="toast" id="toast" role="status" hidden></div>
+<div class="lightbox" id="lightbox" hidden role="dialog" aria-label="Bilde">
+  <img id="lbImg" alt="">
+  <div class="bar"><span id="lbMeta"></span><span style="display:flex;gap:8px"><button class="btn small danger" type="button" id="lbDel" hidden>Slett bildet</button><button class="btn small" type="button" id="lbClose">Lukk</button></span></div>
+</div>
 
 <script>
 (() => {
@@ -409,7 +424,7 @@ label.f small { font-weight: 400; color: var(--muted); }
   };
 
   /* ---------- lagring: claude.ai-database, Firebase eller bare nettleseren ---------- */
-  const local = { data: lsGet("pb-data", { spots: [], reports: [] }), save() { lsSet("pb-data", this.data); emitLocal(); } };
+  const local = { data: Object.assign({ photos: [] }, lsGet("pb-data", { spots: [], reports: [] })), save() { lsSet("pb-data", this.data); emitLocal(); } };
   let db = null;
   function emitLocal() {
     state.spots = local.data.spots;
@@ -428,11 +443,22 @@ label.f small { font-weight: 400; color: var(--muted); }
     async deleteSpot(id) {
       if (db) return db.doc("spots/" + id).delete();
       local.data.spots = local.data.spots.filter((x) => x.id !== id);
-      local.data.reports = local.data.reports.filter((r) => r.spotId !== id); local.save();
+      local.data.reports = local.data.reports.filter((r) => r.spotId !== id);
+      local.data.photos = local.data.photos.filter((p) => p.spotId !== id); local.save();
     },
     async addReport(r) {
       if (db) return db.collection("reports").add(r);
       local.data.reports.unshift({ id: uid(), ...r }); local.data.reports = local.data.reports.slice(0, 400); local.save();
+    },
+    async addPhoto(p) {
+      if (db) return db.collection("photos").add(p);
+      local.data.photos.push({ id: uid(), ...p });
+      try { localStorage.setItem("pb-data", JSON.stringify(local.data)); } catch { local.data.photos.pop(); throw { code: "quota_exceeded" }; }
+      loadPhotos(p.spotId); emitLocal();
+    },
+    async deletePhoto(id) {
+      if (db) return db.doc("photos/" + id).delete();
+      local.data.photos = local.data.photos.filter((x) => x.id !== id); lsSet("pb-data", local.data); loadPhotos(state.selected); emitLocal();
     },
     async setAd(a) {
       if (db) return db.doc("config/ad").set(a);
@@ -707,6 +733,14 @@ label.f small { font-weight: 400; color: var(--muted); }
     </details>`;
   }
 
+  function photosHtml(s) {
+    const ph = state.photos || [];
+    const up = state.canWrite ? `<div class="upload"><label class="btn ghost small" for="d-photo">📷 Legg til bilde</label><input id="d-photo" type="file" accept="image/*"></div>` : "";
+    if (!ph.length && !up) return "";
+    return `<div class="report"><h3>Bilder${ph.length ? ` (${ph.length})` : ""}</h3>
+      ${ph.length ? `<div class="photos">${ph.map((p) => `<button class="ph" type="button" data-photo="${esc(p.id)}" aria-label="Vis bildet"><img src="${esc(p.data)}" alt="Bilde av ${esc(s.name)}" loading="lazy"></button>`).join("")}</div>` : `<p class="hint" style="margin:0">Ingen bilder ennå. Et bilde av skiltet eller innkjøringen hjelper andre å finne frem.</p>`}
+      ${up}</div>`;
+  }
   function renderDetail() {
     const s = byId(state.selected);
     if (!s) { state.view = "list"; state.selected = null; render(); return; }
@@ -773,6 +807,7 @@ label.f small { font-weight: 400; color: var(--muted); }
         <a class="btn primary" href="${navUrl(s)}" target="_blank" rel="noopener">Kjør hit ↗</a>
         ${s.url ? `<a class="btn ghost" href="${esc(s.url)}" target="_blank" rel="noopener">${g ? "Se hos Bergen Parkering ↗" : "Ledige plasser nå ↗"}</a>` : ""}
       </div>
+      ${photosHtml(s)}
       ${report}${tools}${byline}`;
     $("#bodyDetail").scrollTop = scroll;
 
@@ -893,6 +928,7 @@ label.f small { font-weight: 400; color: var(--muted); }
   /* ---------- handlinger ---------- */
   function openSpot(id, fromMap) {
     const changed = state.selected !== id;
+    if (changed) loadPhotos(id);
     state.selected = id; state.view = "detail"; state.editCount = false; state.confirmDelete = false;
     if (changed) $("#bodyDetail").innerHTML = "";
     render();
@@ -901,7 +937,70 @@ label.f small { font-weight: 400; color: var(--muted); }
     const s = byId(id);
     if (s && hasLoc(s)) setTimeout(() => showOnMap([s.lat, s.lng], fromMap ? map.getZoom() : Math.max(map.getZoom(), 16.5)), isDesktop() ? 0 : 280);
   }
-  function backToList() { state.view = "list"; state.selected = null; render(); }
+  /* ---------- bilder ----------
+     Bildene krympes i nettleseren (maks 1000 px, ca. 150 kB) og lagres i databasen sammen med plassene. */
+  let photoUnsub = null;
+  function loadPhotos(id) {
+    if (photoUnsub) { photoUnsub(); photoUnsub = null; }
+    state.photos = [];
+    if (!id) return;
+    if (db) {
+      photoUnsub = db.collection("photos").where("spotId", "==", id).limit(24).onSnapshot((snap) => {
+        state.photos = snap.docs.map((x) => ({ id: x.id, ...x.data() })).sort((a, b) => b.at - a.at); render();
+      }, () => {});
+    } else {
+      state.photos = local.data.photos.filter((p) => p.spotId === id).sort((a, b) => b.at - a.at);
+    }
+  }
+  function shrinkImage(file) {
+    return new Promise((ok, fail) => {
+      const url = URL.createObjectURL(file), img = new Image();
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        let max = 1000, q = 0.72, data;
+        for (let i = 0; i < 6; i++) {
+          const k = Math.min(1, max / Math.max(img.width, img.height));
+          const c = document.createElement("canvas"); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+          c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+          data = c.toDataURL("image/jpeg", q);
+          if (data.length < 200000) break;
+          max = Math.round(max * 0.8); q = Math.max(0.5, q - 0.06);
+        }
+        ok(data);
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); fail(new Error("Kunne ikke lese bildet")); };
+      img.src = url;
+    });
+  }
+  async function uploadPhoto(spotId, file) {
+    if (!file || !/^image\//.test(file.type)) { toast("Velg en bildefil."); return false; }
+    try {
+      toast("Laster opp bildet …");
+      const data = await shrinkImage(file);
+      await api.addPhoto({ spotId, data, by: state.me || null, at: Date.now() });
+      toast("Bildet er lagt til. Takk!"); return true;
+    } catch (e) { e && e.code ? fail(e) : toast("Kunne ikke bruke bildet. Prøv et annet."); return false; }
+  }
+  function openLightbox(p) {
+    $("#lbImg").src = p.data;
+    $("#lbMeta").textContent = "Lagt inn av " + who(p.by) + " " + new Date(p.at).toLocaleDateString("nb-NO", { day: "numeric", month: "short" });
+    const mine = state.mode === "local" || (state.me && p.by === state.me);
+    $("#lbDel").hidden = !mine || !state.canWrite; $("#lbDel").dataset.id = p.id; $("#lbDel").textContent = "Slett bildet";
+    $("#lightbox").hidden = false;
+  }
+  $("#lbClose").addEventListener("click", () => ($("#lightbox").hidden = true));
+  $("#lightbox").addEventListener("click", (e) => { if (e.target.id === "lightbox" || e.target.id === "lbImg") $("#lightbox").hidden = true; });
+  $("#lbDel").addEventListener("click", async (e) => {
+    const b = e.currentTarget;
+    if (b.textContent !== "Ja, slett") { b.textContent = "Ja, slett"; return; }
+    try { await api.deletePhoto(b.dataset.id); $("#lightbox").hidden = true; toast("Bildet er slettet."); } catch (er) { fail(er); }
+  });
+  document.addEventListener("change", async (e) => {
+    if (e.target.id === "d-photo") { const f = e.target.files[0]; e.target.value = ""; if (f && state.selected) await uploadPhoto(state.selected, f); }
+    if (e.target.id === "f-photo") { const f = e.target.files[0]; $("#f-photo-name").textContent = f ? "✓ " + f.name : ""; }
+  });
+
+  function backToList() { loadPhotos(null); state.view = "list"; state.selected = null; render(); }
 
   function startPlace(p) {
     if (!map) { toast("Kartet er ikke tilgjengelig."); return; }
@@ -988,6 +1087,7 @@ label.f small { font-weight: 400; color: var(--muted); }
     const rowEl = t.closest(".row[data-id]"); if (rowEl) { openSpot(rowEl.dataset.id); return; }
     const op = t.closest("[data-open]"); if (op) { openSpot(op.dataset.open); return; }
     const kindChip = t.closest(".chip[data-kind]"); if (kindChip) { state.kind = kindChip.dataset.kind; render(); return; }
+    const ph = t.closest("[data-photo]"); if (ph) { const p = (state.photos || []).find((x) => x.id === ph.dataset.photo); if (p) openLightbox(p); return; }
     const lv = t.closest(".level[data-level]"); if (lv) { sendReport(lv.dataset.level); return; }
     const a = t.closest("[data-act]"); if (!a) return;
     const s = byId(state.selected);
@@ -1018,6 +1118,7 @@ label.f small { font-weight: 400; color: var(--muted); }
   });
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Escape") return;
+    if (!$("#lightbox").hidden) { $("#lightbox").hidden = true; return; }
     if (state.view === "place") cancelPlace(); else if (state.view === "detail" || state.view === "form") backToList();
   });
 
@@ -1044,7 +1145,11 @@ label.f small { font-weight: 400; color: var(--muted); }
       by: state.me || null, at: Date.now(), lat: state.newLoc[0], lng: state.newLoc[1],
     };
     $("#spotSave").disabled = true;
-    try { const id = await api.addSpot(spot); toast("Plassen er lagt til. Takk!"); state.newLoc = null; if (id) openSpot(id); else backToList(); }
+    try {
+      const id = await api.addSpot(spot); toast("Plassen er lagt til. Takk!"); state.newLoc = null;
+      const file = $("#f-photo").files[0]; $("#f-photo").value = ""; $("#f-photo-name").textContent = "";
+      if (id) { openSpot(id); if (file) await uploadPhoto(id, file); } else backToList();
+    }
     catch (er) { fail(er); }
     finally { $("#spotSave").disabled = false; }
   });
