@@ -244,6 +244,12 @@ label.f small { font-weight: 400; color: var(--muted); }
 .zl span { font: 600 12px/1.15 var(--body); color: #14212b; background: rgba(255,255,255,.88); border-radius: 4px; padding: 2px 5px; text-align: center; }
 .zl span small { display: block; font-weight: 500; font-size: 10.5px; color: #5a6b78; }
 .zl-compact .zl span { display: none; }
+/* kommunens avgiftsplasser: gult skilt med sort kant, skiller seg fra sonefargene */
+.pin.avg { --c: #ffd21f; color: #14212b; border-color: #14212b; font-size: 13px; letter-spacing: -.02em; }
+.pin.avg[class*="s-"] { color: #fff; }
+.row .pin.avg { border: 2px solid #14212b; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12.5px; color: var(--muted); align-items: center; }
+.legend i { display: inline-grid; place-items: center; width: 18px; height: 18px; border-radius: 5px; margin-right: 5px; vertical-align: -4px; font: 700 10px/1 var(--display); font-style: normal; }
 .pin.mini { width: 16px !important; height: 16px; border-radius: 5px; border-width: 2px; font-size: 0; }
 .auto { width: 12px; height: 12px; border-radius: 3px; background: var(--sign); border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,.4); }
 .zonecard { display: grid; gap: 2px; padding: 10px 12px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface); font-size: 13.5px; }
@@ -322,7 +328,8 @@ label.f small { font-weight: 400; color: var(--muted); }
         </div>
         <div class="chips" role="toolbar" aria-label="Filter">
           <button class="chip" type="button" data-kind="alle" aria-pressed="true">Alle</button>
-          <button class="chip" type="button" data-kind="gate" aria-pressed="false">Gateparkering</button>
+          <button class="chip" type="button" data-kind="avgift" aria-pressed="false">Avgiftsplasser</button>
+          <button class="chip" type="button" data-kind="gate" aria-pressed="false">Meldt inn</button>
           <button class="chip" type="button" data-kind="phus" aria-pressed="false">Parkeringshus</button>
           <button class="chip" type="button" id="freeChip" aria-pressed="false">Ledig nå</button>
           <button class="chip" type="button" id="zoneChip" aria-pressed="true">Soner</button>
@@ -601,7 +608,9 @@ label.f small { font-weight: 400; color: var(--muted); }
   function filtered() {
     const q = state.q.trim().toLowerCase();
     return allSpots().filter((s) => {
-      if (state.kind !== "alle" && s.kind !== state.kind) return false;
+      if (state.kind === "avgift" && !s.kommunal) return false;
+      if (state.kind === "gate" && (s.kommunal || s.kind !== "gate")) return false;
+      if (state.kind === "phus" && s.kind !== "phus") return false;
       if (q && ![s.name, s.street, s.zone, s.note, s.area].join(" ").toLowerCase().includes(q)) return false;
       if (state.onlyFree) { const l = freshLevel(s); if (!l || LEVELS[l].rank < 3) return false; }
       return true;
@@ -665,7 +674,8 @@ label.f small { font-weight: 400; color: var(--muted); }
     if (g) return `<div class="pin phus live s-${liveLevel(g)} ${extraClass}"${width ? ` style="width:${width}px"` : ""}>${esc(g.free_spaces)}</div>`;
     const r = latestFor(s.id), fresh = isFresh(r);
     const label = fresh && r.free != null && r.free < 100 ? r.free : "P";
-    return `<div class="pin ${s.kind === "phus" ? "phus" : ""} ${fresh ? "s-" + r.level : ""} ${extraClass}">${esc(label)}</div>`;
+    const lbl = s.kommunal && label === "P" ? "kr" : label;
+    return `<div class="pin ${s.kind === "phus" ? "phus" : ""} ${s.kommunal ? "avg" : ""} ${fresh ? "s-" + r.level : ""} ${extraClass}">${esc(lbl)}</div>`;
   }
   function statusPill(s) {
     const g = liveFor(s);
@@ -678,7 +688,7 @@ label.f small { font-weight: 400; color: var(--muted); }
   function row(s) {
     const d = distTo(s);
     const sub = [
-      s.kind === "phus" ? "P-hus" : (zoneBadge(s) ? `<span class="zone">${esc(zoneBadge(s))}</span>` : "Gate"),
+      s.kind === "phus" ? "P-hus" : s.kommunal ? `Avgiftsplass${zoneBadge(s) ? ` · <span class="zone">${esc(zoneBadge(s))}</span>` : ""}` : (zoneBadge(s) ? `<span class="zone">${esc(zoneBadge(s))}</span>` : "Gate"),
       liveFor(s) ? `${fmtInt(liveFor(s).capacity_spaces)} plasser` : (s.count ? `ca. ${fmtInt(s.count)} plasser` : ""),
       d != null ? fmtDist(d) : "",
     ].filter(Boolean).map((x) => `<span>${x}</span>`).join("");
@@ -710,6 +720,7 @@ label.f small { font-weight: 400; color: var(--muted); }
         : `<div class="zonecard"><b>Du er utenfor boligsonene</b><span>Sjekk skiltet der du parkerer.</span></div>`);
     }
     parts.push(adHtml());
+    parts.push(`<div class="legend"><span><i style="background:#ffd21f;color:#14212b;border:2px solid #14212b">kr</i>Avgiftsplass – alle kan betale</span><span><i style="background:var(--stale);color:#fff;border:2px solid #fff">P</i>P-hus / meldt inn</span><span>Fargede felt = boligsoner</span></div>`);
 
     // står du ved en plass? foreslå å melde status
     if (state.myPos && state.canWrite) {
@@ -848,7 +859,6 @@ label.f small { font-weight: 400; color: var(--muted); }
       ${s.note ? `<p class="dnote">${esc(s.note)}</p>` : ""}
       <div class="actions">
         <a class="btn primary" href="${navUrl(s)}" target="_blank" rel="noopener">Kjør hit ↗</a>
-        ${hasLoc(s) ? `<a class="btn ghost" href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${s.lat.toFixed(6)},${s.lng.toFixed(6)}" target="_blank" rel="noopener">Se skiltene i Street View ↗</a>` : ""}
         ${s.url ? `<a class="btn ghost" href="${esc(s.url)}" target="_blank" rel="noopener">${g ? "Se hos Bergen Parkering ↗" : "Ledige plasser nå ↗"}</a>` : ""}
       </div>
       ${photosHtml(s)}
