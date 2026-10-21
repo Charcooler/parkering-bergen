@@ -430,7 +430,8 @@ label.f small { font-weight: 400; color: var(--muted); }
   const FRESH_MS = 2 * 60 * 60 * 1000;
   const WINDOW_MS = 6 * 60 * 60 * 1000; // bare meldinger fra de siste 6 timene hentes (sparer lesinger)
   // Kartverket topo, satt sammen til bilder: hele området (zoom 15/16) og skarpere sentrum (zoom 17)
-  const WIDE = [[60.362281, 5.273438], [60.419276, 5.377808]];
+  const WIDE = [[60.345978, 5.256958], [60.42741, 5.388794]];
+
   const CENTER = [[60.378575, 5.295410], [60.404358, 5.353088]];
   const PEEK = 118;
 
@@ -933,6 +934,7 @@ label.f small { font-weight: 400; color: var(--muted); }
     };
     map.fitBounds([[60.386, 5.312], [60.400, 5.338]], isDesktop() ? { paddingTopLeft: [410, 0] } : { paddingBottomRight: [0, PEEK] });
     map.on("zoomend", upgrade); upgrade();
+    map.on("zoomend", panBounds); panBounds();
     let lastMini = map.getZoom() < 15.5;
     map.on("zoomend", () => { const m = map.getZoom() < 15.5; if (m !== lastMini) { lastMini = m; renderMap(); } });
     layer = L.layerGroup().addTo(map);
@@ -1037,7 +1039,15 @@ const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v
   const mainEl = $(".main");
   const maxH = () => mainEl.clientHeight - 8;
   const snapHeight = (s) => s === "full" ? maxH() : s === "half" ? Math.round(mainEl.clientHeight * 0.48) : PEEK;
-  function syncSheet(h) { mainEl.style.setProperty("--sheet", (h ?? snapHeight(panel.dataset.snap)) + "px"); mainEl.dataset.snap = panel.dataset.snap; }
+  function syncSheet(h) { mainEl.style.setProperty("--sheet", (h ?? snapHeight(panel.dataset.snap)) + "px"); mainEl.dataset.snap = panel.dataset.snap; if (h == null) panBounds(); }
+  // kartet kan dras så langt at kanten av kartbildet havner rett over arket/sidepanelet
+  function panBounds() {
+    if (!map) return;
+    const z = map.getZoom(), pad = 24;
+    const below = isDesktop() ? 0 : Math.min(snapHeight(panel.dataset.snap || "peek"), snapHeight("half"));
+    const sw = map.project(L.latLng(WIDE[0]), z), ne = map.project(L.latLng(WIDE[1]), z);
+    map.setMaxBounds(L.latLngBounds(map.unproject([sw.x - pad - coveredLeft(), sw.y + below + pad], z), map.unproject([ne.x + pad, ne.y - pad], z)));
+  }
   function setSnap(s) {
     if (panel.dataset.snap === s) { syncSheet(); return; }
     panel.dataset.snap = s; syncSheet();
