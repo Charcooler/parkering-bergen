@@ -106,6 +106,14 @@ header.top { background: var(--sign); color: var(--sign-ink); display: flex; ali
   display: grid; place-items: center; font: 700 15px/1 var(--display); box-shadow: 0 2px 6px rgba(0,0,0,.35); transition: transform .15s; }
 .pin.phus { width: 36px; height: 36px; border-radius: 10px; font-size: 19px; }
 .pin.live { font-size: 16px; padding: 0 6px; }
+/* P-hus: blått P-hus-skilt; status vises som farget ring rundt */
+.pin.phus { --c: #0a4f9e; background: #0a4f9e; color: #fff; border: 2.5px solid #fff; border-radius: 8px; gap: 3px; grid-auto-flow: column; }
+.pin.phus .hus { font-size: 14px; font-weight: 600; opacity: .85; letter-spacing: .02em; }
+.pin.phus.s-mye { box-shadow: 0 0 0 3px var(--ok), 0 2px 6px rgba(0,0,0,.35); }
+.pin.phus.s-noe { box-shadow: 0 0 0 3px var(--some), 0 2px 6px rgba(0,0,0,.35); }
+.pin.phus.s-lite { box-shadow: 0 0 0 3px var(--low), 0 2px 6px rgba(0,0,0,.35); }
+.pin.phus.s-fullt { box-shadow: 0 0 0 3px var(--full), 0 2px 6px rgba(0,0,0,.35); }
+.row .pin.phus { border-width: 0; }
 .row .pin.live { width: auto; min-width: 44px; font-size: 15px; }
 .ago.live { color: var(--ok); font-weight: 600; }
 .pin.s-mye { --c: var(--ok); } .pin.s-noe { --c: var(--some); } .pin.s-lite { --c: var(--low); } .pin.s-fullt { --c: var(--full); }
@@ -373,8 +381,8 @@ label.f small { font-weight: 400; color: var(--muted); }
             <label class="f">Bydel
               <select id="f-area"></select>
             </label>
-            <label class="f">Sone <small>fra skiltet</small>
-              <input id="f-zone" maxlength="40" placeholder="f.eks. sone 1">
+            <label class="f">Sone <small>som på skiltet</small>
+              <input id="f-zone" maxlength="40" placeholder="f.eks. sone 1 og 5">
             </label>
           </div>
           <label class="f">Gate eller adresse
@@ -647,12 +655,34 @@ label.f small { font-weight: 400; color: var(--muted); }
     const polys = g.type === "MultiPolygon" ? g.coordinates : [g.coordinates];
     return polys.some((p) => inRing(lat, lng, p[0]) && !p.slice(1).some((h) => inRing(lat, lng, h)));
   }
+  // avstand i meter fra et punkt til nærmeste sonegrense
+  function edgeDist(lat, lng, g) {
+    const k = Math.cos(lat * Math.PI / 180), M = 111320;
+    let best = Infinity;
+    const polys = g.type === "MultiPolygon" ? g.coordinates : [g.coordinates];
+    for (const p of polys) for (const ring of p) for (let i = 1; i < ring.length; i++) {
+      const ax = (ring[i - 1][0] - lng) * k * M, ay = (ring[i - 1][1] - lat) * M, bx = (ring[i][0] - lng) * k * M, by = (ring[i][1] - lat) * M;
+      const dx = bx - ax, dy = by - ay, t = Math.max(0, Math.min(1, -(ax * dx + ay * dy) / (dx * dx + dy * dy || 1)));
+      best = Math.min(best, Math.hypot(ax + t * dx, ay + t * dy));
+    }
+    return best;
+  }
+  // soner man er i eller står helt inntil (grensegater kan være skiltet for begge)
+  const zonesNear = (lat, lng, m = 25) => ZONES ? ZONES.soner.filter((z) => inGeom(lat, lng, z.geo) || edgeDist(lat, lng, z.geo) < m) : [];
+  // sonekort fra andre soner som også gjelder her (kommunen: sone 1 gjelder også i 2 og 3)
+  const alsoValidHere = (z) => ZONES ? ZONES.soner.filter((o) => o !== z && o.sonekort && new RegExp("\\b" + z.sone + "\\b").test(o.sonekort.replace(/^.*?parkere i/, ""))) : [];
   const zoneAt = (lat, lng) => ZONES && ZONES.soner.find((z) => inGeom(lat, lng, z.geo)) || null;
   const zoneOf = (s) => hasLoc(s) ? zoneAt(s.lat, s.lng) : null;
+  const zoneExtra = (z) => [z.sonekort, ...alsoValidHere(z).map((o) => `Beboere med sonekort for sone ${o.sone} kan også parkere her.`)].filter(Boolean).join(" ");
   const zoneText = (z) => z.besok
     ? "Besøkende betaler 24 kr i timen (360 kr per døgn) i appen «P i Bergen» eller på automat. Gratis på kveld, natt og søndag."
     : "Gateplassene er bare for beboere med sonekort. Bruk en avgiftsplass eller et P-hus.";
-  const zoneBadge = (s) => s.zone ? s.zone : (zoneOf(s) ? "sone " + zoneOf(s).sone : null);
+  const zoneBadge = (s) => {
+    if (s.zone) return s.zone;
+    if (!hasLoc(s) || !ZONES) return null;
+    const zs = zonesNear(s.lat, s.lng, 20).map((z) => z.sone).sort((a, b) => a - b);
+    return zs.length ? "sone " + zs.join(" og ") : null;
+  };
 
   /* ---------- tegning ---------- */
   function render() {
@@ -670,10 +700,10 @@ label.f small { font-weight: 400; color: var(--muted); }
   }
 
   // bredde på nålen for P-hus med sanntidstall
-  const pinWidth = (s) => { const g = liveFor(s); return g ? Math.max(36, 16 + String(g.free_spaces).length * 9) : (s.kind === "phus" ? 36 : 30); };
+  const pinWidth = (s) => { const g = liveFor(s); return g ? Math.max(44, 30 + String(g.free_spaces).length * 9) : (s.kind === "phus" ? 36 : 30); };
   function pinHtml(s, extraClass = "", width) {
     const g = liveFor(s);
-    if (g) return `<div class="pin phus live s-${liveLevel(g)} ${extraClass}"${width ? ` style="width:${width}px"` : ""}>${esc(g.free_spaces)}</div>`;
+    if (g) return `<div class="pin phus live s-${liveLevel(g)} ${extraClass}"${width ? ` style="width:${width}px"` : ""}><span>P</span><span class="hus">${esc(g.free_spaces)}</span></div>`;
     const r = latestFor(s.id), fresh = isFresh(r);
     const label = fresh && r.free != null && r.free < 100 ? r.free : "P";
     const lbl = s.kommunal && label === "P" ? "kr" : label;
@@ -718,11 +748,12 @@ label.f small { font-weight: 400; color: var(--muted); }
     // hvilken sone står jeg i?
     if (state.myPos && ZONES) {
       const z = zoneAt(state.myPos[0], state.myPos[1]);
-      parts.push(z ? `<div class="zonecard ${z.besok ? "vis" : "res"}"><b>Du er i sone ${esc(z.sone)} ${esc(z.navn)}</b><span>${esc(zoneText(z))}</span></div>`
+      const near = zonesNear(state.myPos[0], state.myPos[1]).filter((o) => o !== z);
+      parts.push(z ? `<div class="zonecard ${z.besok ? "vis" : "res"}"><b>Du er i sone ${esc(z.sone)} ${esc(z.navn)}</b><span>${esc(zoneText(z))}</span>${zoneExtra(z) ? `<span>${esc(zoneExtra(z))}</span>` : ""}${near.length ? `<span><b style="font-size:14px">Grense mot sone ${near.map((o) => esc(o.sone)).join(" og ")}.</b> Gaten kan være skiltet for begge sonene – sjekk skiltet.</span>` : ""}</div>`
         : `<div class="zonecard"><b>Du er utenfor boligsonene</b><span>Sjekk skiltet der du parkerer.</span></div>`);
     }
     parts.push(adHtml());
-    parts.push(`<div class="legend"><span><i style="background:#ffd21f;color:#14212b;border:2px solid #14212b">kr</i>Avgiftsplass – alle kan betale</span><span><i style="background:var(--stale);color:#fff;border:2px solid #fff">P</i>P-hus / meldt inn</span><span>Fargede felt = boligsoner</span></div>`);
+    parts.push(`<div class="legend"><span><i style="background:#ffd21f;color:#14212b;border:2px solid #14212b">kr</i>Avgiftsplass – alle kan betale</span><span><i style="background:#0a4f9e;color:#fff">P</i>P-hus (tall = ledige nå)</span><span><i style="background:var(--stale);color:#fff">P</i>Meldt inn av brukere</span><span>Fargede felt = boligsoner</span></div>`);
 
     // står du ved en plass? foreslå å melde status
     if (state.myPos && state.canWrite) {
@@ -837,7 +868,7 @@ label.f small { font-weight: 400; color: var(--muted); }
       d != null ? ["Avstand", fmtDist(d) + `<br><span class="sub">${walk(d)}</span>`] : null,
       s.hours ? ["Åpent", esc(s.hours)] : null,
       ["Bydel", esc(s.area || "Annet")],
-      zoneOf(s) ? ["Boligsone", esc(zoneOf(s).sone + " " + zoneOf(s).navn) + `<br><span class="sub">${zoneOf(s).besok ? "Besøkende kan betale" : "Bare beboere"}</span>`] : null,
+      zoneOf(s) ? ["Boligsone", esc(zoneOf(s).sone + " " + zoneOf(s).navn) + `<br><span class="sub">${zoneOf(s).besok ? "Besøkende kan betale" : "Bare beboere"}${(() => { const o = zonesNear(s.lat, s.lng, 20).filter((x) => x !== zoneOf(s)); return o.length ? ` · grenser mot sone ${o.map((x) => esc(x.sone)).join(" og ")}` : ""; })()}</span>`] : null,
     ].filter(Boolean).map(([k, v]) => `<div class="fact"><small>${k}</small><b>${v}</b></div>`).join("");
 
     const hist = state.reports.filter((x) => x.spotId === s.id).slice(0, 8);
@@ -929,7 +960,7 @@ const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v
     [...ZONES.soner].sort((a, b) => a.sone - b.sone).forEach((z, i) => {
       const c = PALETTE[i % PALETTE.length];
       const g = L.geoJSON(z.geo, { style: { color: c, weight: 2.5, opacity: 0.9, fillColor: c, fillOpacity: 0.28 } })
-        .bindPopup(`<b>Sone ${esc(z.sone)} ${esc(z.navn)}</b><br>${esc(zoneText(z))}`);
+        .bindPopup(`<b>Sone ${esc(z.sone)} ${esc(z.navn)}</b><br>${esc(zoneText(z))}${zoneExtra(z) ? `<br><i>${esc(zoneExtra(z))}</i>` : ""}`);
       zoneLayer.addLayer(g); zoneColor[z.sone] = c; zoneGeo[z.sone] = g;
       labelLayer.addLayer(L.marker(insidePoint(z.geo), { interactive: false, pane: "zoneLabels", icon: L.divIcon({ className: "", iconSize: [0, 0],
         html: `<div class="zl" style="--zc:${c}"><b>${esc(z.sone)}</b><span>${esc(z.navn)}<small>${z.besok ? "besøkende betaler" : "bare beboere"}</small></span></div>` }) }));
@@ -1153,7 +1184,7 @@ const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v
     const pos = [Number(ll.lat.toFixed(6)), Number(ll.lng.toFixed(6))];
     const p = state.place; state.place = null;
     if (p.kind === "me") { state.view = "list"; setMyPos(pos, false); toast("Sortert etter avstand fra deg."); return; }
-    if (p.kind === "new") { state.newLoc = pos; showLoc(); const z = zoneAt(pos[0], pos[1]); if (z && !$("#f-zone").value) $("#f-zone").value = "sone " + z.sone; state.view = "form"; render(); setSnap("full"); setTimeout(() => $("#f-name").focus(), 280); return; }
+    if (p.kind === "new") { state.newLoc = pos; showLoc(); const zs = zonesNear(pos[0], pos[1], 20).map((z) => z.sone).sort((a, b) => a - b); if (zs.length && !$("#f-zone").value) $("#f-zone").value = "sone " + zs.join(" og "); state.view = "form"; render(); setSnap("full"); setTimeout(() => $("#f-name").focus(), 280); return; }
     api.updateSpot(p.id, { lat: pos[0], lng: pos[1] }).then(() => toast("Plasseringen er lagret."), fail);
     openSpot(p.id);
   }
