@@ -104,15 +104,15 @@ header.top { background: var(--sign); color: var(--sign-ink); display: flex; ali
 /* ---------- nåler på kartet ---------- */
 .pin { --c: var(--stale); width: 30px; height: 30px; border-radius: 9px; background: var(--c); color: #fff; border: 2.5px solid #fff;
   display: grid; place-items: center; font: 700 15px/1 var(--display); box-shadow: 0 2px 6px rgba(0,0,0,.35); transition: transform .15s; }
-.pin.phus { width: 36px; height: 36px; border-radius: 10px; font-size: 19px; }
-.pin.live { font-size: 16px; padding: 0 6px; }
+.pin.phus { width: 28px; height: 28px; border-radius: 7px; font-size: 15px; }
+.pin.live { font-size: 13px; padding: 0 4px; }
 /* P-hus: blått P-hus-skilt; status vises som farget ring rundt */
-.pin.phus { --c: #0a4f9e; background: #0a4f9e; color: #fff; border: 2.5px solid #fff; border-radius: 8px; gap: 3px; grid-auto-flow: column; }
-.pin.phus .hus { font-size: 14px; font-weight: 600; opacity: .85; letter-spacing: .02em; }
-.pin.phus.s-mye { box-shadow: 0 0 0 3px var(--ok), 0 2px 6px rgba(0,0,0,.35); }
-.pin.phus.s-noe { box-shadow: 0 0 0 3px var(--some), 0 2px 6px rgba(0,0,0,.35); }
-.pin.phus.s-lite { box-shadow: 0 0 0 3px var(--low), 0 2px 6px rgba(0,0,0,.35); }
-.pin.phus.s-fullt { box-shadow: 0 0 0 3px var(--full), 0 2px 6px rgba(0,0,0,.35); }
+.pin.phus { --c: #0a4f9e; background: #0a4f9e; color: #fff; border: 2px solid #fff; border-radius: 6px; gap: 2px; grid-auto-flow: column; }
+.pin.phus .hus { font-size: 11.5px; font-weight: 600; opacity: .85; letter-spacing: .02em; }
+.pin.phus.s-mye { box-shadow: 0 0 0 2px var(--ok), 0 2px 6px rgba(0,0,0,.35); }
+.pin.phus.s-noe { box-shadow: 0 0 0 2px var(--some), 0 2px 6px rgba(0,0,0,.35); }
+.pin.phus.s-lite { box-shadow: 0 0 0 2px var(--low), 0 2px 6px rgba(0,0,0,.35); }
+.pin.phus.s-fullt { box-shadow: 0 0 0 2px var(--full), 0 2px 6px rgba(0,0,0,.35); }
 .row .pin.phus { border-width: 0; }
 .row .pin.live { width: auto; min-width: 44px; font-size: 15px; }
 .ago.live { color: var(--ok); font-weight: 600; }
@@ -700,7 +700,7 @@ label.f small { font-weight: 400; color: var(--muted); }
   }
 
   // bredde på nålen for P-hus med sanntidstall
-  const pinWidth = (s) => { const g = liveFor(s); return g ? Math.max(44, 30 + String(g.free_spaces).length * 9) : (s.kind === "phus" ? 36 : 30); };
+  const pinWidth = (s) => { const g = liveFor(s); return g ? Math.max(30, 17 + String(g.free_spaces).length * 7) : (s.kind === "phus" ? 28 : 30); };
   function pinHtml(s, extraClass = "", width) {
     const g = liveFor(s);
     if (g) return `<div class="pin phus live s-${liveLevel(g)} ${extraClass}"${width ? ` style="width:${width}px"` : ""}><span>P</span><span class="hus">${esc(g.free_spaces)}</span></div>`;
@@ -1004,7 +1004,7 @@ const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v
       const sel = state.selected === s.id && state.view === "detail";
       // kommunens avgiftsplasser blir små prikker når man har zoomet ut
       const mini = s.kommunal && !sel && map.getZoom() < 15.5 && !freshLevel(s);
-      const w = mini ? 16 : pinWidth(s), h = mini ? 16 : s.kind === "phus" ? 36 : 30;
+      const w = mini ? 16 : pinWidth(s), h = mini ? 16 : s.kind === "phus" ? 28 : 30;
       const m = L.marker([s.lat, s.lng], {
         icon: L.divIcon({ className: "", html: pinHtml(s, (sel ? "sel " : "") + (mini ? "mini" : ""), mini ? null : w), iconSize: [w, h], iconAnchor: [w / 2, h / 2] }),
         zIndexOffset: sel ? 1000 : (s.kind === "phus" ? 100 : 0), title: s.name,
