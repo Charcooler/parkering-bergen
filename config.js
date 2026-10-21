@@ -3,10 +3,10 @@
 // Uten nøkler lagres alt bare i hver enkelt nettleser.
 window.PARKERING_CONFIG = {
   firebase: {
-    apiKey: "",
-    authDomain: "",
-    projectId: "",
-    appId: "",
+    apiKey: "AIzaSyA6TDAy4xkRBRdxkkpvAyqc03-v4M7kmhg",
+    authDomain: "parkering-bergen.firebaseapp.com",
+    projectId: "parkering-bergen",
+    appId: "1:933377180:web:69f04ac1cda03e5fa0a959",
   },
   // Annonselinjen under kartet. La text være tom for å vise plassholderen.
   ad: {
