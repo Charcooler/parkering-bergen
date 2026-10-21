@@ -602,7 +602,7 @@ label.f small { font-weight: 400; color: var(--muted); }
   function filtered() {
     const q = state.q.trim().toLowerCase();
     return allSpots().filter((s) => {
-      if (state.kind === "soner") return false;
+      if (state.kind === "soner" && (s.kommunal || s.kind === "phus")) return false;
       if (state.kind === "avgift" && !s.kommunal) return false;
       if (state.kind === "gate" && (s.kommunal || s.kind !== "gate")) return false;
       if (state.kind === "phus" && s.kind !== "phus") return false;
@@ -751,6 +751,10 @@ label.f small { font-weight: 400; color: var(--muted); }
       const zs = ZONES ? [...ZONES.soner] : [];
       const here = state.myPos && zoneAt(state.myPos[0], state.myPos[1]);
       zs.sort((a, b) => (here && a === here ? -1 : here && b === here ? 1 : 0) || a.sone - b.sone);
+      const mine = sorted(filtered());
+      if (mine.length) parts.push(`<div class="group-title"><span>Soneplasser meldt inn av brukere</span><span>${mine.length}</span></div><div class="rows">${mine.map(row).join("")}</div>`);
+      else if (state.loaded) parts.push(`<div class="empty"><h2>Ingen innsendte soneplasser${state.q || state.onlyFree ? " i søket" : " ennå"}</h2><p>Vet du om en soneplass? Trykk «+ Legg til», flytt nålen dit den er, og skriv ca. hvor mange plasser det er.</p></div>`);
+      parts.push(`<div class="group-title"><span>Soner</span><span>${zs.length}</span></div>`);
       parts.push(`<div class="rows">${zs.map((z) => `<button class="row" type="button" data-zone="${esc(z.sone)}">
         <div class="pin" style="--c:${zoneColor[z.sone] || "var(--stale)"};border-radius:50%">${esc(z.sone)}</div>
         <span class="row-main"><b>Sone ${esc(z.sone)} ${esc(z.navn)}</b><span class="row-sub"><span>${z.besok ? "Besøkende betaler 24 kr/t" : "Bare beboere med sonekort"}</span>${here === z ? "<span>Du er her</span>" : ""}</span></span>
