@@ -224,6 +224,14 @@ label.f small { font-weight: 400; color: var(--muted); }
 .loc .ok { color: var(--ok); font-weight: 600; }
 .err { color: var(--full); font-size: 13px; margin: 0; }
 
+.zlabel { font: 700 13px/1 var(--display); color: var(--ink); background: color-mix(in srgb, var(--surface) 85%, transparent); border: 1.5px solid currentColor; border-radius: 5px; padding: 2px 5px; white-space: nowrap; transform: translate(-50%, -50%); display: inline-block; pointer-events: none; }
+.zlabel.res { color: var(--full); } .zlabel.vis { color: var(--sign); }
+.auto { width: 12px; height: 12px; border-radius: 3px; background: var(--sign); border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,.4); }
+.zonecard { display: grid; gap: 2px; padding: 10px 12px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface); font-size: 13.5px; }
+.zonecard b { font: 600 17px/1.2 var(--display); }
+.zonecard.res { border-color: var(--full); } .zonecard.vis { border-color: var(--sign); }
+.leaflet-popup-content { font-family: var(--body); font-size: 13.5px; margin: 10px 14px; }
+.leaflet-popup-content b { font-family: var(--display); font-size: 17px; }
 .photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); gap: 6px; }
 .photos button.ph { padding: 0; border: 0; border-radius: 8px; overflow: hidden; aspect-ratio: 1; cursor: pointer; background: var(--sunken); max-width: 100%; }
 .photos img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -298,6 +306,7 @@ label.f small { font-weight: 400; color: var(--muted); }
           <button class="chip" type="button" data-kind="gate" aria-pressed="false">Gateparkering</button>
           <button class="chip" type="button" data-kind="phus" aria-pressed="false">Parkeringshus</button>
           <button class="chip" type="button" id="freeChip" aria-pressed="false">Ledig nå</button>
+          <button class="chip" type="button" id="zoneChip" aria-pressed="true">Soner</button>
         </div>
       </div>
       <div class="pbody" id="bodyList"></div>
@@ -405,7 +414,7 @@ label.f small { font-weight: 400; color: var(--muted); }
     me: null, canWrite: true, canEdit: false, mode: "local", user: null, names: {},
     q: "", sort: "smart", kind: "alle", onlyFree: false,
     view: "list", selected: null, place: null, newLoc: null,
-    myPos: null, ad: null, editAd: false, editCount: false, confirmDelete: false, sending: false,
+    myPos: null, showZones: true, ad: null, editAd: false, editCount: false, confirmDelete: false, sending: false,
   };
 
   /* ---------- lagring: claude.ai-database, Firebase eller bare nettleseren ---------- */
@@ -594,6 +603,27 @@ label.f small { font-weight: 400; color: var(--muted); }
     return [...list].sort(cmp);
   }
 
+  /* ---------- boligsoner (Bergen kommune, Boligsonekart) ---------- */
+  let ZONES = null;
+  function inRing(lat, lng, ring) {
+    let inside = false;
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      const [xi, yi] = ring[i], [xj, yj] = ring[j];
+      if ((yi > lat) !== (yj > lat) && lng < (xj - xi) * (lat - yi) / (yj - yi) + xi) inside = !inside;
+    }
+    return inside;
+  }
+  function inGeom(lat, lng, g) {
+    const polys = g.type === "MultiPolygon" ? g.coordinates : [g.coordinates];
+    return polys.some((p) => inRing(lat, lng, p[0]) && !p.slice(1).some((h) => inRing(lat, lng, h)));
+  }
+  const zoneAt = (lat, lng) => ZONES && ZONES.soner.find((z) => inGeom(lat, lng, z.geo)) || null;
+  const zoneOf = (s) => hasLoc(s) ? zoneAt(s.lat, s.lng) : null;
+  const zoneText = (z) => z.besok
+    ? "Besøkende betaler 24 kr i timen (360 kr per døgn) i appen «P i Bergen» eller på automat. Gratis på kveld, natt og søndag."
+    : "Gateplassene er bare for beboere med sonekort. Bruk en avgiftsplass eller et P-hus.";
+  const zoneBadge = (s) => s.zone ? s.zone : (zoneOf(s) ? "sone " + zoneOf(s).sone : null);
+
   /* ---------- tegning ---------- */
   function render() {
     for (const v of ["List", "Detail", "Place", "Form"]) {
@@ -629,7 +659,7 @@ label.f small { font-weight: 400; color: var(--muted); }
   function row(s) {
     const d = distTo(s);
     const sub = [
-      s.kind === "phus" ? "P-hus" : (s.zone ? `<span class="zone">${esc(s.zone)}</span>` : "Gate"),
+      s.kind === "phus" ? "P-hus" : (zoneBadge(s) ? `<span class="zone">${esc(zoneBadge(s))}</span>` : "Gate"),
       liveFor(s) ? `${fmtInt(liveFor(s).capacity_spaces)} plasser` : (s.count ? `ca. ${fmtInt(s.count)} plasser` : ""),
       d != null ? fmtDist(d) : "",
     ].filter(Boolean).map((x) => `<span>${x}</span>`).join("");
@@ -653,6 +683,13 @@ label.f small { font-weight: 400; color: var(--muted); }
 
     const parts = [];
     if (state.notice) parts.push(`<div class="notice">${esc(state.notice)}</div>`);
+
+    // hvilken sone står jeg i?
+    if (state.myPos && ZONES) {
+      const z = zoneAt(state.myPos[0], state.myPos[1]);
+      parts.push(z ? `<div class="zonecard ${z.besok ? "vis" : "res"}"><b>Du er i sone ${esc(z.sone)} ${esc(z.navn)}</b><span>${esc(zoneText(z))}</span></div>`
+        : `<div class="zonecard"><b>Du er utenfor boligsonene</b><span>Sjekk skiltet der du parkerer.</span></div>`);
+    }
     parts.push(adHtml());
 
     // står du ved en plass? foreslå å melde status
@@ -738,7 +775,7 @@ label.f small { font-weight: 400; color: var(--muted); }
     $("#headDetail").innerHTML = `<div class="dhead">
       <button class="back" type="button" data-act="back" aria-label="Tilbake til listen">←</button>
       <div class="dtitle"><h2>${esc(s.name)}</h2>
-        <div class="meta"><span class="kind">${s.kind === "phus" ? "Parkeringshus" : "Gateparkering"}</span>${s.zone ? `<span class="zone">${esc(s.zone)}</span>` : ""}${s.street ? `<span>${esc(s.street)}</span>` : ""}</div>
+        <div class="meta"><span class="kind">${s.kind === "phus" ? "Parkeringshus" : "Gateparkering"}</span>${zoneBadge(s) ? `<span class="zone">${esc(zoneBadge(s))}</span>` : ""}${s.street ? `<span>${esc(s.street)}</span>` : ""}</div>
       </div></div>`;
 
     const status = g
@@ -755,6 +792,7 @@ label.f small { font-weight: 400; color: var(--muted); }
       d != null ? ["Avstand", fmtDist(d) + `<br><span class="sub">${walk(d)}</span>`] : null,
       s.hours ? ["Åpent", esc(s.hours)] : null,
       ["Bydel", esc(s.area || "Annet")],
+      zoneOf(s) ? ["Boligsone", esc(zoneOf(s).sone + " " + zoneOf(s).navn) + `<br><span class="sub">${zoneOf(s).besok ? "Besøkende kan betale" : "Bare beboere"}</span>`] : null,
     ].filter(Boolean).map(([k, v]) => `<div class="fact"><small>${k}</small><b>${v}</b></div>`).join("");
 
     const hist = state.reports.filter((x) => x.spotId === s.id).slice(0, 8);
@@ -817,6 +855,33 @@ label.f small { font-weight: 400; color: var(--muted); }
     map.fitBounds([[60.386, 5.312], [60.400, 5.338]], isDesktop() ? { paddingTopLeft: [410, 0] } : { paddingBottomRight: [0, PEEK] });
     map.on("zoomend", upgrade); upgrade();
     layer = L.layerGroup().addTo(map);
+    fetch("kart/soner.json").then((r) => r.json()).then((d) => { ZONES = d; drawZones(); render(); }).catch(() => {});
+  }
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  let zoneLayer = null, labelLayer = null, autoLayer = null;
+  function drawZones() {
+    if (!map || !ZONES) return;
+    const res = css("--full"), vis = css("--sign");
+    zoneLayer = L.layerGroup(); labelLayer = L.layerGroup(); autoLayer = L.layerGroup();
+    for (const z of ZONES.soner) {
+      const c = z.besok ? vis : res;
+      const g = L.geoJSON(z.geo, { style: { color: c, weight: 1.5, opacity: 0.7, fillColor: c, fillOpacity: 0.07 } })
+        .bindPopup(`<b>Sone ${esc(z.sone)} ${esc(z.navn)}</b><br>${esc(zoneText(z))}`);
+      zoneLayer.addLayer(g);
+      labelLayer.addLayer(L.marker(g.getBounds().getCenter(), { interactive: false, icon: L.divIcon({ className: "", iconSize: [0, 0], html: `<span class="zlabel ${z.besok ? "vis" : "res"}">${esc(z.sone)} ${esc(z.navn)}</span>` }) }));
+    }
+    for (const f of ZONES.forbud) zoneLayer.addLayer(L.geoJSON(f, { style: { color: res, weight: 2, dashArray: "5 4", fillColor: res, fillOpacity: 0.15 } })
+      .bindPopup("<b>Parkeringsforbud</b><br>Ikke parker her uten tillatelse."));
+    for (const [la, ln] of ZONES.automater) autoLayer.addLayer(L.marker([la, ln], { icon: L.divIcon({ className: "", html: '<div class="auto"></div>', iconSize: [12, 12], iconAnchor: [6, 6] }) }).bindTooltip("Betalingsautomat for besøkende"));
+    map.on("zoomend", syncZones); syncZones();
+  }
+  function syncZones() {
+    if (!zoneLayer) return;
+    const on = state.showZones, z = map.getZoom();
+    for (const [l, show] of [[zoneLayer, on], [labelLayer, on && z >= 14.5], [autoLayer, on && z >= 15.5]]) {
+      if (show && !map.hasLayer(l)) l.addTo(map); else if (!show && map.hasLayer(l)) l.remove();
+    }
+    zoneLayer.eachLayer((g) => g.bringToBack && g.bringToBack());
   }
   function renderMap() {
     if (!layer) return;
@@ -1006,7 +1071,7 @@ label.f small { font-weight: 400; color: var(--muted); }
     const pos = [Number(ll.lat.toFixed(6)), Number(ll.lng.toFixed(6))];
     const p = state.place; state.place = null;
     if (p.kind === "me") { state.view = "list"; setMyPos(pos, false); toast("Sortert etter avstand fra deg."); return; }
-    if (p.kind === "new") { state.newLoc = pos; showLoc(); state.view = "form"; render(); setSnap("full"); setTimeout(() => $("#f-name").focus(), 280); return; }
+    if (p.kind === "new") { state.newLoc = pos; showLoc(); const z = zoneAt(pos[0], pos[1]); if (z && !$("#f-zone").value) $("#f-zone").value = "sone " + z.sone; state.view = "form"; render(); setSnap("full"); setTimeout(() => $("#f-name").focus(), 280); return; }
     api.updateSpot(p.id, { lat: pos[0], lng: pos[1] }).then(() => toast("Plasseringen er lagret."), fail);
     openSpot(p.id);
   }
@@ -1113,6 +1178,7 @@ label.f small { font-weight: 400; color: var(--muted); }
   $("#placeCancel").addEventListener("click", cancelPlace);
   $("#formBack").addEventListener("click", () => { backToList(); setSnap("peek"); });
   $("#f-pick").addEventListener("click", () => startPlace({ kind: "new", fromForm: true }));
+  $("#zoneChip").addEventListener("click", (e) => { state.showZones = !state.showZones; e.currentTarget.setAttribute("aria-pressed", String(state.showZones)); syncZones(); });
   $("#freeChip").addEventListener("click", () => { state.onlyFree = !state.onlyFree; render(); });
   $("#q").addEventListener("input", (e) => { state.q = e.target.value; render(); });
   $("#q").addEventListener("focus", () => { if (!isDesktop()) setSnap("full"); });
