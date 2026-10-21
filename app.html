@@ -313,6 +313,7 @@ label.f small { font-weight: 400; color: var(--muted); }
         </div>
         <div class="chips" role="toolbar" aria-label="Filter">
           <button class="chip" type="button" data-kind="alle" aria-pressed="true">Alle</button>
+          <button class="chip" type="button" data-kind="soner" aria-pressed="false">Bare soner</button>
           <button class="chip" type="button" data-kind="avgift" aria-pressed="false">Avgiftsplasser</button>
           <button class="chip" type="button" data-kind="gate" aria-pressed="false">Meldt inn</button>
           <button class="chip" type="button" data-kind="phus" aria-pressed="false">Parkeringshus</button>
@@ -593,6 +594,7 @@ label.f small { font-weight: 400; color: var(--muted); }
   function filtered() {
     const q = state.q.trim().toLowerCase();
     return allSpots().filter((s) => {
+      if (state.kind === "soner") return false;
       if (state.kind === "avgift" && !s.kommunal) return false;
       if (state.kind === "gate" && (s.kommunal || s.kind !== "gate")) return false;
       if (state.kind === "phus" && s.kind !== "phus") return false;
@@ -714,6 +716,19 @@ label.f small { font-weight: 400; color: var(--muted); }
         <button class="btn small" type="button" data-open="${esc(near[0].id)}">Meld status</button></div>`);
     }
 
+    if (state.kind === "soner") {
+      const zs = ZONES ? [...ZONES.soner] : [];
+      const here = state.myPos && zoneAt(state.myPos[0], state.myPos[1]);
+      zs.sort((a, b) => (here && a === here ? -1 : here && b === here ? 1 : 0) || a.sone - b.sone);
+      parts.push(`<div class="rows">${zs.map((z) => `<button class="row" type="button" data-zone="${esc(z.sone)}">
+        <div class="pin" style="--c:${zoneColor[z.sone] || "var(--stale)"};border-radius:50%">${esc(z.sone)}</div>
+        <span class="row-main"><b>Sone ${esc(z.sone)} ${esc(z.navn)}</b><span class="row-sub"><span>${z.besok ? "Besøkende betaler 24 kr/t" : "Bare beboere med sonekort"}</span>${here === z ? "<span>Du er her</span>" : ""}</span></span>
+        <span class="row-status"><span class="pill ${z.besok ? "noe" : "fullt"}">${z.besok ? "Besøkende OK" : "Beboere"}</span></span>
+      </button>`).join("")}</div>`);
+      parts.push(zoneInfo());
+      const body = $("#bodyList"); const st = body.scrollTop; body.innerHTML = parts.join(""); body.scrollTop = st;
+      return;
+    }
     const list = sorted(filtered());
     if (!state.loaded) parts.push(`<p class="foot">Henter plasser fra den felles oversikten …</p>`);
     if (!list.length) {
@@ -887,6 +902,7 @@ label.f small { font-weight: 400; color: var(--muted); }
   }
 const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
   let zoneLayer = null, labelLayer = null, autoLayer = null;
+  const zoneColor = {}, zoneGeo = {};
   function drawZones() {
     if (!map || !ZONES) return;
     const res = css("--full");
@@ -899,7 +915,7 @@ const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v
       const c = PALETTE[i % PALETTE.length];
       const g = L.geoJSON(z.geo, { style: { color: c, weight: 2.5, opacity: 0.9, fillColor: c, fillOpacity: 0.28 } })
         .bindPopup(`<b>Sone ${esc(z.sone)} ${esc(z.navn)}</b><br>${esc(zoneText(z))}`);
-      zoneLayer.addLayer(g);
+      zoneLayer.addLayer(g); zoneColor[z.sone] = c; zoneGeo[z.sone] = g;
       labelLayer.addLayer(L.marker(insidePoint(z.geo), { interactive: false, pane: "zoneLabels", icon: L.divIcon({ className: "", iconSize: [0, 0],
         html: `<div class="zl" style="--zc:${c}"><b>${esc(z.sone)}</b><span>${esc(z.navn)}<small>${z.besok ? "besøkende betaler" : "bare beboere"}</small></span></div>` }) }));
     });
@@ -1186,8 +1202,20 @@ const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v
   document.addEventListener("click", async (ev) => {
     const t = ev.target;
     const rowEl = t.closest(".row[data-id]"); if (rowEl) { openSpot(rowEl.dataset.id); return; }
+    const zr = t.closest("[data-zone]");
+    if (zr && zoneGeo[zr.dataset.zone]) {
+      const g = zoneGeo[zr.dataset.zone];
+      if (!isDesktop()) setSnap("peek");
+      setTimeout(() => { map.fitBounds(g.getBounds(), isDesktop() ? { paddingTopLeft: [430, 20], paddingBottomRight: [20, 20] } : { paddingBottomRight: [0, PEEK + 20], paddingTopLeft: [20, 20] }); g.openPopup(g.getBounds().getCenter()); }, isDesktop() ? 0 : 280);
+      return;
+    }
     const op = t.closest("[data-open]"); if (op) { openSpot(op.dataset.open); return; }
-    const kindChip = t.closest(".chip[data-kind]"); if (kindChip) { state.kind = kindChip.dataset.kind; render(); return; }
+    const kindChip = t.closest(".chip[data-kind]");
+    if (kindChip) {
+      state.kind = kindChip.dataset.kind;
+      if (state.kind === "soner" && !state.showZones) { state.showZones = true; $("#zoneChip").setAttribute("aria-pressed", "true"); syncZones(); }
+      render(); return;
+    }
     const ph = t.closest("[data-photo]"); if (ph) { const p = (state.photos || []).find((x) => x.id === ph.dataset.photo); if (p) openLightbox(p); return; }
     const lv = t.closest(".level[data-level]"); if (lv) { sendReport(lv.dataset.level); return; }
     const a = t.closest("[data-act]"); if (!a) return;
