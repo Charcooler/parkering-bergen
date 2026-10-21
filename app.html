@@ -224,8 +224,12 @@ label.f small { font-weight: 400; color: var(--muted); }
 .loc .ok { color: var(--ok); font-weight: 600; }
 .err { color: var(--full); font-size: 13px; margin: 0; }
 
-.zlabel { font: 700 13px/1 var(--display); color: var(--ink); background: color-mix(in srgb, var(--surface) 85%, transparent); border: 1.5px solid currentColor; border-radius: 5px; padding: 2px 5px; white-space: nowrap; transform: translate(-50%, -50%); display: inline-block; pointer-events: none; }
-.zlabel.res { color: var(--full); } .zlabel.vis { color: var(--sign); }
+.zl { position: absolute; transform: translate(-50%, -50%); display: grid; justify-items: center; gap: 2px; pointer-events: none; white-space: nowrap; }
+.zl b { min-width: 30px; height: 30px; padding: 0 6px; border-radius: 15px; display: grid; place-items: center; background: var(--zc); color: #fff; font: 700 17px/1 var(--display); border: 2.5px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.35); }
+.zl span { font: 600 12px/1.15 var(--body); color: #14212b; background: rgba(255,255,255,.88); border-radius: 4px; padding: 2px 5px; text-align: center; }
+.zl span small { display: block; font-weight: 500; font-size: 10.5px; color: #5a6b78; }
+.zl-compact .zl span { display: none; }
+.pin.mini { width: 16px !important; height: 16px; border-radius: 5px; border-width: 2px; font-size: 0; }
 .auto { width: 12px; height: 12px; border-radius: 3px; background: var(--sign); border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,.4); }
 .zonecard { display: grid; gap: 2px; padding: 10px 12px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface); font-size: 13.5px; }
 .zonecard b { font: 600 17px/1.2 var(--display); }
@@ -266,7 +270,7 @@ label.f small { font-weight: 400; color: var(--muted); }
 }
 </style>
 
-<div class="app">
+<div class="app" lang="nb">
   <header class="top">
     <div class="psign" aria-hidden="true">P</div>
     <div class="brand">
@@ -829,6 +833,7 @@ label.f small { font-weight: 400; color: var(--muted); }
       ${s.note ? `<p class="dnote">${esc(s.note)}</p>` : ""}
       <div class="actions">
         <a class="btn primary" href="${navUrl(s)}" target="_blank" rel="noopener">Kjør hit ↗</a>
+        ${hasLoc(s) ? `<a class="btn ghost" href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=${s.lat.toFixed(6)},${s.lng.toFixed(6)}" target="_blank" rel="noopener">Se skiltene i Street View ↗</a>` : ""}
         ${s.url ? `<a class="btn ghost" href="${esc(s.url)}" target="_blank" rel="noopener">${g ? "Se hos Bergen Parkering ↗" : "Ledige plasser nå ↗"}</a>` : ""}
       </div>
       ${photosHtml(s)}
@@ -855,6 +860,8 @@ label.f small { font-weight: 400; color: var(--muted); }
     };
     map.fitBounds([[60.386, 5.312], [60.400, 5.338]], isDesktop() ? { paddingTopLeft: [410, 0] } : { paddingBottomRight: [0, PEEK] });
     map.on("zoomend", upgrade); upgrade();
+    let lastMini = map.getZoom() < 15.5;
+    map.on("zoomend", () => { const m = map.getZoom() < 15.5; if (m !== lastMini) { lastMini = m; renderMap(); } });
     layer = L.layerGroup().addTo(map);
     // boligsonene og kommunens avgiftsplasser (parkeringsautomater og parkometre)
     const AREA_OF_ZONE = { Sentrum: "Sentrum / Torgallmenningen", Domkirken: "Sentrum / Torgallmenningen", Nordnes: "Nordnes", Sydnes: "Sydnes", "Møhlenpris": "Møhlenpris", Sandviken: "Sandviken", Kalfaret: "Kalfaret", "Nygård": "Nygårdshøyden", "Stølen": "Fjellsiden" };
@@ -872,24 +879,45 @@ const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v
   let zoneLayer = null, labelLayer = null, autoLayer = null;
   function drawZones() {
     if (!map || !ZONES) return;
-    const res = css("--full"), vis = css("--sign");
+    const res = css("--full");
+    // egen farge per sone, så nabosoner skiller seg fra hverandre
+    const PALETTE = ["#d1495b", "#2e86ab", "#e09f3e", "#7b2d8b", "#3a9d5d", "#1b998b", "#c45b1b", "#4f5bd5", "#a0527a", "#6d8a1f"];
     zoneLayer = L.layerGroup(); labelLayer = L.layerGroup(); autoLayer = L.layerGroup();
-    for (const z of ZONES.soner) {
-      const c = z.besok ? vis : res;
-      const g = L.geoJSON(z.geo, { style: { color: c, weight: 1.5, opacity: 0.7, fillColor: c, fillOpacity: 0.07 } })
+    map.createPane("zoneLabels").style.zIndex = 650; // sonenumrene over P-skiltene
+    map.getPane("zoneLabels").style.pointerEvents = "none";
+    [...ZONES.soner].sort((a, b) => a.sone - b.sone).forEach((z, i) => {
+      const c = PALETTE[i % PALETTE.length];
+      const g = L.geoJSON(z.geo, { style: { color: c, weight: 2.5, opacity: 0.9, fillColor: c, fillOpacity: 0.28 } })
         .bindPopup(`<b>Sone ${esc(z.sone)} ${esc(z.navn)}</b><br>${esc(zoneText(z))}`);
       zoneLayer.addLayer(g);
-      labelLayer.addLayer(L.marker(g.getBounds().getCenter(), { interactive: false, icon: L.divIcon({ className: "", iconSize: [0, 0], html: `<span class="zlabel ${z.besok ? "vis" : "res"}">${esc(z.sone)} ${esc(z.navn)}</span>` }) }));
-    }
+      labelLayer.addLayer(L.marker(insidePoint(z.geo), { interactive: false, pane: "zoneLabels", icon: L.divIcon({ className: "", iconSize: [0, 0],
+        html: `<div class="zl" style="--zc:${c}"><b>${esc(z.sone)}</b><span>${esc(z.navn)}<small>${z.besok ? "besøkende betaler" : "bare beboere"}</small></span></div>` }) }));
+    });
     for (const f of ZONES.forbud) zoneLayer.addLayer(L.geoJSON(f, { style: { color: res, weight: 2, dashArray: "5 4", fillColor: res, fillOpacity: 0.15 } })
       .bindPopup("<b>Parkeringsforbud</b><br>Ikke parker her uten tillatelse."));
     for (const [la, ln] of ZONES.automater) autoLayer.addLayer(L.marker([la, ln], { icon: L.divIcon({ className: "", html: '<div class="auto"></div>', iconSize: [12, 12], iconAnchor: [6, 6] }) }).bindTooltip("Betalingsautomat for besøkende"));
     map.on("zoomend", syncZones); syncZones();
   }
+  // et punkt godt inne i sonen (der etiketten står), også for buktete soner
+  function insidePoint(g) {
+    const ring = (g.type === "MultiPolygon" ? g.coordinates.reduce((a, b) => (b[0].length > a[0].length ? b : a)) : g.coordinates)[0];
+    const xs = ring.map((p) => p[0]), ys = ring.map((p) => p[1]);
+    const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
+    let best = null, bestD = -1;
+    for (let i = 1; i < 20; i++) for (let j = 1; j < 20; j++) {
+      const x = x0 + (x1 - x0) * i / 20, y = y0 + (y1 - y0) * j / 20;
+      if (!inGeom(y, x, g)) continue;
+      let d = Infinity;
+      for (const [px, py] of ring) d = Math.min(d, Math.hypot((px - x) * 0.5, py - y));
+      if (d > bestD) { bestD = d; best = [y, x]; }
+    }
+    return best || [(y0 + y1) / 2, (x0 + x1) / 2];
+  }
   function syncZones() {
     if (!zoneLayer) return;
     const on = state.showZones, z = map.getZoom();
-    for (const [l, show] of [[zoneLayer, on], [labelLayer, on && z >= 14.5], [autoLayer, on && z >= 15.5]]) {
+    map.getContainer().classList.toggle("zl-compact", z < 15);
+    for (const [l, show] of [[zoneLayer, on], [labelLayer, on], [autoLayer, on && z >= 15.5]]) {
       if (show && !map.hasLayer(l)) l.addTo(map); else if (!show && map.hasLayer(l)) l.remove();
     }
     zoneLayer.eachLayer((g) => g.bringToBack && g.bringToBack());
@@ -902,9 +930,11 @@ const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v
     for (const s of allSpots()) {
       if (!hasLoc(s) || !ids.has(s.id)) continue;
       const sel = state.selected === s.id && state.view === "detail";
-      const w = pinWidth(s), h = s.kind === "phus" ? 36 : 30;
+      // kommunens avgiftsplasser blir små prikker når man har zoomet ut
+      const mini = s.kommunal && !sel && map.getZoom() < 15.5 && !freshLevel(s);
+      const w = mini ? 16 : pinWidth(s), h = mini ? 16 : s.kind === "phus" ? 36 : 30;
       const m = L.marker([s.lat, s.lng], {
-        icon: L.divIcon({ className: "", html: pinHtml(s, sel ? "sel" : "", w), iconSize: [w, h], iconAnchor: [w / 2, h / 2] }),
+        icon: L.divIcon({ className: "", html: pinHtml(s, (sel ? "sel " : "") + (mini ? "mini" : ""), mini ? null : w), iconSize: [w, h], iconAnchor: [w / 2, h / 2] }),
         zIndexOffset: sel ? 1000 : (s.kind === "phus" ? 100 : 0), title: s.name,
       }).addTo(layer);
       m.on("click", () => { if (state.view !== "place") openSpot(s.id, true); });
