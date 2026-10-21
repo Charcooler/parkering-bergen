@@ -399,14 +399,27 @@ label.f small { font-weight: 400; color: var(--muted); }
   const AREAS = [
     "Sentrum / Torgallmenningen", "Bryggen og Vågen", "Nordnes", "Nøstet", "Engen",
     "Marken", "Nygårdshøyden", "Møhlenpris", "Sydnes", "Fjellsiden",
-    "Kalfaret", "Sandviken", "Skuteviken", "Lungegården / Bystasjonen", "Annet"
+    "Kalfaret", "Sandviken", "Skuteviken", "Lungegården / Bystasjonen", "Marineholmen / Solheimsviken", "Annet"
   ];
-  // Offentlige parkeringshus (Bergen Parkering). «live» er nøkkelen i sanntidsdataene fra ledig-parkering.no.
+  // Parkeringshus. Bergen Parkering sine: «live» er nøkkelen i sanntidsdataene fra ledig-parkering.no.
   const GARAGES = [
-    { id: "g-bygarasjen", name: "ByGarasjen", street: "Ved Bystasjonen", area: "Lungegården / Bystasjonen", lat: 60.38749, lng: 5.33124, count: 1792, live: "bygarasjen", hours: "Døgnåpent", note: "Elbillading på plan 2, mot Store Lungegårdsvann.", url: "https://bergenparkering.no/anlegg/bygarasjen/" },
-    { id: "g-klostergarasjen", name: "KlosterGarasjen", street: "Vestre Murallmenningen 14", area: "Nøstet", lat: 60.39317, lng: 5.31657, count: 832, live: "klostergarasjen", hours: "Døgnåpent", note: "Elbillading på plan E og F. Gangutganger mot Strandkaien, Klosteret og Markeveien.", url: "https://bergenparkering.no/anlegg/klostergarasjen/" },
-    { id: "g-grieggarasjen", name: "GriegGarasjen", street: "Lars Hilles gate 3 (under Grieghallen)", area: "Sentrum / Torgallmenningen", lat: 60.38956, lng: 5.32560, count: 363, live: "edvard", hours: "Døgnåpent", note: "Lading på plan U3. Høydegrense 2,05 m.", url: "https://bergenparkering.no/anlegg/grieggarasjen/" },
-    { id: "g-nordnesgarasjen", name: "NordnesGarasjen", street: "Nordnesgaten 46", area: "Nordnes", lat: 60.39984, lng: 5.30531, count: null, hours: "Innkjøring 06–24", note: "Rett ved Akvariet. Elbillading.", url: "https://bergenparkering.no/anlegg/nordnesgarasjen/" },
+    { id: "g-bygarasjen", name: "ByGarasjen", street: "Ved Bystasjonen", area: "Lungegården / Bystasjonen", lat: 60.38749, lng: 5.33124, count: 1792, live: "bygarasjen", operator: "Bergen Parkering", hours: "Døgnåpent", note: "Elbillading på plan 2, mot Store Lungegårdsvann.", url: "https://bergenparkering.no/anlegg/bygarasjen/" },
+    { id: "g-klostergarasjen", name: "KlosterGarasjen", street: "Vestre Murallmenningen 14", area: "Nøstet", lat: 60.39317, lng: 5.31657, count: 832, live: "klostergarasjen", operator: "Bergen Parkering", hours: "Døgnåpent", note: "Elbillading på plan E og F. Gangutganger mot Strandkaien, Klosteret og Markeveien.", url: "https://bergenparkering.no/anlegg/klostergarasjen/" },
+    { id: "g-grieggarasjen", name: "GriegGarasjen", street: "Lars Hilles gate 3 (under Grieghallen)", area: "Sentrum / Torgallmenningen", lat: 60.38956, lng: 5.32560, count: 363, live: "edvard", operator: "Bergen Parkering", hours: "Døgnåpent", note: "Lading på plan U3. Høydegrense 2,05 m.", url: "https://bergenparkering.no/anlegg/grieggarasjen/" },
+    { id: "g-nordnesgarasjen", name: "NordnesGarasjen", street: "Nordnesgaten 46", area: "Nordnes", lat: 60.39984, lng: 5.30531, count: 84, operator: "Bergen Parkering", hours: "Innkjøring 06–24", note: "Rett ved Akvariet. Elbillading.", url: "https://bergenparkering.no/anlegg/nordnesgarasjen/" },
+    // GC Rieber Eiendom (drives av Sesam Parkering). Pris fra 01.02.2026: 48 kr/t hverdag 07–17, ellers 24 kr/t, maks 295 kr/døgn.
+    { id: "g-marineholmen", name: "Marineholmen P-hus (Magasinet)", street: "Thormøhlens gate, ved VilVite", area: "Marineholmen / Solheimsviken", lat: 60.38118, lng: 5.32981, count: 335, operator: "GC Rieber Eiendom", note: "Fem etasjer. 48 kr/t hverdager 07–17, ellers 24 kr/t, maks 295 kr/døgn. Betal med Sesam Sesam, på automat eller nett.", url: "https://www.gcrieber-eiendom.no/for-leietakere/parkering/" },
+    { id: "g-motorhallen", name: "Motorhallen parkeringshall", street: "Vikens gate, Solheimsviken", area: "Marineholmen / Solheimsviken", lat: 60.3767, lng: 5.33616, count: null, operator: "GC Rieber Eiendom", note: "Innkjøring mellom Motorhallen og Beddingen. 48 kr/t hverdager 07–17, ellers 24 kr/t, maks 295 kr/døgn (Sesam Sesam).", url: "https://www.gcrieber-eiendom.no/for-leietakere/parkering/" },
+    { id: "g-bontelabo", name: "Bontelabo takparkering", street: "Bontelabo 2–8", area: "Skuteviken", lat: 60.40229, lng: 5.31848, count: null, operator: "GC Rieber Eiendom", note: "Parkering på taket av Bontelabo 2, 4 og 8, og på bakkeplan mot sjøen. 48 kr/t hverdager 07–17, ellers 24 kr/t, maks 295 kr/døgn (Sesam Sesam).", url: "https://www.gcrieber-eiendom.no/for-leietakere/parkering/" },
+    // Andre offentlige anlegg (posisjon og antall fra OpenStreetMap)
+    { id: "g-solheimsgarasjen", name: "SolheimsGarasjen", street: "Solheimsgaten", area: "Marineholmen / Solheimsviken", lat: 60.37539, lng: 5.33776, count: 81, operator: "Bergen Parkering" },
+    { id: "g-hansagarden", name: "Hansagården P-hus", street: "Kalfarveien", area: "Kalfaret", lat: 60.38584, lng: 5.35015, count: 313, operator: "APCOA" },
+    { id: "g-griegpark", name: "Grieg Park P-hus", street: "Strømgaten", area: "Sentrum / Torgallmenningen", lat: 60.38839, lng: 5.32887, count: null, operator: null },
+    { id: "g-paleet", name: "Paleet P-hus", street: "Sverres gate", area: "Sentrum / Torgallmenningen", lat: 60.39067, lng: 5.31775, count: null, operator: "Q-Park" },
+    { id: "g-sentrum-phus", name: "Sentrum P-hus", street: "Jon Smørs gate", area: "Sentrum / Torgallmenningen", lat: 60.39396, lng: 5.31988, count: null, operator: "Q-Park" },
+    { id: "g-rosenkrantz", name: "Rosenkrantz P-hus", street: "Rosenkrantzgaten", area: "Bryggen og Vågen", lat: 60.39689, lng: 5.32512, count: 175, operator: "APCOA" },
+    { id: "g-bryggen", name: "Bryggen P-hus", street: "Dreggsallmenningen", area: "Bryggen og Vågen", lat: 60.39812, lng: 5.32209, count: 93, operator: "APCOA" },
+    { id: "g-birkebeiner", name: "Birkebeinersenteret P-hus", street: "Birkebeinergaten", area: "Bryggen og Vågen", lat: 60.39981, lng: 5.32393, count: 87, operator: "APCOA" },
   ].map((g) => ({ ...g, kind: "phus", builtin: true, zone: null }));
 
   const LEVELS = {
@@ -856,6 +869,7 @@ label.f small { font-weight: 400; color: var(--muted); }
       g && g.total_chargers ? ["Ladere ledige", `${g.available_chargers} av ${g.total_chargers}`] : null,
       d != null ? ["Avstand", fmtDist(d) + `<br><span class="sub">${walk(d)}</span>`] : null,
       s.hours ? ["Åpent", esc(s.hours)] : null,
+      s.operator ? ["Drives av", esc(s.operator)] : null,
       ["Bydel", esc(s.area || "Annet")],
       zoneOf(s) ? ["Boligsone", esc(zoneOf(s).sone + " " + zoneOf(s).navn) + `<br><span class="sub">${zoneOf(s).besok ? "Besøkende kan betale" : "Bare beboere"}${(() => { const o = zonesNear(s.lat, s.lng, 20).filter((x) => x !== zoneOf(s)); return o.length ? ` · grenser mot sone ${o.map((x) => esc(x.sone)).join(" og ")}` : ""; })()}</span>`] : null,
     ].filter(Boolean).map(([k, v]) => `<div class="fact"><small>${k}</small><b>${v}</b></div>`).join("");
@@ -894,7 +908,7 @@ label.f small { font-weight: 400; color: var(--muted); }
       ${s.note ? `<p class="dnote">${esc(s.note)}</p>` : ""}
       <div class="actions">
         <a class="btn primary" href="${navUrl(s)}" target="_blank" rel="noopener">Kjør hit ↗</a>
-        ${s.url ? `<a class="btn ghost" href="${esc(s.url)}" target="_blank" rel="noopener">${g ? "Se hos Bergen Parkering ↗" : "Ledige plasser nå ↗"}</a>` : ""}
+        ${s.url ? `<a class="btn ghost" href="${esc(s.url)}" target="_blank" rel="noopener">${g ? "Se hos Bergen Parkering ↗" : s.operator === "GC Rieber Eiendom" ? "Priser og betaling ↗" : "Ledige plasser nå ↗"}</a>` : ""}
       </div>
       ${photosHtml(s)}
       ${report}${tools}${byline}`;

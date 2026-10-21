@@ -11,9 +11,11 @@ Meldinger eldre enn 2 timer vises som utdatert. En liten annonselinje under kart
 redigeres av eier/redaktører.
 
 Kartet fyller skjermen. På mobil ligger plassene i et ark som dras opp fra bunnen, på PC i en
-fast kolonne til venstre. De offentlige parkeringshusene (ByGarasjen, KlosterGarasjen,
-GriegGarasjen og NordnesGarasjen) ligger inne fra start, med lenke til sanntidsledige plasser hos
-Bergen Parkering. Status meldes med ett trykk, og «Kjør hit» åpner veibeskrivelse.
+fast kolonne til venstre. 15 parkeringshus ligger inne fra start: Bergen Parkering sine
+(ByGarasjen, KlosterGarasjen, GriegGarasjen, NordnesGarasjen, SolheimsGarasjen), GC Rieber Eiendom
+sine (Marineholmen P-hus/Magasinet, Motorhallen, Bontelabo – priser fra gcrieber-eiendom.no) og
+andre offentlige anlegg (APCOA, Q-Park m.fl.). Posisjon og antall plasser for de siste er hentet
+fra OpenStreetMap (© OpenStreetMap-bidragsytere, ODbL). Status meldes med ett trykk, og «Kjør hit» åpner veibeskrivelse.
 
 ### Sanntid fra P-husene
 
